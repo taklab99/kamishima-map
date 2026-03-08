@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>伊勢・鳥羽・神島 旅リンク集</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #18212f;
+      --muted: #5f6b7a;
+      --line: #dfe5ef;
+      --primary: #155eef;
+      --primary-soft: #eaf1ff;
+      --warn-bg: #fff4e5;
+      --warn-text: #9a6700;
+      --danger: #b42318;
+      --danger-soft: #fff1f1;
+      --ok: #067647;
+      --ok-soft: #edfdf2;
+      --shadow: 0 8px 24px rgba(18, 31, 53, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 180px);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+
+    .container {
+      width: min(1020px, 100%);
+      margin: 0 auto;
+      padding: 16px 16px 92px;
+    }
+
+    .hero {
+      position: sticky;
+      top: 8px;
+      z-index: 20;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 5vw, 34px);
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .searchbar {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 0 12px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .searchbar input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .note {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--warn-bg);
+      color: var(--warn-text);
+      font-size: 13px;
+      line-height: 1.6;
+      border: 1px solid #f7d79d;
+    }
+
+    .tabs-wrap {
+      margin-top: 18px;
+      position: sticky;
+      top: 206px;
+      z-index: 19;
+      padding-top: 4px;
+      background: linear-gradient(180deg, rgba(245,247,251,0.96), rgba(245,247,251,0.8));
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex: 0 0 auto;
+      min-height: 44px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      padding: 0 14px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .tab-btn .count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .tab-btn:not(.active) .count {
+      background: #eef2f8;
+      color: var(--muted);
+    }
+
+    .section-head {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .section-head p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .section-meta {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .card-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(15, 23, 42, 0.05);
+    }
+
+    .thumb {
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      color: #fff;
+      position: relative;
+    }
+
+    .thumb::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.18));
+    }
+
+    .thumb-icon, .thumb-label { position: relative; z-index: 1; }
+    .thumb-icon {
+      font-size: 38px;
+      line-height: 1;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.16);
+    }
+    .thumb-label {
+      max-width: 72%;
+      text-align: right;
+      font-size: 13px;
+      line-height: 1.3;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 28px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f2f5fa;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .tag.dynamic {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .tag.important {
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    .title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .desc {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .domain {
+      font-size: 12px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+
+    .actions {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 46px 46px;
+      gap: 8px;
+    }
+
+    .btn {
+      min-height: 46px;
+      border-radius: 12px;
+      border: 0;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-open { background: var(--primary); color: #fff; }
+    .btn-copy { background: #eef2f8; color: var(--text); }
+    .btn-icon {
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .btn-icon.active {
+      background: #fff6db;
+      border-color: #f5c451;
+      color: #9a6700;
+    }
+
+    .empty {
+      margin-top: 18px;
+      padding: 22px 16px;
+      text-align: center;
+      background: #fff;
+      border: 1px dashed var(--line);
+      border-radius: 18px;
+      color: var(--muted);
+      display: none;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 25;
+      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+      background: rgba(245,247,251,0.92);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(24,33,47,0.08);
+    }
+
+    .bottom-row {
+      width: min(1020px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .nav-btn {
+      min-height: 48px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .nav-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    @media (min-width: 720px) {
+      .container { padding-top: 20px; }
+      .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .actions { grid-template-columns: 1.2fr 1fr 46px 46px; }
+    }
+
+    @media (min-width: 1024px) {
+      .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="eyebrow">伊勢・鳥羽・神島 2泊3日旅リンク集</div>
+      <h1>参照サイトまとめ</h1>
+      <p>
+        28件のリンクを <strong>1日目 / 2日目 / 3日目 / その他</strong> に分類し、
+        そのうえで見返す可能性が高いものだけを <strong>重要</strong> タブにも重複掲載しています。
+      </p>
+      <label class="searchbar">
+        <span>🔎</span>
+        <input id="searchInput" type="search" placeholder="サイト名・地名・用途で検索" />
+      </label>
+    </header>
+
+    <div class="tabs-wrap">
+      <div class="tabs" id="tabs"></div>
+    </div>
+
+    <div class="section-head">
+      <div>
+        <h2 id="sectionTitle">1日目</h2>
+        <p id="sectionDesc"></p>
+      </div>
+      <div class="section-meta" id="sectionMeta"></div>
+    </div>
+
+    <div class="card-grid" id="cardGrid"></div>
+    <div class="empty" id="emptyState">条件に合うリンクが見つかりませんでした。検索語を変えてみてください。</div>
+
+    <div class="footer-note">
+      このHTMLは参照用の整理ページです。外部サイトの内容自体は保存していません。<br>
+      ⭐ お気に入り と ✓ 確認済み の状態は、このブラウザ内に保存されます。
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="bottom-row" id="bottomNav"></div>
+  </nav>
+
+  <script>
+    const items = [
+      {
+        id: 'route-shinagawa-ugata', tab: 'day1', category: '交通', important: true, dynamic: true,
+        title: '品川から鵜方までの乗換案内 - NAVITIME',
+        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E5%93%81%E5%B7%9D&dnvStationName=%E9%B5%9C%E6%96%B9&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=07&hour=6&minute=20&orvStationCode=00007825&dnvStationCode=00000610&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&airplane=1&sprexprs=1&utrexprs=1&othexprs=1&mtrplbus=1&intercitybus=1&ferry=1&accidentRailCode=&accidentRailName=&isrec=#detail_route_1',
+        desc: '初日の出発ルート確認用。品川から鵜方までの接続を見直したいときに使う。',
+        thumb: '🚄', sub: '出発ルート', domain: 'navitime.co.jp'
+      },
+      {
+        id: 'bus-timetable-spain', tab: 'day1', category: 'PDF', important: true, dynamic: true,
+        title: 'bus_timetable.pdf',
+        url: 'https://www.parque-net.com/pdf/bus_timetable.pdf',
+        desc: '鵜方駅から志摩スペイン村へ向かうバス時刻表。',
+        thumb: '🚌', sub: 'バス時刻表', domain: 'parque-net.com'
+      },
+      {
+        id: 'spain-restaurant', tab: 'day1', category: '食事', important: false, dynamic: true,
+        title: 'レストラン｜志摩スペイン村',
+        url: 'https://www.parque-net.com/restaurant/index.html',
+        desc: '園内での昼食候補を確認するページ。',
+        thumb: '🍽️', sub: '昼食候補', domain: 'parque-net.com'
+      },
+      {
+        id: 'hotel-michishio-cuisine', tab: 'day1', category: '宿', important: false, dynamic: true,
+        title: '伊勢志摩国立公園 賢島の宿 みち潮【公式サイト】',
+        url: 'https://www.michishio.jp/cuisine/',
+        desc: '1日目に賢島宿泊を想定したときの料理案内。',
+        thumb: '🏨', sub: '宿の料理', domain: 'michishio.jp'
+      },
+
+      {
+        id: 'route-kashikojima-toba', tab: 'day2', category: '交通', important: true, dynamic: true,
+        title: '賢島から鳥羽までの乗換案内 - NAVITIME',
+        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E8%B3%A2%E5%B3%B6&orvStationCode=00002112&dnvStationName=%E9%B3%A5%E7%BE%BD&dnvStationCode=00006282&airplane=1&sprexprs=1&utrexprs=1&othexprs=1&mtrplbus=1&intercitybus=1&ferry=1&tr_next=00002112.00006282.00000311.0&beforeyear=2026&beforemonth=04&beforeday=25&beforehour=11&beforeminute=30&afteryear=2026&aftermonth=04&afterday=25&afterhour=11&afterminute=00&before=1&bf=before&month=2026/04&day=25&hour=10&minute=42&sort=0&wspeed=100&basis=1&currentFromTime=11:00&currentToTime=11:30&currentFare=1080&currentIcFare=1080&currentTimeDiff=_30',
+        desc: '2日目の賢島→鳥羽移動確認用。',
+        thumb: '🚆', sub: '2日目の移動', domain: 'navitime.co.jp'
+      },
+      {
+        id: 'espana-cruise', tab: 'day2', category: '観光', important: true, dynamic: true,
+        title: '賢島エスパーニャクルーズ｜【公式】志摩マリンレジャー',
+        url: 'https://shima-marineleisure.com/espana',
+        desc: '賢島エスパーニャクルーズの運航・案内確認用。',
+        thumb: '🚢', sub: 'クルーズ', domain: 'shima-marineleisure.com'
+      },
+      {
+        id: 'hotel-wako-access', tab: 'day2', category: '宿', important: false, dynamic: true,
+        title: '三重県鳥羽【吉田屋 和光】公式サイト・アクセス',
+        url: 'https://www.hotel-wako.co.jp/acc/index.html',
+        desc: '鳥羽側宿泊時のアクセス確認用。',
+        thumb: '🧳', sub: '宿アクセス', domain: 'hotel-wako.co.jp'
+      },
+      {
+        id: 'toba-aquarium', tab: 'day2', category: '観光', important: true, dynamic: false,
+        title: '館内案内 | 鳥羽水族館 公式サイト',
+        url: 'https://aquarium.co.jp/kannai/',
+        desc: '鳥羽水族館の館内案内。2日目候補の主力。',
+        thumb: '🐠', sub: '館内案内', domain: 'aquarium.co.jp'
+      },
+      {
+        id: 'kagetu', tab: 'day2', category: '食事', important: true, dynamic: true,
+        title: '伊勢海老コース | 伊勢海老 海鮮蒸し料理 華月',
+        url: 'https://kagetu.co.jp/menu2/menuiseebi/',
+        desc: '2日目夕食候補。コース内容や予約前の確認用。',
+        thumb: '🦞', sub: '夕食候補', domain: 'kagetu.co.jp'
+      },
+      {
+        id: 'the-kaiya', tab: 'day2', category: '食事', important: false, dynamic: true,
+        title: '鳥羽で貝を食べるなら「ザ・貝屋」',
+        url: 'https://www.the-kaiya-toba.com/html/oshina.html',
+        desc: '貝料理の候補店。',
+        thumb: '🦪', sub: '貝料理', domain: 'the-kaiya-toba.com'
+      },
+      {
+        id: 'yakigai-iroha', tab: 'day2', category: '地図', important: false, dynamic: true,
+        title: '焼貝 いろは - Google マップ',
+        url: 'https://www.google.com/maps/place/%E7%84%BC%E8%B2%9D+%E3%81%84%E3%82%8D%E3%81%AF/@34.4863058,136.8426419,19.75z/data=!4m6!3m5!1s0x6004f96d815954c5:0x7ab2df5ce1e47282!8m2!3d34.4861547!4d136.8436442!16s%2Fg%2F11h5khfgyk?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D',
+        desc: 'Googleマップで場所を直接確認したいとき用。',
+        thumb: '📍', sub: '地図確認', domain: 'google.com'
+      },
+
+      {
+        id: 'route-toba-futamiura', tab: 'day3', category: '交通', important: true, dynamic: true,
+        title: '鳥羽から二見浦までの乗換案内 - NAVITIME',
+        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E9%B3%A5%E7%BE%BD&dnvStationName=%E4%BA%8C%E8%A6%8B%E6%B5%A6&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=00006282&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=',
+        desc: '神島から戻った後の二見エリア移動確認用。',
+        thumb: '🚉', sub: '二見へ移動', domain: 'navitime.co.jp'
+      },
+      {
+        id: 'route-futamiura-tsu', tab: 'day3', category: '交通', important: true, dynamic: true,
+        title: '二見浦から津までの乗換案内 - NAVITIME',
+        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E4%BA%8C%E8%A6%8B%E6%B5%A6&dnvStationName=%E6%B4%A5&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=',
+        desc: '帰路の途中で津へ寄る想定の移動確認用。',
+        thumb: '🚆', sub: '津へ移動', domain: 'navitime.co.jp'
+      },
+      {
+        id: 'route-tsu-shinagawa', tab: 'day3', category: '交通', important: true, dynamic: true,
+        title: '津から品川までの乗換案内 - NAVITIME',
+        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E6%B4%A5&dnvStationName=%E5%93%81%E5%B7%9D&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=',
+        desc: '旅の締め。津から品川へ戻るルート確認用。',
+        thumb: '🏠', sub: '帰宅ルート', domain: 'navitime.co.jp'
+      },
+      {
+        id: 'futami-jinja', tab: 'day3', category: '観光', important: true, dynamic: true,
+        title: 'お伊勢参りは二見から 二見興玉神社',
+        url: 'https://futamiokitamajinja.or.jp',
+        desc: '二見興玉神社の公式サイト。アクセスや境内案内の確認用。',
+        thumb: '⛩️', sub: '神社公式', domain: 'futamiokitamajinja.or.jp'
+      },
+      {
+        id: 'kamishima-guide', tab: 'day3', category: '観光', important: false, dynamic: false,
+        title: '神島の観光ガイド：アクセス・宿泊・食事まで徹底解説！',
+        url: 'https://www.kankomie.or.jp/report/1412#3-1',
+        desc: '神島観光の予習・現地再確認用ガイド。',
+        thumb: '🧭', sub: '観光ガイド', domain: 'kankomie.or.jp'
+      },
+      {
+        id: 'toba-ferry', tab: 'day3', category: '交通', important: true, dynamic: true,
+        title: '市営定期船／鳥羽市ホームページ',
+        url: 'https://www.city.toba.mie.jp/soshiki/t_kanri/gyomu/doro_kotsu/kokyo_kotsu/1913.html',
+        desc: '神島行きの定期船時刻を確認する中心ページ。',
+        thumb: '⛴️', sub: '神島の船', domain: 'city.toba.mie.jp'
+      },
+      {
+        id: 'toba-kamishima', tab: 'day3', category: '観光', important: false, dynamic: false,
+        title: '神島／鳥羽市ホームページ',
+        url: 'https://www.city.toba.mie.jp/soshiki/kikaku_keiei/gyomu/seisaku_keikaku/rito_shinko/3054.html',
+        desc: '神島の基本情報を確認する公式ページ。',
+        thumb: '🏝️', sub: '島の概要', domain: 'city.toba.mie.jp'
+      },
+      {
+        id: 'toba-pdf-r060901', tab: 'day3', category: 'PDF', important: false, dynamic: true,
+        title: 'r060901.pdf',
+        url: 'https://www.city.toba.mie.jp/material/files/group/45/r060901.pdf',
+        desc: '鳥羽市の補助資料PDF。',
+        thumb: '📄', sub: '補助PDF', domain: 'city.toba.mie.jp'
+      },
+      {
+        id: 'iseshima-map-pdf', tab: 'day3', category: 'PDF', important: false, dynamic: false,
+        title: '出力.indd',
+        url: 'https://www.iseshima-kanko.jp/downloads/media/23630',
+        desc: '神島関連マップとして見返す想定の資料。',
+        thumb: '🗺️', sub: '観光マップ', domain: 'iseshima-kanko.jp'
+      },
+      {
+        id: 'toba-marine-terminal', tab: 'day3', category: '地図', important: false, dynamic: true,
+        title: '鳥羽マリンターミナル',
+        url: 'https://peraichi.com/landing_pages/view/tobamarine',
+        desc: '船のりばの現地確認用。',
+        thumb: '🛳️', sub: '船のりば', domain: 'peraichi.com'
+      },
+      {
+        id: 'ise-seaparadise', tab: 'day3', category: '観光', important: true, dynamic: true,
+        title: '水族館について | 伊勢シーパラダイス(シーパラ)',
+        url: 'https://ise-seaparadise.com/about/',
+        desc: '3日目午後候補の伊勢シーパラダイス。',
+        thumb: '🦭', sub: '水族館候補', domain: 'ise-seaparadise.com'
+      },
+      {
+        id: 'meoto-yokocho', tab: 'day3', category: '食事', important: true, dynamic: true,
+        title: 'めおと横丁 ｜ 伊勢夫婦岩めおと横丁',
+        url: 'https://ise-meotoiwa.jp/restaurant-shop/',
+        desc: '買い物・食事・営業時間の確認用。',
+        thumb: '🛍️', sub: '買い物・食事', domain: 'ise-meotoiwa.jp'
+      },
+      {
+        id: 'futami-gift', tab: 'day3', category: '観光', important: true, dynamic: true,
+        title: 'お札・お守り・授与品のご案内',
+        url: 'https://futamiokitamajinja.or.jp/visit/gift/',
+        desc: '授与所やお守りの内容を確認するページ。',
+        thumb: '🪬', sub: 'お守り確認', domain: 'futamiokitamajinja.or.jp'
+      },
+
+      {
+        id: 'paranormasite-toba', tab: 'other', category: '観光', important: false, dynamic: false,
+        title: 'パラノマサイト FILE38 伊勢人魚物語×鳥羽市',
+        url: 'https://www.toba.gr.jp/4867-2/',
+        desc: 'イベント特設系の確認ページ。',
+        thumb: '🎮', sub: '特設ページ', domain: 'toba.gr.jp'
+      },
+      {
+        id: 'paranormasite-map-pdf', tab: 'other', category: 'PDF', important: false, dynamic: false,
+        title: 'パラノマサイト-FILE38-伊勢人魚物語MAP-最小',
+        url: 'https://www.toba.gr.jp/files/2bc0ec3b4dbda3ed6b9053a81ae56260.pdf',
+        desc: 'イベント用の補助MAP PDF。',
+        thumb: '🧾', sub: 'イベントMAP', domain: 'toba.gr.jp'
+      },
+      {
+        id: 'paranormasite-iseshima', tab: 'other', category: '観光', important: false, dynamic: false,
+        title: 'パラノマサイト FILE38 伊勢人魚物語 特設サイト',
+        url: 'https://www.iseshima-kanko.jp/fc/report_fc/PARANORMA_iseshima',
+        desc: '伊勢志摩観光ナビ側の特設ページ。',
+        thumb: '📚', sub: '特集記事', domain: 'iseshima-kanko.jp'
+      },
+      {
+        id: 'kamome-bus-jpg', tab: 'other', category: 'PDF', important: false, dynamic: true,
+        title: 'kamomebuszikokuhyoomote.jpg (2482×1755)',
+        url: 'https://www.city.toba.mie.jp/material/files/group/45/kamomebuszikokuhyoomote.jpg',
+        desc: 'かもめバス時刻表を画像で確認したいとき用。',
+        thumb: '🚌', sub: '時刻表画像', domain: 'city.toba.mie.jp'
+      }
+    ];
+
+    const tabs = [
+      { key: 'day1', label: '1日目', desc: '品川 → 鵜方 → 志摩スペイン村 で見返すリンク' },
+      { key: 'day2', label: '2日目', desc: '賢島・鳥羽エリアの観光、食事、宿まわりのリンク' },
+      { key: 'day3', label: '3日目', desc: '神島・二見・帰路で使うリンク' },
+      { key: 'other', label: 'その他', desc: '補助資料、イベント、サブの時刻表など' },
+      { key: 'important', label: '重要', desc: '見返す可能性が高いリンクだけを再掲' }
+    ];
+
+    const sectionLabels = {
+      day1: '1日目',
+      day2: '2日目',
+      day3: '3日目',
+      other: 'その他',
+      important: '重要'
+    };
+
+    const palette = {
+      '交通': 'linear-gradient(135deg, #155eef, #3b82f6)',
+      '観光': 'linear-gradient(135deg, #0f766e, #22c55e)',
+      '食事': 'linear-gradient(135deg, #d94841, #f97316)',
+      '宿': 'linear-gradient(135deg, #7c3aed, #8b5cf6)',
+      'PDF': 'linear-gradient(135deg, #475467, #667085)',
+      '地図': 'linear-gradient(135deg, #ad6800, #f59e0b)'
+    };
+
+    const state = {
+      activeTab: 'day1',
+      search: '',
+      favorites: loadSet('travel-links-favorites'),
+      done: loadSet('travel-links-done')
+    };
+
+    function loadSet(key) {
+      try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); }
+      catch { return new Set(); }
+    }
+
+    function saveSet(key, set) {
+      localStorage.setItem(key, JSON.stringify([...set]));
+    }
+
+    function toggleSet(set, key, id) {
+      if (set.has(id)) set.delete(id); else set.add(id);
+      saveSet(key, set);
+      render();
+    }
+
+    function matchesTab(item) {
+      return state.activeTab === 'important' ? item.important : item.tab === state.activeTab;
+    }
+
+    function matchesSearch(item) {
+      const q = state.search.trim().toLowerCase();
+      if (!q) return true;
+      const hay = [item.title, item.desc, item.category, item.domain, item.sub, sectionLabels[item.tab]].join(' ').toLowerCase();
+      return hay.includes(q);
+    }
+
+    function getVisibleItems() {
+      return items.filter(item => matchesTab(item) && matchesSearch(item));
+    }
+
+    function countForTab(key) {
+      return items.filter(item => key === 'important' ? item.important : item.tab === key).length;
+    }
+
+    function createTabs() {
+      const tabsEl = document.getElementById('tabs');
+      const bottom = document.getElementById('bottomNav');
+      tabsEl.innerHTML = '';
+      bottom.innerHTML = '';
+
+      tabs.forEach(tab => {
+        const count = countForTab(tab.key);
+        const btn = document.createElement('button');
+        btn.className = 'tab-btn' + (state.activeTab === tab.key ? ' active' : '');
+        btn.innerHTML = `${tab.label}<span class="count">${count}</span>`;
+        btn.onclick = () => {
+          state.activeTab = tab.key;
+          render();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        tabsEl.appendChild(btn);
+      });
+
+      tabs.forEach(tab => {
+        const btn = document.createElement('button');
+        btn.className = 'nav-btn' + (state.activeTab === tab.key ? ' active' : '');
+        btn.textContent = tab.label === 'その他' ? '他' : tab.label;
+        btn.onclick = () => {
+          state.activeTab = tab.key;
+          render();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        bottom.appendChild(btn);
+      });
+    }
+
+    function makeCard(item) {
+      const card = document.createElement('article');
+      card.className = 'card';
+      const fav = state.favorites.has(item.id);
+      const done = state.done.has(item.id);
+      const bg = palette[item.category] || 'linear-gradient(135deg, #155eef, #7c3aed)';
+
+      card.innerHTML = `
+        <div class="thumb" style="background:${bg}">
+          <div class="thumb-icon">${item.thumb}</div>
+          <div class="thumb-label">${item.sub}</div>
+        </div>
+        <div class="card-body">
+          <div class="meta">
+            <span class="tag">${sectionLabels[item.tab]}</span>
+            <span class="tag">${item.category}</span>
+            ${item.important ? '<span class="tag important">重要</span>' : ''}
+            ${item.dynamic ? '<span class="tag dynamic">要再確認</span>' : ''}
+          </div>
+          <h3 class="title">${item.title}</h3>
+          <p class="desc">${item.desc}</p>
+          <div class="domain">${item.domain}</div>
+          <div class="actions">
+            <button class="btn btn-open" data-open>開く</button>
+            <button class="btn btn-copy" data-copy>URL</button>
+            <button class="btn btn-icon ${fav ? 'active' : ''}" data-fav title="お気に入り">⭐</button>
+            <button class="btn btn-icon ${done ? 'active' : ''}" data-done title="確認済み">✓</button>
+          </div>
+        </div>
+      `;
+
+      card.querySelector('[data-open]').onclick = () => window.open(item.url, '_blank', 'noopener');
+      card.querySelector('[data-copy]').onclick = async () => {
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(item.url);
+          } else {
+            const ta = document.createElement('textarea');
+            ta.value = item.url;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+          }
+          const btn = card.querySelector('[data-copy]');
+          btn.textContent = 'コピー済';
+          setTimeout(() => btn.textContent = 'URL', 1000);
+        } catch {
+          alert('URLのコピーに失敗しました。長押しまたは共有メニューをご利用ください。');
+        }
+      };
+      card.querySelector('[data-fav]').onclick = () => toggleSet(state.favorites, 'travel-links-favorites', item.id);
+      card.querySelector('[data-done]').onclick = () => toggleSet(state.done, 'travel-links-done', item.id);
+      return card;
+    }
+
+    function render() {
+      createTabs();
+      const visible = getVisibleItems();
+      const grid = document.getElementById('cardGrid');
+      const empty = document.getElementById('emptyState');
+      const currentTab = tabs.find(t => t.key === state.activeTab);
+
+      document.getElementById('sectionTitle').textContent = currentTab.label;
+      document.getElementById('sectionDesc').textContent = currentTab.desc;
+      document.getElementById('sectionMeta').textContent = `表示 ${visible.length}件 / 総リンク 28件`;
+
+      grid.innerHTML = '';
+      visible.forEach(item => grid.appendChild(makeCard(item)));
+      empty.style.display = visible.length ? 'none' : 'block';
+    }
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      state.search = e.target.value;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

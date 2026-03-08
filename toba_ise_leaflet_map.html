@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>パラノマサイト コラボイベントマップ</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #dbe3ee;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --sidebar-width: 380px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic UI", sans-serif; color: var(--text); background: #e5edf8; }
+    body { display: flex; min-height: 100vh; }
+    .sidebar { width: var(--sidebar-width); background: #f8fafc; border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+    .sidebar-header { padding: 18px 18px 10px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); }
+    h1 { margin: 0 0 8px; font-size: 1.2rem; line-height: 1.4; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+    .summary-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+    .summary-label { font-size: 0.76rem; color: var(--muted); margin-bottom: 4px; }
+    .summary-value { font-size: 1.1rem; font-weight: 700; }
+    .controls { padding: 14px 18px; border-bottom: 1px solid var(--line); overflow-y: auto; max-height: 42vh; }
+    .section-title { font-size: 0.8rem; letter-spacing: .04em; color: var(--muted); margin: 10px 0 8px; font-weight: 700; }
+    .search-row { display: flex; gap: 8px; }
+    input[type="search"] { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 0.95rem; }
+    .button-row { display: flex; gap: 8px; margin-top: 8px; }
+    button { appearance: none; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 9px 12px; font-size: 0.9rem; cursor: pointer; }
+    button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .chips, .legend-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip, .legend-item { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 0.84rem; }
+    .checklist { display: grid; gap: 8px; }
+    label.filter-item { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--line); padding: 8px 10px; border-radius: 10px; font-size: 0.9rem; }
+    .color-dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(15, 23, 42, 0.15); flex: 0 0 auto; }
+    .status { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); color: #1e3a8a; font-size: 0.86rem; line-height: 1.5; }
+    .location-list { flex: 1; overflow: auto; padding: 14px 18px 22px; }
+    .location-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(15,23,42,.03); cursor: pointer; }
+    .location-card:hover { border-color: #b7c8e4; box-shadow: 0 4px 18px rgba(37,99,235,.08); }
+    .location-head { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+    .location-title { margin: 0; font-size: 1rem; line-height: 1.45; }
+    .location-meta { margin-top: 8px; color: var(--muted); font-size: 0.86rem; line-height: 1.5; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .badge { display: inline-flex; align-items: center; gap: 4px; background: #f8fafc; border: 1px solid var(--line); border-radius: 999px; padding: 4px 8px; font-size: 0.76rem; }
+    .badge.point { background: #fef3c7; border-color: #fcd34d; }
+    .badge.prize { background: #dcfce7; border-color: #86efac; }
+    .badge.game { background: #ede9fe; border-color: #c4b5fd; }
+    .badge.panel { background: #ffe4e6; border-color: #fda4af; }
+    #map { flex: 1; min-width: 0; }
+    .popup-title { margin: 0 0 8px; font-size: 1rem; line-height: 1.4; }
+    .popup-grid { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 0.9rem; line-height: 1.45; }
+    .popup-grid dt { font-weight: 700; }
+    .empty { padding: 18px; color: var(--muted); text-align: center; border: 1px dashed var(--line); border-radius: 12px; background: rgba(255,255,255,.7); }
+    @media (max-width: 960px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; border-right: 0; border-bottom: 1px solid var(--line); max-height: 56vh; }
+      #map { min-height: 44vh; }
+      .controls { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>パラノマサイト コラボイベントマップ</h1>
+      <p class="subtitle">CSVの地点一覧をもとに、OpenStreetMap + Leafletで表示するページです。初回表示時は住所から座標を順に取得するため、ピンが少しずつ表示されます。</p>
+      <div class="summary-grid">
+        <div class="summary-card"><div class="summary-label">総地点数</div><div class="summary-value" id="summary-total">0</div></div>
+        <div class="summary-card"><div class="summary-label">景品交換</div><div class="summary-value" id="summary-prize">0</div></div>
+        <div class="summary-card"><div class="summary-label">ゲームロケ</div><div class="summary-value" id="summary-game">0</div></div>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="section-title">検索</div>
+      <div class="search-row">
+        <input id="searchInput" type="search" placeholder="地点名・住所・パネル名で絞り込み" />
+      </div>
+      <div class="button-row">
+        <button id="fitBoundsBtn" class="primary">全地点を表示</button>
+        <button id="reGeocodeBtn">座標キャッシュを再取得</button>
+      </div>
+
+      <div class="section-title">イベント条件</div>
+      <div class="chips">
+        <label class="chip"><input type="checkbox" id="filterPrize" /> 景品交換場所のみ</label>
+        <label class="chip"><input type="checkbox" id="filterGame" /> ゲームロケーションのみ</label>
+        <label class="chip"><input type="checkbox" id="filterPanel" /> パネルありのみ</label>
+      </div>
+
+      <div class="section-title">カテゴリ</div>
+      <div class="checklist" id="categoryFilters"></div>
+
+      <div class="section-title">凡例</div>
+      <div class="legend-list" id="legend"></div>
+
+      <div class="status" id="statusBox">地図を初期化しています…</div>
+    </div>
+    <div class="location-list" id="locationList"></div>
+  </aside>
+  <main id="map" aria-label="地図"></main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    const LOCATIONS = [{"no": "1", "name": "神島定期船待合所", "address": "三重県鳥羽市神島町193-5", "category": "港・船", "description": "神島への定期船を利用する待合所", "points": "1P", "prize": "", "game": "○", "panel": "水口勇佐パネル", "lat": null, "lng": null}, {"no": "2", "name": "監的哨跡", "address": "三重県鳥羽市神島町", "category": "史跡", "description": "神島の史跡スポット（住所は代表表記）", "points": "1P", "prize": "", "game": "○", "panel": "", "lat": null, "lng": null}, {"no": "3", "name": "山海荘", "address": "三重県鳥羽市神島町75", "category": "宿泊", "description": "神島内の宿泊施設", "points": "1P", "prize": "", "game": "○", "panel": "白浪里パネル", "lat": null, "lng": null}, {"no": "4", "name": "鳥羽マリンターミナル（鳥羽ビジターセンター）", "address": "三重県鳥羽市鳥羽1丁目2383-51", "category": "観光案内", "description": "鳥羽の海上アクセス拠点と観光案内施設", "points": "1P", "prize": "シールのみ", "game": "", "panel": "志貴結命子・霧生双奴パネル", "lat": null, "lng": null}, {"no": "5", "name": "鳥羽一番街 観光案内所", "address": "三重県鳥羽市鳥羽1-2383-13", "category": "観光案内", "description": "鳥羽駅近くの観光案内・商業施設内", "points": "2P", "prize": "○", "game": "", "panel": "アルナーヴ・バーナム（アヴィ）パネル", "lat": null, "lng": null}, {"no": "6", "name": "イオン鳥羽店", "address": "三重県鳥羽市大明西町1-1", "category": "買い物", "description": "鳥羽市内の商業施設", "points": "1P", "prize": "", "game": "", "panel": "キービジュアルパネル", "lat": null, "lng": null}, {"no": "7", "name": "伊勢湾フェリーターミナル 鳥羽のりば", "address": "三重県鳥羽市鳥羽3-1484-111", "category": "港・船", "description": "伊勢湾フェリーの鳥羽側ターミナル", "points": "1P", "prize": "", "game": "", "panel": "雲居アザミ・沫緒つかさパネル", "lat": null, "lng": null}, {"no": "8", "name": "鳥羽展望台 海女のテラス", "address": "三重県鳥羽市国崎町大岳3-3", "category": "展望台", "description": "海を一望できる展望スポット", "points": "1P", "prize": "シールのみ", "game": "", "panel": "キルケ・ルナーライトパネル", "lat": null, "lng": null}, {"no": "9", "name": "朝熊山頂展望台", "address": "三重県伊勢市朝熊町字名古185-3", "category": "展望台", "description": "伊勢志摩を見渡せる山頂展望台", "points": "1P", "prize": "", "game": "○", "panel": "", "lat": null, "lng": null}, {"no": "10", "name": "二見浦海岸", "address": "三重県伊勢市二見町茶屋", "category": "海岸・景勝地", "description": "夫婦岩周辺の海岸エリア（住所は代表表記）", "points": "1P", "prize": "", "game": "○", "panel": "", "lat": null, "lng": null}, {"no": "11", "name": "伊勢市内（二見交番付近）", "address": "三重県伊勢市二見町茶屋109-4", "category": "集合地点", "description": "二見交番付近の想定地点", "points": "1P", "prize": "", "game": "○", "panel": "", "lat": null, "lng": null}, {"no": "12", "name": "伊勢夫婦岩 めおと横丁", "address": "三重県伊勢市二見町江580", "category": "観光施設", "description": "夫婦岩近くの観光商業施設", "points": "2P", "prize": "○", "game": "", "panel": "", "lat": null, "lng": null}, {"no": "13", "name": "アスト津", "address": "三重県津市羽所町700", "category": "駅・交通拠点", "description": "津駅東口に直結する複合施設", "points": "", "prize": "", "game": "", "panel": "生駒桔平 人魚顔出しパネル", "lat": null, "lng": null}];
+    const CATEGORY_COLORS = {
+      '港・船': '#3b82f6',
+      '史跡': '#8b5cf6',
+      '宿泊': '#a16207',
+      '観光案内': '#16a34a',
+      '買い物': '#eab308',
+      '展望台': '#f97316',
+      '海岸・景勝地': '#06b6d4',
+      '集合地点': '#ef4444',
+      '観光施設': '#ec4899',
+      '駅・交通拠点': '#6b7280'
+    };
+
+    const map = L.map('map', { zoomControl: true }).setView([34.52, 136.84], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const markersLayer = L.layerGroup().addTo(map);
+    const markerMap = new Map();
+    const cacheKey = 'paranormasight_event_geo_cache_v1';
+    const geocodeCache = loadCache();
+
+    const searchInput = document.getElementById('searchInput');
+    const filterPrize = document.getElementById('filterPrize');
+    const filterGame = document.getElementById('filterGame');
+    const filterPanel = document.getElementById('filterPanel');
+    const statusBox = document.getElementById('statusBox');
+    const locationList = document.getElementById('locationList');
+    const categoryFilters = document.getElementById('categoryFilters');
+    const legend = document.getElementById('legend');
+
+    function loadCache() {
+      try { return JSON.parse(localStorage.getItem(cacheKey) || '{}'); }
+      catch { return {}; }
+    }
+    function saveCache() {
+      localStorage.setItem(cacheKey, JSON.stringify(geocodeCache));
+    }
+
+    function isPrizeLocation(value) {
+      return !!value && value.trim() !== '';
+    }
+    function isGameLocation(value) {
+      return value === '○';
+    }
+    function hasPanel(value) {
+      return !!value && value.trim() !== '';
+    }
+
+    function updateSummary() {
+      document.getElementById('summary-total').textContent = LOCATIONS.length;
+      document.getElementById('summary-prize').textContent = LOCATIONS.filter(item => isPrizeLocation(item.prize)).length;
+      document.getElementById('summary-game').textContent = LOCATIONS.filter(item => isGameLocation(item.game)).length;
+    }
+
+    function createCategoryControls() {
+      const categories = [...new Set(LOCATIONS.map(item => item.category))];
+      categories.forEach(category => {
+        const color = CATEGORY_COLORS[category] || '#2563eb';
+        const id = `cat-${category}`;
+        const label = document.createElement('label');
+        label.className = 'filter-item';
+        label.innerHTML = `
+          <input type="checkbox" data-category="${escapeHtml(category)}" checked>
+          <span class="color-dot" style="background:${color}"></span>
+          <span>${escapeHtml(category)}</span>
+        `;
+        categoryFilters.appendChild(label);
+
+        const legendItem = document.createElement('div');
+        legendItem.className = 'legend-item';
+        legendItem.innerHTML = `<span class="color-dot" style="background:${color}"></span><span>${escapeHtml(category)}</span>`;
+        legend.appendChild(legendItem);
+      });
+      categoryFilters.addEventListener('change', render);
+    }
+
+    function getSelectedCategories() {
+      return [...categoryFilters.querySelectorAll('input[data-category]:checked')].map(el => el.dataset.category);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function buildPopup(item) {
+      const parts = [];
+      parts.push(`<h3 class="popup-title">${escapeHtml(item.name)}</h3>`);
+      parts.push('<dl class="popup-grid">');
+      parts.push(`<dt>住所</dt><dd>${escapeHtml(item.address)}</dd>`);
+      parts.push(`<dt>カテゴリ</dt><dd>${escapeHtml(item.category)}</dd>`);
+      if (item.description) parts.push(`<dt>説明</dt><dd>${escapeHtml(item.description)}</dd>`);
+      if (item.points) parts.push(`<dt>ポイント</dt><dd>${escapeHtml(item.points)}</dd>`);
+      if (item.prize) parts.push(`<dt>景品交換</dt><dd>${escapeHtml(item.prize)}</dd>`);
+      if (item.game) parts.push(`<dt>ゲームロケ</dt><dd>${escapeHtml(item.game)}</dd>`);
+      if (item.panel) parts.push(`<dt>パネル</dt><dd>${escapeHtml(item.panel)}</dd>`);
+      parts.push(`</dl>`);
+      return parts.join('');
+    }
+
+    function createMarker(item) {
+      const color = CATEGORY_COLORS[item.category] || '#2563eb';
+      const marker = L.circleMarker([item.lat, item.lng], {
+        radius: 9,
+        weight: 2,
+        color: '#ffffff',
+        fillColor: color,
+        fillOpacity: 0.95
+      });
+      marker.bindPopup(buildPopup(item), { maxWidth: 320 });
+      marker.on('click', () => highlightCard(item.no));
+      return marker;
+    }
+
+    function markerBoundsFromVisible() {
+      const bounds = [];
+      markerMap.forEach((marker, key) => {
+        if (markersLayer.hasLayer(marker)) bounds.push(marker.getLatLng());
+      });
+      return bounds;
+    }
+
+    function fitVisibleBounds() {
+      const bounds = markerBoundsFromVisible();
+      if (bounds.length === 1) map.setView(bounds[0], 15);
+      else if (bounds.length > 1) map.fitBounds(bounds, { padding: [32, 32] });
+    }
+
+    function currentFilteredItems() {
+      const keyword = searchInput.value.trim().toLowerCase();
+      const selectedCategories = new Set(getSelectedCategories());
+      return LOCATIONS.filter(item => {
+        if (!selectedCategories.has(item.category)) return false;
+        if (filterPrize.checked && !isPrizeLocation(item.prize)) return false;
+        if (filterGame.checked && !isGameLocation(item.game)) return false;
+        if (filterPanel.checked && !hasPanel(item.panel)) return false;
+        if (!keyword) return true;
+        const haystack = [item.name, item.address, item.description, item.panel, item.category, item.points].join(' ').toLowerCase();
+        return haystack.includes(keyword);
+      });
+    }
+
+    function renderList(items) {
+      locationList.innerHTML = '';
+      if (!items.length) {
+        locationList.innerHTML = '<div class="empty">条件に合う地点がありません。</div>';
+        return;
+      }
+      items.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'location-card';
+        card.dataset.no = item.no;
+        const badges = [];
+        if (item.points) badges.push(`<span class="badge point">ポイント: ${escapeHtml(item.points)}</span>`);
+        if (item.prize) badges.push(`<span class="badge prize">景品交換: ${escapeHtml(item.prize)}</span>`);
+        if (item.game) badges.push(`<span class="badge game">ゲームロケ: ${escapeHtml(item.game)}</span>`);
+        if (item.panel) badges.push(`<span class="badge panel">パネル: ${escapeHtml(item.panel)}</span>`);
+        const color = CATEGORY_COLORS[item.category] || '#2563eb';
+        card.innerHTML = `
+          <div class="location-head">
+            <div>
+              <h2 class="location-title">${escapeHtml(item.no)}. ${escapeHtml(item.name)}</h2>
+              <div class="location-meta">${escapeHtml(item.address)}</div>
+            </div>
+            <span class="color-dot" style="width:14px;height:14px;background:${color}"></span>
+          </div>
+          <div class="location-meta">${escapeHtml(item.category)} / ${escapeHtml(item.description || '')}</div>
+          <div class="badge-row">${badges.join('')}</div>
+        `;
+        card.addEventListener('click', () => focusLocation(item.no));
+        locationList.appendChild(card);
+      });
+    }
+
+    function renderMarkers(items) {
+      markersLayer.clearLayers();
+      items.forEach(item => {
+        if (item.lat == null || item.lng == null) return;
+        let marker = markerMap.get(item.no);
+        if (!marker) {
+          marker = createMarker(item);
+          markerMap.set(item.no, marker);
+        } else {
+          marker.setLatLng([item.lat, item.lng]);
+          marker.setPopupContent(buildPopup(item));
+        }
+        markersLayer.addLayer(marker);
+      });
+    }
+
+    function render() {
+      const items = currentFilteredItems();
+      renderList(items);
+      renderMarkers(items);
+    }
+
+    function highlightCard(no) {
+      locationList.querySelectorAll('.location-card').forEach(el => el.style.outline = '');
+      const target = locationList.querySelector(`.location-card[data-no="${CSS.escape(String(no))}"]`);
+      if (target) {
+        target.style.outline = '2px solid #60a5fa';
+        target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        window.setTimeout(() => target.style.outline = '', 1600);
+      }
+    }
+
+    function focusLocation(no) {
+      const item = LOCATIONS.find(row => row.no === String(no));
+      if (!item) return;
+      if (item.lat != null && item.lng != null) {
+        map.setView([item.lat, item.lng], 15);
+        const marker = markerMap.get(item.no);
+        if (marker) marker.openPopup();
+      } else {
+        statusBox.textContent = `${item.name} はまだ座標取得前です。少し待ってからもう一度選択してください。`;
+      }
+    }
+
+    async function geocodeAddress(address) {
+      const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=jp&accept-language=ja&q=${encodeURIComponent(address)}`;
+      const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const result = await response.json();
+      if (!Array.isArray(result) || result.length === 0) return null;
+      return { lat: Number(result[0].lat), lng: Number(result[0].lon) };
+    }
+
+    function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+    async function ensureCoordinates(forceRefresh = false) {
+      const targets = LOCATIONS.filter(item => forceRefresh || item.lat == null || item.lng == null);
+      let resolved = 0;
+      let failed = 0;
+      for (let i = 0; i < targets.length; i++) {
+        const item = targets[i];
+        statusBox.textContent = `座標を取得中… ${i + 1} / ${targets.length} : ${item.name}`;
+
+        const cache = !forceRefresh ? geocodeCache[item.address] : null;
+        if (cache && typeof cache.lat === 'number' && typeof cache.lng === 'number') {
+          item.lat = cache.lat;
+          item.lng = cache.lng;
+          resolved++;
+          render();
+          continue;
+        }
+
+        try {
+          const point = await geocodeAddress(item.address);
+          if (point) {
+            item.lat = point.lat;
+            item.lng = point.lng;
+            geocodeCache[item.address] = point;
+            saveCache();
+            resolved++;
+          } else {
+            failed++;
+          }
+        } catch (error) {
+          console.warn('Geocode failed', item.name, error);
+          failed++;
+        }
+
+        render();
+        await delay(1100);
+      }
+      const positioned = LOCATIONS.filter(item => item.lat != null && item.lng != null).length;
+      statusBox.textContent = `表示可能: ${positioned}件 / 全${LOCATIONS.length}件。未解決: ${LOCATIONS.length - positioned}件。`;
+      fitVisibleBounds();
+    }
+
+    searchInput.addEventListener('input', render);
+    filterPrize.addEventListener('change', render);
+    filterGame.addEventListener('change', render);
+    filterPanel.addEventListener('change', render);
+    document.getElementById('fitBoundsBtn').addEventListener('click', fitVisibleBounds);
+    document.getElementById('reGeocodeBtn').addEventListener('click', async () => {
+      if (!confirm('保存済みの座標キャッシュを削除して、住所から再取得します。よろしいですか？')) return;
+      Object.keys(geocodeCache).forEach(key => delete geocodeCache[key]);
+      saveCache();
+      LOCATIONS.forEach(item => { item.lat = null; item.lng = null; });
+      render();
+      await ensureCoordinates(true);
+    });
+
+    updateSummary();
+    createCategoryControls();
+    render();
+    ensureCoordinates(false);
+  </script>
+</body>
+</html>

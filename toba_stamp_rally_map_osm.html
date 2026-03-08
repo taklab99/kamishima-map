@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>伊勢志摩デジタルスタンプラリー マップ（APIキー不要版）</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <style>
+    :root {
+      --bg: #08131f;
+      --panel: rgba(15, 34, 54, 0.94);
+      --panel-2: rgba(17, 44, 69, 0.92);
+      --text: #eaf3ff;
+      --muted: #acc8e2;
+      --line: rgba(255,255,255,0.12);
+      --accent: #61cdfd;
+      --accent-2: #ff7bc8;
+      --accent-3: #ffd166;
+      --shadow: 0 18px 42px rgba(0,0,0,0.26);
+      --success: #7fe0a5;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #07111b 0%, #09182c 45%, #091624 100%);
+      color: var(--text);
+      font-family: "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", system-ui, -apple-system, sans-serif;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 26px;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, rgba(97,205,253,0.13), rgba(255,123,200,0.10));
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(26px, 3vw, 42px);
+      line-height: 1.18;
+    }
+
+    .hero p {
+      margin: 8px 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .hero ul {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .route-buttons,
+    .quick-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button,
+    .link-chip {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 15px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .16s ease, opacity .16s ease, background .16s ease;
+    }
+
+    button:hover,
+    .link-chip:hover {
+      transform: translateY(-1px);
+    }
+
+    button {
+      color: #08131f;
+      background: linear-gradient(135deg, #9be5ff, #61cdfd);
+    }
+
+    button.secondary {
+      color: var(--text);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    button.active {
+      background: linear-gradient(135deg, #ffd166, #ffae42);
+      color: #291600;
+    }
+
+    .link-chip {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+    }
+
+    .route-note,
+    .meta-note {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(127, 224, 165, 0.18);
+      background: rgba(127, 224, 165, 0.09);
+      color: #e6fff0;
+      line-height: 1.75;
+      font-size: 13px;
+    }
+
+    .meta-note {
+      border-color: rgba(255, 209, 102, 0.18);
+      background: rgba(255, 209, 102, 0.09);
+      color: #fff6dd;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(330px, 420px) 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      max-height: calc(100vh - 36px);
+      overflow: auto;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+    }
+
+    #map {
+      height: min(75vh, 920px);
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: #dce7f1;
+    }
+
+    .spot-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .spot-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .spot-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .spot-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .spot-meta span {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .spot-card p {
+      margin: 6px 0;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .spot-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .spot-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      font-size: 12px;
+    }
+
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-tip {
+      background: #10253a;
+      color: var(--text);
+    }
+
+    .leaflet-container a {
+      color: #89dcff;
+    }
+
+    .numbered-pin {
+      width: 30px;
+      height: 30px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #09131e;
+      border: 2px solid rgba(255,255,255,0.82);
+      box-shadow: 0 6px 16px rgba(0,0,0,.28);
+    }
+
+    .numbered-pin > span {
+      transform: rotate(45deg);
+      display: inline-block;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .pin-main { background: linear-gradient(135deg, #8fe6ff, #61cdfd); }
+    .pin-reward { background: linear-gradient(135deg, #ffe39a, #ffbc42); }
+    .pin-bonus { background: linear-gradient(135deg, #ffc5ea, #ff7bc8); }
+
+    .legend {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      z-index: 500;
+      background: rgba(10, 22, 36, 0.92);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      font-size: 12px;
+      line-height: 1.7;
+      backdrop-filter: blur(6px);
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .map-frame {
+      position: relative;
+    }
+
+    @media (max-width: 1080px) {
+      .top-grid,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+
+      #map {
+        height: 60vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>伊勢志摩デジタルスタンプラリー<br>APIキー不要マップ</h1>
+      <p>チラシ掲載スポットを、<strong>OpenStreetMap + Leaflet</strong> で確認できるHTMLです。地図上で全体の位置関係を把握しつつ、各地点は <strong>Googleマップ検索リンク</strong> でも開けるようにしました。</p>
+      <p>チラシに掲載されている主なロケーションは、神島3件・鳥羽市街5件・伊勢/二見4件・津1件です。前面チラシの記載をもとに整理しています。</p>
+      <ul>
+        <li>Google Maps JavaScript APIキーは不要です。</li>
+        <li>座標はチラシの地点名をもとに整理した <strong>代表位置ベース</strong> です。現地訪問前には各地点のGoogleマップ詳細を確認してください。</li>
+        <li>「鳥羽マリンターミナル」と「鳥羽ビジターセンター」は、チラシの併記に合わせて同一エリア扱いです。</li>
+        <li>「伊勢市内（二見交番付近）」は、チラシどおり“付近”扱いで表示しています。</li>
+      </ul>
+    </section>
+
+    <section class="top-grid">
+      <div class="panel">
+        <h2>表示ルート</h2>
+        <div class="route-buttons" id="routeButtons"></div>
+        <div class="route-note" id="routeNote"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Googleマップ連携</h2>
+        <div class="quick-links" id="quickLinks"></div>
+        <div class="meta-note">
+          地図上では概略位置と回り順を把握し、最終的なナビ開始はGoogleマップの各リンクから行う使い方がおすすめです。
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="sidebar panel">
+        <h2>スポット一覧</h2>
+        <div class="badges">
+          <span class="badge">メインロケーション 12地点</span>
+          <span class="badge">任意立ち寄り 1地点</span>
+          <span class="badge">景品引換あり 3地点</span>
+        </div>
+        <div class="spot-list" id="spotList"></div>
+      </aside>
+
+      <main class="panel" style="padding:18px;">
+        <div class="map-frame">
+          <div id="map"></div>
+          <div class="legend">
+            <strong>凡例</strong>
+            <div class="legend-row"><span class="legend-dot" style="background:#61cdfd"></span> 通常スポット</div>
+            <div class="legend-row"><span class="legend-dot" style="background:#ffbc42"></span> 景品引換あり</div>
+            <div class="legend-row"><span class="legend-dot" style="background:#ff7bc8"></span> 任意立ち寄り</div>
+          </div>
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script>
+    const SPOTS = [
+      {
+        id: 'kamishima_waiting',
+        no: 1,
+        name: '神島定期船待合所',
+        area: '神島',
+        points: '1P',
+        kind: 'メイン',
+        category: 'main',
+        lat: 34.5578,
+        lng: 136.8944,
+        note: '神島エリアの起点候補。鳥羽側からは船移動を想定。',
+        query: '神島定期船待合所 三重県鳥羽市神島町'
+      },
+      {
+        id: 'kanteki',
+        no: 2,
+        name: '監的哨跡',
+        area: '神島',
+        points: '1P',
+        kind: 'メイン',
+        category: 'main',
+        lat: 34.5607,
+        lng: 136.9002,
+        note: '神島内の見学スポット。待合所から徒歩ルートを想定。',
+        query: '監的哨跡 三重県鳥羽市神島町'
+      },
+      {
+        id: 'sankaiso',
+        no: 3,
+        name: '山海荘',
+        area: '神島',
+        points: '1P',
+        kind: 'メイン',
+        category: 'main',
+        lat: 34.5588,
+        lng: 136.8927,
+        note: '神島エリアの立ち寄り地点。',
+        query: '山海荘 三重県鳥羽市神島町'
+      },
+      {
+        id: 'toba_marine',
+        no: 4,
+        name: '鳥羽マリンターミナル（鳥羽ビジターセンター）',
+        area: '鳥羽市街',
+        points: '1P',
+        kind: 'メイン＋景品引換（シールのみ）',
+        category: 'reward',
+        lat: 34.4818,
+        lng: 136.8440,
+        note: '神島へ向かう起点にもなりやすい港側スポット。',
+        query: '鳥羽マリンターミナル 三重県鳥羽市'
+      },
+      {
+        id: 'toba_ichibangai',
+        no: 5,
+        name: '鳥羽一番街 観光案内所',
+        area: '鳥羽市街',
+        points: '2P',
+        kind: 'メイン＋景品引換',
+        category: 'reward',
+        lat: 34.4814,
+        lng: 136.8430,
+        note: '鳥羽駅前で回収しやすい景品引換スポット。',
+        query: '鳥羽一番街 観光案内所 三重県鳥羽市'
+      },
+      {
+        id: 'aeon_toba',
+        no: 6,
+        name: 'イオン鳥羽店',
+        area: '鳥羽市街',
+        points: '1P',
+        kind: 'メイン',
+        category: 'main',
+        lat: 34.4868,
+        lng: 136.8512,
+        note: '市街地側で寄りやすいスポット。',
+        query: 'イオン鳥羽店 三重県鳥羽市'
+      },
+      {
+        id: 'ferry_terminal',
+        no: 7,
+        name: '伊勢湾フェリーターミナル 鳥羽のりば',
+        area: '鳥羽市街',
+        points: '1P',
+        kind: 'メイン',
+        category: 'main',
+        lat: 34.4773,
+        lng: 136.8426,
+        note: '鳥羽港側の導線に入れやすいスポット。',
+        query: '伊勢湾フェリーターミナル 鳥羽のりば 三重県鳥羽市'
+      },
+      {
+        id: 'toba_observatory',
+        no: 8,
+        name: '鳥羽展望台 海女のテラス',
+        area: '鳥羽南部',
+        points: '1P',
+        kind: 'メイン',
+        category: 'main',
+        lat: 34.4108,
+        lng: 136.8993,
+        note: '南側へ足をのばす展望スポット。チラシでは木曜定休表記。',
+        query: '鳥羽展望台 海女のテラス 三重県鳥羽市'
+      },
+      {
+        id: 'asama',
+        no: 9,
+        name: '朝熊山頂展望台',
+        area: '伊勢',
+        points: '1P',
+        kind: 'メイン',
+        category: 'main',
+        lat: 34.4705,
+        lng: 136.7998,
+        note: '伊勢側へ入る前後で組み込みやすい展望スポット。',
+        query: '朝熊山頂展望台 三重県伊勢市'
+      },
+      {
+        id: 'futami_beach',
+        no: 10,
+        name: '二見浦海岸',
+        area: '伊勢・二見',
+        points: '1P',
+        kind: 'メイン',
+        category: 'main',
+        lat: 34.5101,
+        lng: 136.7852,
+        note: '伊勢・二見ルートの海岸スポット。',
+        query: '二見浦海岸 三重県伊勢市'
+      },
+      {
+        id: 'futami_koban',
+        no: 11,
+        name: '伊勢市内（二見交番付近）',
+        area: '伊勢・二見',
+        points: '1P',
+        kind: 'メイン',
+        category: 'main',
+        lat: 34.5077,
+        lng: 136.7836,
+        note: 'チラシでは「二見交番付近」表記。周辺代表位置で表示。',
+        query: '二見交番 三重県伊勢市'
+      },
+      {
+        id: 'meoto_yokocho',
+        no: 12,
+        name: '伊勢夫婦岩 めおと横丁',
+        area: '伊勢・二見',
+        points: '2P',
+        kind: 'メイン＋景品引換',
+        category: 'reward',
+        lat: 34.5109,
+        lng: 136.7871,
+        note: '伊勢・二見ルートの終点候補。景品引換の記載あり。',
+        query: '伊勢夫婦岩 めおと横丁 三重県伊勢市'
+      },
+      {
+        id: 'asto_tsu',
+        no: 13,
+        name: 'アスト津（近鉄津駅 東口直結）',
+        area: '津',
+        points: '任意',
+        kind: 'コラボ立ち寄り',
+        category: 'bonus',
+        lat: 34.7305,
+        lng: 136.5099,
+        note: '裏面掲載の任意立ち寄り地点。スタンプ本編とは別枠。',
+        query: 'アスト津 三重県津市'
+      }
+    ];
+
+    const ROUTES = {
+      all: {
+        label: '全体表示',
+        ids: SPOTS.filter(spot => spot.id !== 'asto_tsu').map(spot => spot.id),
+        note: 'スタンプラリー本編の全スポットを表示します。まず位置関係を確認したいとき向けです。',
+        style: { color: '#61cdfd', weight: 4, opacity: 0.85 }
+      },
+      toba: {
+        label: '鳥羽市街ルート',
+        ids: ['toba_marine', 'toba_ichibangai', 'aeon_toba', 'ferry_terminal', 'toba_observatory'],
+        note: '鳥羽駅周辺から鳥羽展望台へ向かう想定の参考順です。車移動の前提で見るとわかりやすいです。',
+        style: { color: '#ffd166', weight: 5, opacity: 0.9 }
+      },
+      kamishima: {
+        label: '神島ルート',
+        ids: ['toba_marine', 'kamishima_waiting', 'kanteki', 'sankaiso'],
+        note: '鳥羽マリンターミナルを起点に、船＋島内徒歩で回る想定の参考ルートです。海上区間は直線の参考線です。',
+        style: { color: '#ff7bc8', weight: 5, opacity: 0.88, dashArray: '10 8' }
+      },
+      ise: {
+        label: '伊勢・二見ルート',
+        ids: ['asama', 'futami_beach', 'futami_koban', 'meoto_yokocho'],
+        note: '朝熊山頂展望台から二見エリアへ降りる想定の参考順です。',
+        style: { color: '#7fe0a5', weight: 5, opacity: 0.88 }
+      },
+      full: {
+        label: 'おすすめ順（全体）',
+        ids: ['toba_marine', 'toba_ichibangai', 'aeon_toba', 'ferry_terminal', 'toba_observatory', 'kamishima_waiting', 'kanteki', 'sankaiso', 'asama', 'futami_beach', 'futami_koban', 'meoto_yokocho'],
+        note: '鳥羽市街 → 神島 → 伊勢・二見の順に並べた全体参考順です。実際の移動は船便・道路事情に合わせて調整してください。',
+        style: { color: '#89dcff', weight: 4, opacity: 0.8, dashArray: '8 6' }
+      },
+      bonus: {
+        label: 'アスト津のみ',
+        ids: ['asto_tsu'],
+        note: '裏面掲載のアスト津のみを表示します。別日立ち寄り確認向けです。',
+        style: { color: '#ff7bc8', weight: 5, opacity: 0.9 }
+      }
+    };
+
+    const routeButtonsEl = document.getElementById('routeButtons');
+    const routeNoteEl = document.getElementById('routeNote');
+    const quickLinksEl = document.getElementById('quickLinks');
+    const spotListEl = document.getElementById('spotList');
+
+    const map = L.map('map', {
+      zoomControl: true,
+      scrollWheelZoom: true
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const markerLayer = L.layerGroup().addTo(map);
+    let routeLayer = null;
+    let currentRoute = 'all';
+
+    function googleSearchUrl(query) {
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    }
+
+    function googleDirectionsUrl(ids) {
+      const points = ids.map(id => SPOTS.find(spot => spot.id === id)).filter(Boolean);
+      if (points.length < 2) return googleSearchUrl(points[0]?.query || '鳥羽市');
+      const origin = points[0].query;
+      const destination = points[points.length - 1].query;
+      const waypoints = points.slice(1, -1).map(point => point.query).join('|');
+      const params = new URLSearchParams({
+        api: '1',
+        origin,
+        destination,
+        travelmode: 'driving'
+      });
+      if (waypoints) params.set('waypoints', waypoints);
+      return `https://www.google.com/maps/dir/?${params.toString()}`;
+    }
+
+    function pinClass(category) {
+      if (category === 'reward') return 'pin-reward';
+      if (category === 'bonus') return 'pin-bonus';
+      return 'pin-main';
+    }
+
+    function createMarkerIcon(spot) {
+      return L.divIcon({
+        className: '',
+        html: `<div class="numbered-pin ${pinClass(spot.category)}"><span>${spot.no}</span></div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+        popupAnchor: [0, -28]
+      });
+    }
+
+    function popupHtml(spot) {
+      return `
+        <div style="max-width: 280px; line-height: 1.75;">
+          <strong>${spot.no}. ${spot.name}</strong><br>
+          ${spot.area} / ${spot.points} / ${spot.kind}<br>
+          <span style="color:#bfd6ea;">${spot.note}</span><br>
+          <a href="${googleSearchUrl(spot.query)}" target="_blank" rel="noopener noreferrer">Googleマップで開く</a>
+        </div>
+      `;
+    }
+
+    function renderMarkers() {
+      markerLayer.clearLayers();
+      SPOTS.forEach((spot) => {
+        const marker = L.marker([spot.lat, spot.lng], { icon: createMarkerIcon(spot) })
+          .bindPopup(popupHtml(spot));
+        marker.addTo(markerLayer);
+      });
+    }
+
+    function renderSpotList() {
+      spotListEl.innerHTML = SPOTS.map((spot) => {
+        return `
+          <article class="spot-card" id="card-${spot.id}">
+            <h3>${spot.no}. ${spot.name}</h3>
+            <div class="spot-meta">
+              <span>${spot.area}</span>
+              <span>${spot.points}</span>
+              <span>${spot.kind}</span>
+            </div>
+            <p>${spot.note}</p>
+            <div class="spot-links">
+              <a href="#" data-focus="${spot.id}">地図で見る</a>
+              <a href="${googleSearchUrl(spot.query)}" target="_blank" rel="noopener noreferrer">Googleマップで開く</a>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function renderRouteButtons() {
+      routeButtonsEl.innerHTML = Object.entries(ROUTES).map(([key, route]) => {
+        return `<button class="secondary${key === currentRoute ? ' active' : ''}" data-route="${key}">${route.label}</button>`;
+      }).join('');
+    }
+
+    function renderQuickLinks() {
+      const route = ROUTES[currentRoute];
+      const firstSpot = route.ids[0] ? SPOTS.find(spot => spot.id === route.ids[0]) : null;
+      quickLinksEl.innerHTML = `
+        <a class="link-chip" href="${route.ids.length > 1 ? googleDirectionsUrl(route.ids) : googleSearchUrl(firstSpot?.query || '鳥羽市')}" target="_blank" rel="noopener noreferrer">現在のルートをGoogleマップで開く</a>
+        <a class="link-chip" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('鳥羽駅 三重県鳥羽市')}" target="_blank" rel="noopener noreferrer">鳥羽駅を開く</a>
+        <a class="link-chip" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('伊勢市駅 三重県伊勢市')}" target="_blank" rel="noopener noreferrer">伊勢市駅を開く</a>
+      `;
+    }
+
+    function focusSpot(spotId) {
+      const spot = SPOTS.find(item => item.id === spotId);
+      if (!spot) return;
+      map.setView([spot.lat, spot.lng], Math.max(map.getZoom(), 15), { animate: true });
+      markerLayer.eachLayer((layer) => {
+        const latLng = layer.getLatLng();
+        if (Math.abs(latLng.lat - spot.lat) < 0.00001 && Math.abs(latLng.lng - spot.lng) < 0.00001) {
+          layer.openPopup();
+        }
+      });
+    }
+
+    function drawRoute(routeKey) {
+      currentRoute = routeKey;
+      const route = ROUTES[routeKey];
+      if (!route) return;
+
+      if (routeLayer) {
+        map.removeLayer(routeLayer);
+        routeLayer = null;
+      }
+
+      const coords = route.ids
+        .map(id => SPOTS.find(spot => spot.id === id))
+        .filter(Boolean)
+        .map(spot => [spot.lat, spot.lng]);
+
+      if (coords.length >= 2) {
+        routeLayer = L.polyline(coords, route.style).addTo(map);
+      }
+
+      if (coords.length === 1) {
+        map.setView(coords[0], 14);
+      } else if (coords.length > 1) {
+        map.fitBounds(coords, { padding: [30, 30] });
+      }
+
+      routeNoteEl.textContent = route.note;
+      renderRouteButtons();
+      renderQuickLinks();
+    }
+
+    routeButtonsEl.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-route]');
+      if (!button) return;
+      drawRoute(button.dataset.route);
+    });
+
+    spotListEl.addEventListener('click', (event) => {
+      const link = event.target.closest('a[data-focus]');
+      if (!link) return;
+      event.preventDefault();
+      focusSpot(link.dataset.focus);
+    });
+
+    renderMarkers();
+    renderSpotList();
+    drawRoute('all');
+  </script>
+</body>
+</html>
