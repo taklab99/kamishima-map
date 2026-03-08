@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>鳥羽・伊勢イベントマップ</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #2563eb;
+      --shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+      --header-h: 64px;
+      --tab-h: 58px;
+      --safe-bottom: max(12px, env(safe-area-inset-bottom));
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .app {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 14px;
+      min-height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+    .header p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .top-tabs {
+      position: sticky;
+      top: var(--header-h);
+      z-index: 999;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(246,247,251,.96);
+      backdrop-filter: blur(8px);
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .top-tab, .sort-tab, .select, .search, .action-btn, .back-btn {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .top-tab, .sort-tab, .back-btn {
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .top-tab.active, .sort-tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 8px 18px rgba(37, 99, 235, .18);
+    }
+
+    .view {
+      display: none;
+      min-height: 0;
+    }
+    .view.active {
+      display: block;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .stack {
+      display: grid;
+      gap: 12px;
+      padding: 12px;
+      align-content: start;
+    }
+
+    .section {
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .section:last-child { border-bottom: none; }
+
+    .controls {
+      display: grid;
+      gap: 10px;
+    }
+
+    .search {
+      width: 100%;
+      border-radius: 14px;
+      padding: 12px 14px;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .select {
+      width: 100%;
+      padding: 0 14px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+
+    .sort-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .stat {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+    }
+    .stat .k {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .stat .v {
+      margin-top: 4px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-height: 76px;
+      overflow: auto;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 6px 8px;
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .list {
+      padding: 10px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .item {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 12px;
+      cursor: pointer;
+    }
+    .item.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+    }
+    .item-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .item-title {
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .badge {
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: #f9fafb;
+      white-space: nowrap;
+    }
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .flags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .flag {
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .map-wrap {
+      position: relative;
+      padding: 12px;
+    }
+    .map-note {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      top: 22px;
+      z-index: 700;
+      background: rgba(255,255,255,.95);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      box-shadow: var(--shadow);
+    }
+    #map {
+      width: 100%;
+      height: calc(100vh - var(--header-h) - var(--tab-h) - 42px - var(--safe-bottom));
+      min-height: 420px;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .details-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .details-body {
+      padding: 14px;
+      display: grid;
+      gap: 14px;
+    }
+    .detail-title h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      line-height: 1.4;
+    }
+    .detail-title p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px;
+    }
+    .card .k {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .card .v {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+      padding: 12px 14px;
+    }
+    .back-btn {
+      padding: 10px 12px;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      padding: 4px 0;
+    }
+
+    .marker-pin {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 3px solid white;
+      box-shadow: 0 4px 10px rgba(0,0,0,.25);
+    }
+    .leaflet-popup-content-wrapper { border-radius: 14px; }
+    .popup-title { font-weight: 700; margin-bottom: 6px; line-height: 1.5; }
+    .popup-meta { color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+    @media (min-width: 980px) {
+      .app {
+        grid-template-rows: auto 1fr;
+      }
+      .top-tabs {
+        display: none;
+      }
+      .desktop-layout {
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr) 360px;
+        gap: 16px;
+        padding: 16px;
+        min-height: 0;
+      }
+      .view {
+        display: block !important;
+        min-height: 0;
+      }
+      #view-list .stack, #view-details .stack {
+        padding: 0;
+      }
+      .filters {
+        grid-template-columns: 1fr 1fr;
+      }
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .action-btn {
+        width: auto;
+      }
+      .back-btn {
+        display: none;
+      }
+      .map-wrap {
+        padding: 0;
+      }
+      #map {
+        height: calc(100vh - 110px);
+        min-height: 720px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div>
+        <h1>鳥羽・伊勢イベントマップ</h1>
+        <p>スマートフォンで使いやすい、一覧・地図・詳細の切替型レイアウト</p>
+        <p><a href="kamishima_route_compare">神島マップはこちら</a></p>
+      </div>
+    </header>
+
+    <nav class="top-tabs" aria-label="表示切替">
+      <button id="tabList" class="top-tab active" type="button">一覧</button>
+      <button id="tabMap" class="top-tab" type="button">地図</button>
+      <button id="tabDetails" class="top-tab" type="button">詳細</button>
+    </nav>
+
+    <main class="desktop-layout">
+      <section id="view-list" class="view active">
+        <div class="panel">
+          <div class="section">
+            <div class="controls">
+              <input id="searchInput" class="search" type="text" placeholder="地点名・住所・パネル名で検索" />
+              <div class="filters">
+                <select id="categoryFilter" class="select">
+                  <option value="">すべてのカテゴリ</option>
+                </select>
+                <select id="tagFilter" class="select">
+                  <option value="">すべての条件</option>
+                  <option value="ゲームロケーション">ゲームロケーション</option>
+                  <option value="景品交換場所">景品交換場所</option>
+                  <option value="パネル">パネルあり</option>
+                </select>
+              </div>
+              <div class="sort-tabs" aria-label="並び順切替">
+                <button id="sortByNo" class="sort-tab active" type="button">一覧順</button>
+                <button id="sortByRoute" class="sort-tab" type="button">ルート順</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="stats">
+              <div class="stat"><div class="k">地点数</div><div id="countAll" class="v">0</div></div>
+              <div class="stat"><div class="k">ゲーム</div><div id="countGame" class="v">0</div></div>
+              <div class="stat"><div class="k">景品交換</div><div id="countPrize" class="v">0</div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div id="legend" class="legend"></div>
+          </div>
+
+          <div id="locationList" class="list"></div>
+        </div>
+      </section>
+
+      <section id="view-map" class="view active">
+        <div class="map-wrap">
+          <div class="map-note">地図上のマーカーをタップすると詳細へ移動します。</div>
+          <div id="map"></div>
+        </div>
+      </section>
+
+      <section id="view-details" class="view active">
+        <div class="panel">
+          <div class="section">
+            <div class="details-head">
+              <strong>詳細情報</strong>
+              <button id="backToList" class="back-btn" type="button">一覧へ戻る</button>
+            </div>
+          </div>
+          <div id="detailsBody" class="details-body">
+            <div class="empty">地点を選択してください。</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    const data = [
+  {
+    "No": 1,
+    "地点名": "神島定期船待合所",
+    "住所": "三重県鳥羽市神島町193-5",
+    "カテゴリ": "港・船",
+    "説明": "神島への定期船を利用する待合所",
+    "ポイント": "1P",
+    "景品交換場所": "",
+    "ゲームロケーション": "○",
+    "パネル": "水口勇佐パネル",
+    "緯度": 34.55038903,
+    "経度": 136.98056664,
+    "ルート順": 4
+  },
+  {
+    "No": 2,
+    "地点名": "監的哨跡",
+    "住所": "三重県鳥羽市神島町",
+    "カテゴリ": "史跡",
+    "説明": "神島の史跡スポット（住所は代表表記）",
+    "ポイント": "1P",
+    "景品交換場所": "",
+    "ゲームロケーション": "○",
+    "パネル": "",
+    "緯度": 34.546157,
+    "経度": 136.985848,
+    "ルート順": 6
+  },
+  {
+    "No": 3,
+    "地点名": "山海荘",
+    "住所": "三重県鳥羽市神島町75",
+    "カテゴリ": "宿泊",
+    "説明": "神島内の宿泊施設",
+    "ポイント": "1P",
+    "景品交換場所": "",
+    "ゲームロケーション": "○",
+    "パネル": "白浪里パネル",
+    "緯度": 34.549577,
+    "経度": 136.980688,
+    "ルート順": 5
+  },
+  {
+    "No": 4,
+    "地点名": "鳥羽マリンターミナル（鳥羽ビジターセンター）",
+    "住所": "三重県鳥羽市鳥羽1丁目2383-51",
+    "カテゴリ": "観光案内",
+    "説明": "鳥羽の海上アクセス拠点と観光案内施設",
+    "ポイント": "1P",
+    "景品交換場所": "シールのみ",
+    "ゲームロケーション": "",
+    "パネル": "志貴結命子・霧生双奴パネル",
+    "緯度": 34.490156,
+    "経度": 136.844938,
+    "ルート順": 2
+  },
+  {
+    "No": 5,
+    "地点名": "鳥羽一番街 観光案内所",
+    "住所": "三重県鳥羽市鳥羽1-2383-13",
+    "カテゴリ": "観光案内",
+    "説明": "鳥羽駅近くの観光案内・商業施設内",
+    "ポイント": "2P",
+    "景品交換場所": "○",
+    "ゲームロケーション": "",
+    "パネル": "アルナーヴ・バーナム（アヴィ）パネル",
+    "緯度": 34.487256,
+    "経度": 136.843916,
+    "ルート順": 1
+  },
+  {
+    "No": 6,
+    "地点名": "イオン鳥羽店",
+    "住所": "三重県鳥羽市大明西町1-1",
+    "カテゴリ": "買い物",
+    "説明": "鳥羽市内の商業施設",
+    "ポイント": "1P",
+    "景品交換場所": "",
+    "ゲームロケーション": "",
+    "パネル": "キービジュアルパネル",
+    "緯度": 34.469983,
+    "経度": 136.847665,
+    "ルート順": 7
+  },
+  {
+    "No": 7,
+    "地点名": "伊勢湾フェリーターミナル 鳥羽のりば",
+    "住所": "三重県鳥羽市鳥羽3-1484-111",
+    "カテゴリ": "港・船",
+    "説明": "伊勢湾フェリーの鳥羽側ターミナル",
+    "ポイント": "1P",
+    "景品交換場所": "",
+    "ゲームロケーション": "",
+    "パネル": "雲居アザミ・沫緒つかさパネル",
+    "緯度": 34.480432,
+    "経度": 136.846764,
+    "ルート順": 3
+  },
+  {
+    "No": 8,
+    "地点名": "鳥羽展望台 海女のテラス",
+    "住所": "三重県鳥羽市国崎町大岳3-3",
+    "カテゴリ": "展望台",
+    "説明": "海を一望できる展望スポット",
+    "ポイント": "1P",
+    "景品交換場所": "シールのみ",
+    "ゲームロケーション": "",
+    "パネル": "キルケ・ルナーライトパネル",
+    "緯度": 34.427514,
+    "経度": 136.914894,
+    "ルート順": 8
+  },
+  {
+    "No": 9,
+    "地点名": "朝熊山頂展望台",
+    "住所": "三重県伊勢市朝熊町字名古185-3",
+    "カテゴリ": "展望台",
+    "説明": "伊勢志摩を見渡せる山頂展望台",
+    "ポイント": "1P",
+    "景品交換場所": "",
+    "ゲームロケーション": "○",
+    "パネル": "",
+    "緯度": 34.459862,
+    "経度": 136.791458,
+    "ルート順": 9
+  },
+  {
+    "No": 10,
+    "地点名": "二見浦海岸",
+    "住所": "三重県伊勢市二見町茶屋",
+    "カテゴリ": "海岸・景勝地",
+    "説明": "夫婦岩周辺の海岸エリア（住所は代表表記）",
+    "ポイント": "1P",
+    "景品交換場所": "",
+    "ゲームロケーション": "○",
+    "パネル": "",
+    "緯度": 34.508772,
+    "経度": 136.785259,
+    "ルート順": 10
+  },
+  {
+    "No": 11,
+    "地点名": "伊勢市内（二見交番付近）",
+    "住所": "三重県伊勢市二見町茶屋109-4",
+    "カテゴリ": "集合地点",
+    "説明": "二見交番付近の想定地点",
+    "ポイント": "1P",
+    "景品交換場所": "",
+    "ゲームロケーション": "○",
+    "パネル": "",
+    "緯度": 34.50714,
+    "経度": 136.78989,
+    "ルート順": 11
+  },
+  {
+    "No": 12,
+    "地点名": "伊勢夫婦岩 めおと横丁",
+    "住所": "三重県伊勢市二見町江580",
+    "カテゴリ": "観光施設",
+    "説明": "夫婦岩近くの観光商業施設",
+    "ポイント": "2P",
+    "景品交換場所": "○",
+    "ゲームロケーション": "",
+    "パネル": "",
+    "緯度": 34.507352,
+    "経度": 136.791587,
+    "ルート順": 12
+  },
+  {
+    "No": 13,
+    "地点名": "アスト津",
+    "住所": "三重県津市羽所町700",
+    "カテゴリ": "駅・交通拠点",
+    "説明": "津駅東口に直結する複合施設",
+    "ポイント": "",
+    "景品交換場所": "",
+    "ゲームロケーション": "",
+    "パネル": "生駒桔平 人魚顔出しパネル",
+    "緯度": 34.734624,
+    "経度": 136.511067,
+    "ルート順": 99
+  }
+];
+
+    const categoryColors = {
+      "港・船": "#2563eb",
+      "史跡": "#8b5cf6",
+      "宿泊": "#a16207",
+      "観光案内": "#16a34a",
+      "買い物": "#eab308",
+      "展望台": "#f97316",
+      "海岸・景勝地": "#06b6d4",
+      "集合地点": "#ef4444",
+      "観光施設": "#ec4899",
+      "駅・交通拠点": "#6b7280"
+    };
+
+    const map = L.map('map', { zoomControl: true, scrollWheelZoom: true }).setView([34.51, 136.84], 11);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const isDesktop = () => window.matchMedia('(min-width: 980px)').matches;
+    const markers = new Map();
+    let currentId = null;
+    let sortMode = 'no';
+
+    const tabList = document.getElementById('tabList');
+    const tabMap = document.getElementById('tabMap');
+    const tabDetails = document.getElementById('tabDetails');
+    const viewList = document.getElementById('view-list');
+    const viewMap = document.getElementById('view-map');
+    const viewDetails = document.getElementById('view-details');
+    const backToList = document.getElementById('backToList');
+
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const tagFilter = document.getElementById('tagFilter');
+    const sortByNoBtn = document.getElementById('sortByNo');
+    const sortByRouteBtn = document.getElementById('sortByRoute');
+    const countAll = document.getElementById('countAll');
+    const countGame = document.getElementById('countGame');
+    const countPrize = document.getElementById('countPrize');
+    const legendEl = document.getElementById('legend');
+    const listEl = document.getElementById('locationList');
+    const detailsBody = document.getElementById('detailsBody');
+
+    function setActiveView(viewName) {
+      if (isDesktop()) {
+        viewList.classList.add('active');
+        viewMap.classList.add('active');
+        viewDetails.classList.add('active');
+        return;
+      }
+      const allTabs = [tabList, tabMap, tabDetails];
+      const allViews = [viewList, viewMap, viewDetails];
+      allTabs.forEach(el => el.classList.remove('active'));
+      allViews.forEach(el => el.classList.remove('active'));
+
+      if (viewName === 'list') {
+        tabList.classList.add('active');
+        viewList.classList.add('active');
+      } else if (viewName === 'map') {
+        tabMap.classList.add('active');
+        viewMap.classList.add('active');
+        setTimeout(() => map.invalidateSize(), 120);
+      } else {
+        tabDetails.classList.add('active');
+        viewDetails.classList.add('active');
+      }
+    }
+
+    function colorFor(category) {
+      return categoryColors[category] || '#64748b';
+    }
+
+    function textValue(v) {
+      return String(v ?? '').trim();
+    }
+
+    function hasGame(row) {
+      return textValue(row['ゲームロケーション']) === '○';
+    }
+
+    function hasPrize(row) {
+      return textValue(row['景品交換場所']) !== '';
+    }
+
+    function hasPanel(row) {
+      return textValue(row['パネル']) !== '';
+    }
+
+    function makeMarkerIcon(color) {
+      return L.divIcon({
+        className: '',
+        html: `<div class="marker-pin" style="background:${color}"></div>`,
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+        popupAnchor: [0, -8]
+      });
+    }
+
+    function googleMapsUrl(row) {
+      if (row['緯度'] !== '' && row['経度'] !== '') {
+        return `https://www.google.com/maps?q=${row['緯度']},${row['経度']}`;
+      }
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(row['住所'] || row['地点名'])}`;
+    }
+
+    function detailCard(label, value) {
+      return `
+        <div class="card">
+          <div class="k">${label}</div>
+          <div class="v">${value || '―'}</div>
+        </div>
+      `;
+    }
+
+    function popupHtml(row) {
+      const lines = [
+        `カテゴリ: ${row['カテゴリ'] || '―'}`,
+        `ポイント: ${row['ポイント'] || '―'}`
+      ];
+      if (hasGame(row)) lines.push('ゲームロケーション');
+      if (hasPrize(row)) lines.push(`景品交換: ${row['景品交換場所']}`);
+      if (hasPanel(row)) lines.push(`パネル: ${row['パネル']}`);
+      return `
+        <div class="popup-title">${row['地点名']}</div>
+        <div class="popup-meta">${lines.join('<br>')}</div>
+      `;
+    }
+
+    function renderDetails(row) {
+      const flags = [
+        row['ポイント'] ? `ポイント: ${row['ポイント']}` : '',
+        hasGame(row) ? 'ゲームロケーション' : '',
+        hasPrize(row) ? `景品交換: ${row['景品交換場所']}` : '',
+        hasPanel(row) ? `パネル: ${row['パネル']}` : ''
+      ].filter(Boolean).map(v => `<span class="flag">${v}</span>`).join('');
+
+      detailsBody.innerHTML = `
+        <div class="detail-title">
+          <h2>${row['地点名']}</h2>
+          <p>${row['説明'] || ''}</p>
+        </div>
+        <a class="action-btn" href="${googleMapsUrl(row)}" target="_blank" rel="noopener noreferrer">Googleマップで開く</a>
+        <div class="flags">${flags || '<span class="empty">特記事項はありません。</span>'}</div>
+        <div class="cards">
+          ${detailCard('カテゴリ', row['カテゴリ'])}
+          ${detailCard('一覧順', row['No'])}
+          ${detailCard('ルート順', row['ルート順'] === 99 ? '参考地点' : row['ルート順'])}
+          ${detailCard('住所', row['住所'])}
+          ${detailCard('ポイント', row['ポイント'])}
+          ${detailCard('ゲームロケーション', row['ゲームロケーション'] || '―')}
+          ${detailCard('景品交換場所', row['景品交換場所'] || '―')}
+          ${detailCard('パネル', row['パネル'] || '―')}
+        </div>
+      `;
+    }
+
+    function setActive(id, moveMap = true) {
+      currentId = String(id);
+      document.querySelectorAll('.item').forEach(el => {
+        el.classList.toggle('active', el.dataset.id === currentId);
+      });
+      const row = data.find(r => String(r['No']) === currentId);
+      if (!row) return;
+      renderDetails(row);
+      const marker = markers.get(currentId);
+      if (marker && moveMap) {
+        map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 13), { duration: 0.4 });
+        marker.openPopup();
+      }
+      if (!isDesktop()) {
+        setActiveView('details');
+      }
+    }
+
+    function filteredData() {
+      const q = searchInput.value.trim().toLowerCase();
+      const cat = categoryFilter.value;
+      const tag = tagFilter.value;
+      return data.filter(row => {
+        const hay = [row['地点名'], row['住所'], row['カテゴリ'], row['説明'], row['パネル']].join(' ').toLowerCase();
+        const matchQ = !q || hay.includes(q);
+        const matchCat = !cat || row['カテゴリ'] === cat;
+        let matchTag = true;
+        if (tag === 'ゲームロケーション') matchTag = hasGame(row);
+        if (tag === '景品交換場所') matchTag = hasPrize(row);
+        if (tag === 'パネル') matchTag = hasPanel(row);
+        return matchQ && matchCat && matchTag;
+      });
+    }
+
+    function sortedRows(rows) {
+      const copied = [...rows];
+      if (sortMode === 'route') {
+        return copied.sort((a, b) => {
+          const ra = Number(a['ルート順'] ?? 9999);
+          const rb = Number(b['ルート順'] ?? 9999);
+          if (ra !== rb) return ra - rb;
+          return Number(a['No']) - Number(b['No']);
+        });
+      }
+      return copied.sort((a, b) => Number(a['No']) - Number(b['No']));
+    }
+
+    function renderList(rows) {
+      const ordered = sortedRows(rows);
+      if (!ordered.length) {
+        listEl.innerHTML = '<div class="empty">該当する地点がありません。</div>';
+        return;
+      }
+
+      listEl.innerHTML = '';
+      ordered.forEach(row => {
+        const flags = [
+          row['ポイント'] ? `ポイント ${row['ポイント']}` : '',
+          hasGame(row) ? 'ゲーム' : '',
+          hasPrize(row) ? '景品交換' : '',
+          hasPanel(row) ? 'パネル' : ''
+        ].filter(Boolean);
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'item';
+        btn.dataset.id = row['No'];
+        if (String(row['No']) === currentId) btn.classList.add('active');
+
+        btn.innerHTML = `
+          <div class="item-top">
+            <div class="item-title">${row['地点名']}</div>
+            <span class="badge" style="background:${colorFor(row['カテゴリ'])}22;border-color:${colorFor(row['カテゴリ'])}66;">${row['カテゴリ']}</span>
+          </div>
+          <div class="meta">${row['住所'] || ''}</div>
+          <div class="meta">${sortMode === 'route' ? `ルート順: ${row['ルート順'] === 99 ? '参考地点' : row['ルート順']}` : `一覧順: ${row['No']}`}</div>
+          <div class="flags">${flags.map(v => `<span class="flag">${v}</span>`).join('')}</div>
+        `;
+        btn.addEventListener('click', () => setActive(row['No']));
+        listEl.appendChild(btn);
+      });
+    }
+
+    function updateStats() {
+      countAll.textContent = data.length;
+      countGame.textContent = data.filter(hasGame).length;
+      countPrize.textContent = data.filter(hasPrize).length;
+    }
+
+    function updateMarkers(rows) {
+      const visible = new Set(rows.map(r => String(r['No'])));
+      markers.forEach((marker, id) => {
+        if (visible.has(id)) {
+          if (!map.hasLayer(marker)) marker.addTo(map);
+        } else {
+          if (map.hasLayer(marker)) map.removeLayer(marker);
+        }
+      });
+      if (isDesktop()) {
+        const latlngs = rows
+          .filter(r => r['緯度'] !== '' && r['経度'] !== '')
+          .map(r => [parseFloat(r['緯度']), parseFloat(r['経度'])])
+          .filter(v => !Number.isNaN(v[0]) && !Number.isNaN(v[1]));
+        if (latlngs.length >= 2) {
+          map.fitBounds(latlngs, { padding: [40, 40] });
+        } else if (latlngs.length === 1) {
+          map.setView(latlngs[0], 14);
+        }
+      }
+    }
+
+    function rerender() {
+      const rows = filteredData();
+      renderList(rows);
+      updateMarkers(rows);
+
+      if (currentId && !rows.some(r => String(r['No']) === currentId)) {
+        currentId = rows.length ? String(rows[0]['No']) : null;
+        if (currentId) renderDetails(rows[0]);
+      }
+    }
+
+    function updateSortTabs() {
+      sortByNoBtn.classList.toggle('active', sortMode === 'no');
+      sortByRouteBtn.classList.toggle('active', sortMode === 'route');
+    }
+
+    function initFilters() {
+      const categories = [...new Set(data.map(r => r['カテゴリ']).filter(Boolean))];
+      categories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        categoryFilter.appendChild(opt);
+      });
+      legendEl.innerHTML = categories.map(cat => `
+        <span class="chip">
+          <span class="dot" style="background:${colorFor(cat)}"></span>
+          ${cat}
+        </span>
+      `).join('');
+    }
+
+    function initMarkers() {
+      data.forEach(row => {
+        const lat = parseFloat(row['緯度']);
+        const lng = parseFloat(row['経度']);
+        if (Number.isNaN(lat) || Number.isNaN(lng)) return;
+        const marker = L.marker([lat, lng], {
+          icon: makeMarkerIcon(colorFor(row['カテゴリ']))
+        });
+        marker.bindPopup(popupHtml(row));
+        marker.on('click', () => setActive(row['No'], false));
+        marker.addTo(map);
+        markers.set(String(row['No']), marker);
+      });
+
+      const latlngs = data
+        .filter(r => r['緯度'] !== '' && r['経度'] !== '')
+        .map(r => [parseFloat(r['緯度']), parseFloat(r['経度'])])
+        .filter(v => !Number.isNaN(v[0]) && !Number.isNaN(v[1]));
+      if (latlngs.length) {
+        map.fitBounds(latlngs, { padding: [40, 40] });
+      }
+    }
+
+    tabList.addEventListener('click', () => setActiveView('list'));
+    tabMap.addEventListener('click', () => setActiveView('map'));
+    tabDetails.addEventListener('click', () => setActiveView('details'));
+    backToList.addEventListener('click', () => setActiveView('list'));
+
+    searchInput.addEventListener('input', rerender);
+    categoryFilter.addEventListener('change', rerender);
+    tagFilter.addEventListener('change', rerender);
+
+    sortByNoBtn.addEventListener('click', () => {
+      sortMode = 'no';
+      updateSortTabs();
+      rerender();
+    });
+    sortByRouteBtn.addEventListener('click', () => {
+      sortMode = 'route';
+      updateSortTabs();
+      rerender();
+    });
+
+    window.addEventListener('resize', () => {
+      setActiveView(isDesktop() ? 'desktop' : 'list');
+      setTimeout(() => map.invalidateSize(), 120);
+    });
+
+    initFilters();
+    updateStats();
+    updateSortTabs();
+    initMarkers();
+    rerender();
+
+    if (data.length) {
+      currentId = String(data[0]['No']);
+      renderDetails(data[0]);
+      renderList(filteredData());
+    }
+
+    setActiveView(isDesktop() ? 'desktop' : 'list');
+    setTimeout(() => map.invalidateSize(), 120);
+  </script>
+</body>
+</html>

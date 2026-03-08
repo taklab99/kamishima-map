@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>神島ウォーキング比較マップ（最終調整版）</title>
+  <style>
+    :root {
+      --bg: #f6fbff;
+      --card: #ffffff;
+      --line: #d7e6f2;
+      --text: #17324a;
+      --sub: #5b7287;
+      --accent: #1577c9;
+      --accent-2: #3aa57c;
+      --warn: #f08a24;
+      --shadow: 0 10px 30px rgba(23, 50, 74, 0.08);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #eef8ff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 10px;
+      line-height: 1.3;
+    }
+    .lead {
+      font-size: 0.97rem;
+      color: var(--sub);
+      line-height: 1.7;
+      margin: 0;
+    }
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .chip {
+      font-size: 0.83rem;
+      background: #eef6fd;
+      color: var(--accent);
+      border: 1px solid #cfe4f7;
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+    label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--sub);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    select, button {
+      width: 100%;
+      border: 1px solid #cfe0ee;
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px 14px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+    button {
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      cursor: pointer;
+      background: #eef6fd;
+      border-color: #cfe4f7;
+    }
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .result {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fbfdff;
+    }
+    .result h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+    .metric-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .metric {
+      background: #eef8ff;
+      border: 1px solid #d8ebfb;
+      padding: 8px 10px;
+      border-radius: 12px;
+      min-width: 110px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 1.05rem;
+      color: var(--accent);
+    }
+    .route-text {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--sub);
+      margin: 0;
+    }
+    .note {
+      font-size: 0.85rem;
+      color: var(--sub);
+      margin-top: 10px;
+      line-height: 1.7;
+    }
+    .map-shell {
+      position: relative;
+      overflow: hidden;
+    }
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--sub);
+      margin-top: 10px;
+    }
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .segments, .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .segments th, .segments td, .matrix th, .matrix td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .segments th, .matrix th {
+      color: var(--sub);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+    .matrix-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      margin-top: 10px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #eef8ff;
+      color: var(--accent);
+      border: 1px solid #d8ebfb;
+    }
+    .foot {
+      color: var(--sub);
+      font-size: 0.83rem;
+      line-height: 1.8;
+    }
+    .small {
+      font-size: 0.8rem;
+      color: var(--sub);
+    }
+    .kbd {
+      display: inline-block;
+      border: 1px solid #d7e6f2;
+      border-bottom-width: 3px;
+      border-radius: 8px;
+      padding: 2px 6px;
+      background: #fff;
+      font-size: 0.78rem;
+      color: var(--sub);
+    }
+    @media (min-width: 900px) {
+      .grid { grid-template-columns: 1.1fr .9fr; }
+      .result-grid { grid-template-columns: 1fr 1fr 1fr; }
+      h1 { font-size: 1.8rem; }
+    }
+    svg text { font-family: inherit; }
+    .node { cursor: pointer; }
+    .node circle {
+      fill: #fff;
+      stroke: var(--accent);
+      stroke-width: 2.5;
+      transition: .2s ease;
+    }
+    .node.selected circle,
+    .node:hover circle {
+      fill: #e9f5ff;
+      r: 5.5;
+    }
+    .node text {
+      font-size: 3px;
+      fill: var(--text);
+      font-weight: 700;
+      paint-order: stroke;
+      stroke: rgba(255,255,255,.95);
+      stroke-width: .8px;
+      stroke-linejoin: round;
+    }
+    .edge-base {
+      stroke: #9fc3df;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-dasharray: 4 4;
+    }
+    .edge-highlight {
+      stroke: var(--warn);
+      stroke-width: 4.6;
+      fill: none;
+      stroke-linecap: round;
+      opacity: .95;
+      filter: drop-shadow(0 2px 6px rgba(240,138,36,.28));
+    }
+    .edge-ccw {
+      stroke: var(--accent-2);
+      stroke-width: 4.6;
+      fill: none;
+      stroke-linecap: round;
+      opacity: .7;
+    }
+    .island {
+      fill: #f7e19a;
+      stroke: #e1cb83;
+      stroke-width: 1;
+    }
+    .coast {
+      fill: none;
+      stroke: #93c6eb;
+      stroke-width: .8;
+      stroke-dasharray: 2 2;
+      opacity: .7;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>神島ウォーキング比較マップ（最終調整版）</h1>
+      <p class="lead">
+        公式の神島ウォーキングマップと、各スポットの公式徒歩目安・現地レポートの区間所要を突き合わせて、主要スポット間の<strong>徒歩時間</strong>と<strong>概算距離</strong>を比較できるようにしたページです。<br>
+        地図は<strong>北が上</strong>の概略図で、地点の並びは<strong>神島港が最北側、時計台跡→八代神社→神島灯台→監的哨跡→カルスト地形</strong>となるよう公式マップに照らして再配置しました。距離は<strong>島の周囲3.9km前後・一周約2時間</strong>という公開情報に、公式徒歩時間を合わせて換算した目安です。
+      </p>
+      <div class="chips">
+        <span class="chip">島内一周の目安: 約2時間＋見学分</span>
+        <span class="chip">北が上・位置関係を再確認済み</span>
+        <span class="chip">おすすめ順路: 神島港 → 時計台跡 → 八代神社 → 神島灯台 → 監的哨跡 → カルスト地形</span>
+        <span class="chip">距離は3.9km前後ベースで再換算</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="controls">
+          <div>
+            <label for="start">出発地</label>
+            <select id="start"></select>
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <button id="swap" aria-label="出発地と到着地を入れ替え">⇄</button>
+          </div>
+          <div>
+            <label for="end">到着地</label>
+            <select id="end"></select>
+          </div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result">
+            <h3>最短ルート</h3>
+            <div class="metric-row">
+              <div class="metric"><span class="small">徒歩時間</span><strong id="bestTime">-</strong></div>
+              <div class="metric"><span class="small">概算距離</span><strong id="bestDistance">-</strong></div>
+            </div>
+            <p class="route-text" id="bestPath">-</p>
+          </div>
+          <div class="result">
+            <h3>時計回り</h3>
+            <div class="metric-row">
+              <div class="metric"><span class="small">徒歩時間</span><strong id="cwTime">-</strong></div>
+              <div class="metric"><span class="small">概算距離</span><strong id="cwDistance">-</strong></div>
+            </div>
+            <p class="route-text" id="cwPath">-</p>
+          </div>
+          <div class="result">
+            <h3>反時計回り</h3>
+            <div class="metric-row">
+              <div class="metric"><span class="small">徒歩時間</span><strong id="ccwTime">-</strong></div>
+              <div class="metric"><span class="small">概算距離</span><strong id="ccwDistance">-</strong></div>
+            </div>
+            <p class="route-text" id="ccwPath">-</p>
+          </div>
+        </div>
+
+        <p class="note">
+          使い方: <span class="kbd">出発地</span> と <span class="kbd">到着地</span> を選ぶか、右の地図で地点を2つタップしてください。<br>
+          徒歩時間は<strong>休憩・見学時間を含まない移動目安</strong>です。特に八代神社〜灯台〜監的哨跡は階段と坂道が続きます。
+        </p>
+      </div>
+
+      <div class="card map-shell">
+        <svg id="mapSvg" viewBox="0 0 100 100" width="100%" role="img" aria-label="神島主要スポット概略図（北が上・位置再調整版）">
+          <g>
+            <path class="coast" d="M49 4 C61 8, 72 16, 76 28 C81 43, 80 58, 72 73 C65 86, 52 94, 41 89 C28 83, 23 69, 22 55 C21 40, 24 28, 31 18 C36 11, 42 7, 49 4 Z"></path>
+            <path class="island" d="M50 7 C61 10, 70 17, 73 29 C78 43, 77 58, 69 71 C63 82, 52 89, 42 85 C31 80, 26 67, 25 54 C24 40, 27 29, 33 21 C38 15, 43 10, 50 7 Z"></path>
+            <path class="coast" d="M46 6 L49 12 L52 6"></path>
+            <path class="coast" d="M48 12 L53 16"></path>
+            <path class="coast" d="M47 12 L43 16"></path>
+          </g>
+          <g aria-label="north-arrow">
+            <line x1="90" y1="18" x2="90" y2="8" stroke="#1577c9" stroke-width="1.7" stroke-linecap="round"></line>
+            <path d="M90 5 L87.8 10.5 L92.2 10.5 Z" fill="#1577c9"></path>
+            <text x="90" y="22.5" text-anchor="middle" style="font-size:4px;font-weight:800;fill:#1577c9;">N</text>
+          </g>
+          <g id="baseEdges"></g>
+          <g id="ccwEdges"></g>
+          <g id="highlightEdges"></g>
+          <g id="nodes"></g>
+        </svg>
+        <div class="legend">
+          <span><i class="dot" style="background:#1577c9"></i>地点</span>
+          <span><i class="dot" style="background:#f08a24"></i>最短ルート</span>
+          <span><i class="dot" style="background:#3aa57c"></i>もう一方の回り方</span>
+        </div>
+        <p class="note">概略図は公式ウォーキングマップの地点位置を見直した簡略図です。縮尺は実測図ではありませんが、地点の並びと方位は北上配置で揃えています。</p>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:14px;">
+      <h2 style="margin:0 0 10px;font-size:1.08rem;">区間データ</h2>
+      <table class="segments" aria-label="区間データ一覧">
+        <thead>
+          <tr>
+            <th>区間</th>
+            <th>徒歩時間</th>
+            <th>概算距離</th>
+            <th>メモ</th>
+          </tr>
+        </thead>
+        <tbody id="segmentBody"></tbody>
+      </table>
+      <p class="note">距離は、公式徒歩時間と「周囲3.9km / 一周約4km前後」の公開情報を合わせて再換算した概算です。</p>
+    </section>
+
+    <section class="card" style="margin-top:14px;">
+      <h2 style="margin:0 0 6px;font-size:1.08rem;">主要地点どうしの比較一覧</h2>
+      <p class="small">最短ルートのみ表示しています。時計回り推奨区間は<span class="pill">時計回り推奨</span>で示します。</p>
+      <div class="matrix-wrap">
+        <table class="matrix" aria-label="地点間比較表">
+          <thead>
+            <tr>
+              <th>出発地</th>
+              <th>到着地</th>
+              <th>最短時間</th>
+              <th>概算距離</th>
+              <th>経由</th>
+              <th>補足</th>
+            </tr>
+          </thead>
+          <tbody id="matrixBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card foot" style="margin-top:14px;">
+      <strong>前提メモ</strong><br>
+      ・公式特集では、神島は「島内をぐるっと一周歩いて約2時間程」と案内され、時計台跡を通って八代神社へ向かう<strong>時計回り</strong>が推奨されています。<br>
+      ・各スポットの港からの徒歩目安は、時計台跡 約5分、八代神社 約15分、神島灯台 約35分、監的哨跡 約50分、カルスト地形 約50分を採用しています。<br>
+      ・神島灯台→監的哨跡 約15分、監的哨跡→カルスト地形 約10分は現地レポートの区間記述を反映しています。<br>
+      ・位置関係は公式ウォーキングマップを見直し、神島港を最北側に置く北上配置へ再調整しています。<br>
+      ・このページの距離は旅程比較用の目安です。実際の歩行は、休憩・写真撮影・階段の負荷で<strong>10〜30分以上の差</strong>が出ることがあります。
+    </section>
+  </div>
+
+  <script>
+    const points = [
+      { id: 'port', name: '神島港', x: 50.2, y: 11.5, dx: 0, dy: -4.7, anchor: 'middle' },
+      { id: 'clock', name: '時計台跡', x: 57.4, y: 25.8, dx: 3.2, dy: -3.0, anchor: 'start' },
+      { id: 'shrine', name: '八代神社', x: 63.6, y: 42.7, dx: 3.0, dy: -2.8, anchor: 'start' },
+      { id: 'lighthouse', name: '神島灯台', x: 69.8, y: 66.8, dx: -3.2, dy: -2.8, anchor: 'end' },
+      { id: 'kanteki', name: '監的哨跡', x: 55.2, y: 79.8, dx: 0, dy: 6.2, anchor: 'middle' },
+      { id: 'karst', name: 'カルスト地形', x: 39.2, y: 73.8, dx: -1.0, dy: 6.2, anchor: 'middle' }
+    ];
+
+    const ring = ['port', 'clock', 'shrine', 'lighthouse', 'kanteki', 'karst'];
+
+    const circumferenceKm = 3.9;
+    const baseSegments = [
+      {
+        from: 'port', to: 'clock', minutes: 5,
+        memo: '公式スポット情報では、時計台跡は神島港から徒歩約5分。'
+      },
+      {
+        from: 'clock', to: 'shrine', minutes: 10,
+        memo: '八代神社の港から徒歩約15分と、時計台跡の徒歩約5分との差分。'
+      },
+      {
+        from: 'shrine', to: 'lighthouse', minutes: 20,
+        memo: '神島灯台の港から徒歩約35分と、八代神社の徒歩約15分との差分。階段と山道が多い区間。'
+      },
+      {
+        from: 'lighthouse', to: 'kanteki', minutes: 15,
+        memo: '現地レポートで、神島灯台から監的哨跡まで約15分。'
+      },
+      {
+        from: 'kanteki', to: 'karst', minutes: 10,
+        memo: '現地レポートで、監的哨跡からカルスト地形まで約10分。'
+      },
+      {
+        from: 'karst', to: 'port', minutes: 50,
+        memo: 'カルスト地形は公式スポット情報で神島港から徒歩約50分。反対側ルートの戻り区間として採用。'
+      }
+    ];
+    const loopMinutes = baseSegments.reduce((sum, seg) => sum + seg.minutes, 0);
+    const segments = baseSegments.map(seg => ({
+      ...seg,
+      km: Number((seg.minutes / loopMinutes * circumferenceKm).toFixed(2))
+    }));
+
+    const preferredClockwisePairs = new Set([
+      'port-clock','port-shrine','port-lighthouse','port-kanteki','port-karst',
+      'clock-shrine','clock-lighthouse','clock-kanteki','clock-karst',
+      'shrine-lighthouse','shrine-kanteki','shrine-karst',
+      'lighthouse-kanteki','lighthouse-karst'
+    ]);
+
+    const pointMap = Object.fromEntries(points.map(p => [p.id, p]));
+    const startEl = document.getElementById('start');
+    const endEl = document.getElementById('end');
+    const swapBtn = document.getElementById('swap');
+    const nodesG = document.getElementById('nodes');
+    const baseEdgesG = document.getElementById('baseEdges');
+    const highlightEdgesG = document.getElementById('highlightEdges');
+    const ccwEdgesG = document.getElementById('ccwEdges');
+    const segmentBody = document.getElementById('segmentBody');
+    const matrixBody = document.getElementById('matrixBody');
+
+    function formatKm(km) { return `${km.toFixed(2)} km`; }
+    function formatMin(m) { return `${m}分`; }
+    function getIndex(id) { return ring.indexOf(id); }
+
+    function edgeData(from, to) {
+      const seg = segments.find(s => (s.from === from && s.to === to) || (s.from === to && s.to === from));
+      return seg || null;
+    }
+
+    function pathClockwise(from, to) {
+      let path = [from];
+      let minutes = 0;
+      let km = 0;
+      let i = getIndex(from);
+      while (ring[i] !== to) {
+        const next = ring[(i + 1) % ring.length];
+        const seg = edgeData(ring[i], next);
+        minutes += seg.minutes;
+        km += seg.km;
+        path.push(next);
+        i = (i + 1) % ring.length;
+      }
+      return { path, minutes, km, direction: 'cw' };
+    }
+
+    function pathCounterClockwise(from, to) {
+      let path = [from];
+      let minutes = 0;
+      let km = 0;
+      let i = getIndex(from);
+      while (ring[i] !== to) {
+        const prev = ring[(i - 1 + ring.length) % ring.length];
+        const seg = edgeData(ring[i], prev);
+        minutes += seg.minutes;
+        km += seg.km;
+        path.push(prev);
+        i = (i - 1 + ring.length) % ring.length;
+      }
+      return { path, minutes, km, direction: 'ccw' };
+    }
+
+    function labelPath(pathArr) {
+      return pathArr.map(id => pointMap[id].name).join(' → ');
+    }
+
+    function getRoutes(from, to) {
+      if (from === to) {
+        const same = { path: [from], minutes: 0, km: 0, direction: 'same' };
+        return { best: same, cw: same, ccw: same };
+      }
+      const cw = pathClockwise(from, to);
+      const ccw = pathCounterClockwise(from, to);
+      let best = cw.minutes < ccw.minutes ? cw : ccw;
+      if (cw.minutes === ccw.minutes) {
+        const key = [from, to].sort().join('-');
+        best = preferredClockwisePairs.has(key) ? cw : ccw;
+      }
+      return { best, cw, ccw };
+    }
+
+    function populateSelects() {
+      for (const p of points) {
+        const o1 = document.createElement('option');
+        o1.value = p.id;
+        o1.textContent = p.name;
+        startEl.appendChild(o1);
+        const o2 = document.createElement('option');
+        o2.value = p.id;
+        o2.textContent = p.name;
+        endEl.appendChild(o2);
+      }
+      startEl.value = 'port';
+      endEl.value = 'karst';
+    }
+
+    function renderBaseEdges() {
+      baseEdgesG.innerHTML = '';
+      for (const seg of segments) {
+        const p1 = pointMap[seg.from];
+        const p2 = pointMap[seg.to];
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('class', 'edge-base');
+        path.setAttribute('d', curvedPath(p1, p2));
+        baseEdgesG.appendChild(path);
+      }
+    }
+
+    function curvedPath(a, b) {
+      const mx = (a.x + b.x) / 2;
+      const my = (a.y + b.y) / 2;
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+      const nx = -dy / len;
+      const ny = dx / len;
+      const curve = 4.5;
+      const cx = mx + nx * curve;
+      const cy = my + ny * curve;
+      return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`;
+    }
+
+    function renderNodes() {
+      nodesG.innerHTML = '';
+      for (const p of points) {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'node');
+        g.setAttribute('data-id', p.id);
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', p.x);
+        c.setAttribute('cy', p.y);
+        c.setAttribute('r', 4.6);
+        const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        t.setAttribute('x', p.x + (p.dx ?? 2.8));
+        t.setAttribute('y', p.y + (p.dy ?? -3));
+        t.setAttribute('text-anchor', p.anchor || 'start');
+        t.textContent = p.name;
+        g.appendChild(c);
+        g.appendChild(t);
+        g.addEventListener('click', () => {
+          if (startEl.value === p.id) {
+            endEl.value = p.id;
+          } else if (endEl.value === p.id) {
+            startEl.value = p.id;
+          } else {
+            startEl.value = p.id;
+          }
+          if (startEl.value === endEl.value) {
+            const next = points.find(pt => pt.id !== p.id);
+            if (next) endEl.value = next.id;
+          }
+          update();
+        });
+        nodesG.appendChild(g);
+      }
+    }
+
+    function renderRouteLines(route, target, className) {
+      target.innerHTML = '';
+      if (!route || route.path.length < 2) return;
+      for (let i = 0; i < route.path.length - 1; i++) {
+        const a = pointMap[route.path[i]];
+        const b = pointMap[route.path[i + 1]];
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('class', className);
+        path.setAttribute('d', curvedPath(a, b));
+        target.appendChild(path);
+      }
+    }
+
+    function update() {
+      const from = startEl.value;
+      const to = endEl.value;
+      const { best, cw, ccw } = getRoutes(from, to);
+
+      document.getElementById('bestTime').textContent = formatMin(best.minutes);
+      document.getElementById('bestDistance').textContent = formatKm(best.km);
+      document.getElementById('bestPath').textContent = labelPath(best.path);
+
+      document.getElementById('cwTime').textContent = formatMin(cw.minutes);
+      document.getElementById('cwDistance').textContent = formatKm(cw.km);
+      document.getElementById('cwPath').textContent = labelPath(cw.path);
+
+      document.getElementById('ccwTime').textContent = formatMin(ccw.minutes);
+      document.getElementById('ccwDistance').textContent = formatKm(ccw.km);
+      document.getElementById('ccwPath').textContent = labelPath(ccw.path);
+
+      renderRouteLines(best, highlightEdgesG, 'edge-highlight');
+      const alt = best.direction === 'cw' ? ccw : cw;
+      renderRouteLines(alt, ccwEdgesG, 'edge-ccw');
+
+      document.querySelectorAll('.node').forEach(el => {
+        el.classList.toggle('selected', el.dataset.id === from || el.dataset.id === to);
+      });
+    }
+
+    function renderSegments() {
+      segmentBody.innerHTML = '';
+      for (const seg of segments) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${pointMap[seg.from].name} → ${pointMap[seg.to].name}</td>
+          <td>${formatMin(seg.minutes)}</td>
+          <td>${formatKm(seg.km)}</td>
+          <td>${seg.memo}</td>
+        `;
+        segmentBody.appendChild(tr);
+      }
+    }
+
+    function renderMatrix() {
+      matrixBody.innerHTML = '';
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+          const from = points[i].id;
+          const to = points[j].id;
+          const { best, cw, ccw } = getRoutes(from, to);
+          const tr = document.createElement('tr');
+          const clockwisePreferred = best.direction === 'cw' && cw.minutes <= ccw.minutes;
+          tr.innerHTML = `
+            <td>${pointMap[from].name}</td>
+            <td>${pointMap[to].name}</td>
+            <td>${formatMin(best.minutes)}</td>
+            <td>${formatKm(best.km)}</td>
+            <td>${labelPath(best.path)}</td>
+            <td>${clockwisePreferred ? '<span class="pill">時計回り推奨</span>' : ''}</td>
+          `;
+          matrixBody.appendChild(tr);
+        }
+      }
+    }
+
+    swapBtn.addEventListener('click', () => {
+      const a = startEl.value;
+      startEl.value = endEl.value;
+      endEl.value = a;
+      update();
+    });
+    startEl.addEventListener('change', update);
+    endEl.addEventListener('change', update);
+
+    populateSelects();
+    renderBaseEdges();
+    renderNodes();
+    renderSegments();
+    renderMatrix();
+    update();
+  </script>
+</body>
+</html>
