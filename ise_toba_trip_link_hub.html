@@ -2,154 +2,761 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>伊勢・鳥羽・神島 旅リンク集</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>伊勢・鳥羽・神島 2泊3日 旅のしおり</title>
   <style>
     :root {
-      --bg: #f5f7fb;
-      --card: #ffffff;
-      --text: #18212f;
-      --muted: #5f6b7a;
-      --line: #dfe5ef;
-      --primary: #155eef;
-      --primary-soft: #eaf1ff;
-      --warn-bg: #fff4e5;
-      --warn-text: #9a6700;
-      --danger: #b42318;
-      --danger-soft: #fff1f1;
-      --ok: #067647;
-      --ok-soft: #edfdf2;
-      --shadow: 0 8px 24px rgba(18, 31, 53, 0.08);
-      --radius: 18px;
+      --bg: #fffaf7;
+      --paper: rgba(255, 255, 255, 0.88);
+      --paper-strong: #ffffff;
+      --text: #473b39;
+      --muted: #7f6d69;
+      --line: #f0d8d0;
+      --pink: #f9c9d8;
+      --rose: #ee8daf;
+      --peach: #ffd5b8;
+      --cream: #fff0de;
+      --yellow: #ffe8a3;
+      --mint: #d7f4e7;
+      --sky: #dff1ff;
+      --lavender: #ece6ff;
+      --shadow: 0 16px 40px rgba(110, 75, 70, 0.12);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
+      font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", system-ui, sans-serif;
       color: var(--text);
-      background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 180px);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255, 213, 184, 0.7), transparent 28%),
+        radial-gradient(circle at 85% 8%, rgba(249, 201, 216, 0.65), transparent 30%),
+        radial-gradient(circle at 80% 90%, rgba(215, 244, 231, 0.8), transparent 26%),
+        linear-gradient(180deg, #fffaf7 0%, #fff7f8 38%, #fffdf6 100%);
+      min-height: 100vh;
     }
-    a { color: inherit; text-decoration: none; }
-    button, input { font: inherit; }
 
-    .container {
-      width: min(1020px, 100%);
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .wrap {
+      width: min(1100px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 16px 16px 92px;
+      padding: 18px 0 110px;
     }
 
     .hero {
-      position: sticky;
-      top: 8px;
-      z-index: 20;
-      background: rgba(255,255,255,0.88);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,255,255,0.7);
-      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,247,246,0.92));
+      border: 1px solid rgba(255,255,255,0.8);
       box-shadow: var(--shadow);
-      padding: 18px;
+      border-radius: 32px;
+      padding: 28px 22px 22px;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    .hero::before {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(255, 213, 184, 0.9), transparent 65%);
+      top: -60px;
+      right: -50px;
+    }
+
+    .hero::after {
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(236, 230, 255, 0.95), transparent 65%);
+      bottom: -50px;
+      left: -40px;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 7px 10px;
+      width: fit-content;
+      padding: 8px 14px;
       border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 10px;
+      background: linear-gradient(135deg, #fff0f6, #fff9de);
+      border: 1px solid #ffd5e2;
+      font-size: 13px;
+      font-weight: 700;
+      color: #9a5f72;
     }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: clamp(24px, 5vw, 34px);
-      line-height: 1.2;
+      margin: 0;
+      font-size: clamp(32px, 8vw, 56px);
+      line-height: 1.08;
+      letter-spacing: 0.02em;
     }
 
-    .hero p {
+    .subtitle {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 780px;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .badge {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid #f4e0db;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(110, 75, 70, 0.06);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .button {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .button:hover { transform: translateY(-1px); }
+    .button.primary {
+      background: linear-gradient(135deg, #ef8fb4, #f5a261);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(239, 143, 180, 0.28);
+    }
+    .button.secondary {
+      background: rgba(255,255,255,0.92);
+      color: var(--text);
+      border: 1px solid #efd8d1;
+    }
+
+    .section {
+      margin-top: 22px;
+      background: var(--paper);
+      border: 1px solid rgba(255,255,255,0.82);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+      padding: 22px 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .section-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .summary-grid,
+    .tips-grid,
+    .links-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .summary-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .tips-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .links-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+
+    .summary-card,
+    .tip-card,
+    .link-card,
+    .note-card,
+    .packing-card {
+      background: var(--paper-strong);
+      border-radius: var(--radius-lg);
+      border: 1px solid #f5e3de;
+      padding: 16px;
+      box-shadow: 0 10px 24px rgba(110, 75, 70, 0.07);
+    }
+
+    .summary-card {
+      display: grid;
+      gap: 10px;
+    }
+
+    .summary-card .icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      font-size: 26px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.58);
+    }
+
+    .summary-card h3,
+    .tip-card h3,
+    .packing-card h3,
+    .note-card h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .summary-card p,
+    .tip-card p,
+    .note-card p,
+    .link-card p,
+    .packing-card p {
       margin: 0;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.65;
+      line-height: 1.75;
     }
 
-    .searchbar {
-      margin-top: 14px;
+    .day-nav {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+      margin-bottom: 16px;
+    }
+    .day-nav::-webkit-scrollbar { display: none; }
+
+    .day-tab {
+      min-height: 46px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .day-tab.active {
+      background: linear-gradient(135deg, #ef8fb4, #f7b267);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 12px 24px rgba(239, 143, 180, 0.24);
+    }
+
+    .day-panel { display: none; }
+    .day-panel.active { display: block; }
+
+    .day-head {
+      background: linear-gradient(135deg, #fff6f8, #fffaf0);
+      border: 1px solid #f5ddd8;
+      border-radius: 24px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .day-head h3 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .day-head p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 14px;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 0;
+      padding: 4px 0 4px 0;
+      list-style: none;
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 6px;
+      bottom: 6px;
+      width: 3px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f6bfd1, #ffe1b6);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 44px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 22px;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #fff;
+      border: 4px solid #ef8fb4;
+      box-shadow: 0 0 0 4px rgba(255, 215, 228, 0.6);
+    }
+
+    .timeline-card {
+      background: #fff;
+      border: 1px solid #f4dfda;
+      border-radius: 20px;
+      padding: 14px;
+      box-shadow: 0 10px 22px rgba(110, 75, 70, 0.07);
+      display: grid;
+      gap: 10px;
+    }
+
+    .timeline-top {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .time {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #fff2f6;
+      color: #b45077;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .spot {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .timeline-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .mini-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mini-tag {
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #f8f3ff;
+      color: #6b5db3;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .small-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #fff9ef;
+      border: 1px solid #f7dfbf;
+      color: #8c6848;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .two-col {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+
+    .packing-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .check {
+      display: flex;
+      align-items: start;
+      gap: 10px;
+      padding: 12px 14px;
+      background: #fff;
+      border: 1px solid #f3e2dc;
+      border-radius: 16px;
+    }
+
+    .check input {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      accent-color: #ee8daf;
+      flex-shrink: 0;
+    }
+
+    .check strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .check span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .memo {
+      min-height: 160px;
+      width: 100%;
+      padding: 14px;
+      resize: vertical;
+      border-radius: 16px;
+      border: 1px dashed #e8c9d2;
+      background: linear-gradient(180deg, #fffdfd, #fff7fb);
+      color: var(--text);
+      font: inherit;
+      line-height: 1.75;
+    }
+
+    .link-card {
+      display: grid;
+      gap: 10px;
+    }
+
+    .link-card h4 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.45;
+    }
+
+    .link-card .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f6f7fb;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      width: fit-content;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ef8fb4, #f5a261);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 10px 18px rgba(239, 143, 180, 0.24);
+    }
+
+
+    .show-box {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fff8fb, #fffdf7);
+      border: 1px solid #f4ddd9;
+      display: grid;
+      gap: 10px;
+    }
+
+    .show-box-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .show-box-head strong {
+      font-size: 14px;
+    }
+
+    .show-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .show-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .show-item {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid #f5e7e2;
+    }
+
+    .show-time {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #fff0f6;
+      color: #b45077;
+      font-size: 12px;
+      font-weight: 800;
+      width: fit-content;
+    }
+
+    .show-title {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .sticky-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+      background: rgba(255, 250, 247, 0.84);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(202, 156, 152, 0.18);
+    }
+
+    .sticky-nav .inner {
+      width: min(720px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .sticky-link {
+      display: grid;
+      place-items: center;
+      min-height: 50px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #edd7d0;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .sticky-link.active {
+      background: linear-gradient(135deg, #ef8fb4, #f5a261);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .floating-stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      opacity: 0.35;
+      font-size: 18px;
+      animation: floaty 5.8s ease-in-out infinite;
+    }
+    .star:nth-child(2) { animation-delay: 1.2s; }
+    .star:nth-child(3) { animation-delay: 2.4s; }
+    .star:nth-child(4) { animation-delay: 3.6s; }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(6deg); }
+    }
+
+
+    .ref-links-wrap {
+      display: grid;
+      gap: 14px;
+    }
+
+    .ref-hero {
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #fff7fb, #fffaf1);
+      border: 1px solid #f6ded7;
+      box-shadow: 0 10px 24px rgba(110, 75, 70, 0.06);
+    }
+
+    .ref-hero p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .ref-search {
       display: flex;
       align-items: center;
       gap: 10px;
       min-height: 50px;
-      padding: 0 12px;
-      border-radius: 14px;
+      padding: 0 14px;
+      border-radius: 16px;
       background: #fff;
-      border: 1px solid var(--line);
+      border: 1px solid #f2ddd8;
+      box-shadow: 0 8px 18px rgba(110, 75, 70, 0.05);
     }
 
-    .searchbar input {
+    .ref-search input {
       width: 100%;
       border: 0;
       outline: 0;
       background: transparent;
       color: var(--text);
       font-size: 16px;
+      font-family: inherit;
     }
 
-    .note {
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: var(--warn-bg);
-      color: var(--warn-text);
+    .ref-note {
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: #fff8ea;
+      border: 1px solid #f6ddb3;
+      color: #9a6700;
       font-size: 13px;
-      line-height: 1.6;
-      border: 1px solid #f7d79d;
+      line-height: 1.7;
     }
 
-    .tabs-wrap {
-      margin-top: 18px;
-      position: sticky;
-      top: 206px;
-      z-index: 19;
-      padding-top: 4px;
-      background: linear-gradient(180deg, rgba(245,247,251,0.96), rgba(245,247,251,0.8));
-    }
-
-    .tabs {
+    .ref-tabs {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      scrollbar-width: none;
       padding-bottom: 4px;
+      scrollbar-width: none;
     }
-    .tabs::-webkit-scrollbar { display: none; }
+    .ref-tabs::-webkit-scrollbar { display: none; }
 
-    .tab-btn {
+    .ref-tab-btn {
       flex: 0 0 auto;
       min-height: 44px;
+      padding: 0 14px;
       border-radius: 999px;
-      border: 1px solid var(--line);
+      border: 1px solid #efd9d2;
       background: #fff;
       color: var(--muted);
-      padding: 0 14px;
       font-weight: 800;
+      font-size: 14px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       cursor: pointer;
     }
 
-    .tab-btn.active {
-      background: var(--primary);
+    .ref-tab-btn.active {
+      background: linear-gradient(135deg, #ef8fb4, #f5a261);
       color: #fff;
-      border-color: var(--primary);
+      border-color: transparent;
+      box-shadow: 0 10px 20px rgba(239, 143, 180, 0.2);
     }
 
-    .tab-btn .count {
+    .ref-count {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -157,18 +764,17 @@
       height: 24px;
       padding: 0 7px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.2);
       font-size: 12px;
       font-weight: 800;
     }
 
-    .tab-btn:not(.active) .count {
-      background: #eef2f8;
+    .ref-tab-btn:not(.active) .ref-count {
+      background: #f7f1f8;
       color: var(--muted);
     }
 
-    .section-head {
-      margin-top: 18px;
+    .ref-section-head {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -176,73 +782,74 @@
       align-items: end;
     }
 
-    .section-head h2 {
+    .ref-section-head h3 {
       margin: 0;
-      font-size: 21px;
+      font-size: 22px;
+      line-height: 1.35;
     }
 
-    .section-head p {
+    .ref-section-head p {
       margin: 6px 0 0;
-      font-size: 13px;
       color: var(--muted);
-      line-height: 1.6;
+      font-size: 14px;
+      line-height: 1.7;
     }
 
-    .section-meta {
+    .ref-section-meta {
       font-size: 12px;
       color: var(--muted);
       font-weight: 800;
     }
 
-    .card-grid {
-      margin-top: 14px;
+    .ref-grid {
       display: grid;
-      grid-template-columns: repeat(1, minmax(0, 1fr));
+      grid-template-columns: 1fr;
       gap: 14px;
     }
 
-    .card {
+    .ref-card {
       display: flex;
       flex-direction: column;
-      background: var(--card);
-      border-radius: var(--radius);
+      background: #fff;
+      border-radius: 22px;
       overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(15, 23, 42, 0.05);
+      border: 1px solid #f4dfda;
+      box-shadow: 0 10px 24px rgba(110, 75, 70, 0.07);
     }
 
-    .thumb {
+    .ref-thumb {
       padding: 14px;
       display: flex;
       justify-content: space-between;
       align-items: end;
       color: #fff;
       position: relative;
+      min-height: 110px;
     }
 
-    .thumb::before {
+    .ref-thumb::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.18));
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.16));
     }
 
-    .thumb-icon, .thumb-label { position: relative; z-index: 1; }
-    .thumb-icon {
+    .ref-thumb-icon, .ref-thumb-label { position: relative; z-index: 1; }
+    .ref-thumb-icon {
       font-size: 38px;
       line-height: 1;
       text-shadow: 0 4px 10px rgba(0,0,0,0.16);
     }
-    .thumb-label {
+    .ref-thumb-label {
       max-width: 72%;
       text-align: right;
       font-size: 13px;
-      line-height: 1.3;
+      line-height: 1.35;
       font-weight: 800;
       letter-spacing: .02em;
     }
 
-    .card-body {
+    .ref-card-body {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -250,191 +857,539 @@
       padding: 14px;
     }
 
-    .meta {
+    .ref-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    .tag {
+    .ref-tag {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       min-height: 28px;
       padding: 6px 10px;
       border-radius: 999px;
-      background: #f2f5fa;
-      color: var(--muted);
+      background: #f8f3ff;
+      color: #7465b6;
       font-size: 12px;
       font-weight: 800;
     }
 
-    .tag.dynamic {
-      background: var(--danger-soft);
-      color: var(--danger);
+    .ref-tag.dynamic {
+      background: #fff1f4;
+      color: #bf4e73;
     }
 
-    .tag.important {
-      background: var(--ok-soft);
-      color: var(--ok);
+    .ref-tag.important {
+      background: #edfdf2;
+      color: #067647;
     }
 
-    .title {
+    .ref-title {
       margin: 0;
       font-size: 18px;
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
-    .desc {
+    .ref-desc {
       margin: 0;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.65;
+      line-height: 1.72;
     }
 
-    .domain {
+    .ref-domain {
       font-size: 12px;
       color: var(--muted);
       word-break: break-all;
     }
 
-    .actions {
+    .ref-actions {
       margin-top: auto;
       display: grid;
-      grid-template-columns: 1fr 1fr 46px 46px;
+      grid-template-columns: 1fr 1fr 46px;
       gap: 8px;
     }
 
-    .btn {
+    .ref-btn {
       min-height: 46px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 0;
       font-weight: 800;
       cursor: pointer;
+      font-family: inherit;
     }
 
-    .btn-open { background: var(--primary); color: #fff; }
-    .btn-copy { background: #eef2f8; color: var(--text); }
-    .btn-icon {
+    .ref-btn-open {
+      background: linear-gradient(135deg, #ef8fb4, #f5a261);
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(239, 143, 180, 0.2);
+    }
+    .ref-btn-copy {
+      background: #fff7f2;
+      color: var(--text);
+      border: 1px solid #efdcd5;
+    }
+    .ref-btn-icon {
       background: #fff;
-      border: 1px solid var(--line);
+      border: 1px solid #efdcd5;
       color: var(--muted);
       font-size: 18px;
     }
-    .btn-icon.active {
+    .ref-btn-icon.active {
       background: #fff6db;
       border-color: #f5c451;
       color: #9a6700;
     }
 
-    .empty {
-      margin-top: 18px;
+    .ref-empty {
       padding: 22px 16px;
       text-align: center;
       background: #fff;
-      border: 1px dashed var(--line);
+      border: 1px dashed #edd7d0;
       border-radius: 18px;
       color: var(--muted);
       display: none;
     }
 
-    .footer-note {
-      margin-top: 24px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
+    @media (min-width: 760px) {
+      .wrap { width: min(1120px, calc(100% - 40px)); padding-top: 26px; }
+      .hero { padding: 36px 34px 30px; }
+      .section { padding: 28px 24px; }
+      .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .tips-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .links-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ref-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .two-col { grid-template-columns: 1.05fr .95fr; }
     }
 
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 25;
-      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
-      background: rgba(245,247,251,0.92);
-      backdrop-filter: blur(14px);
-      border-top: 1px solid rgba(24,33,47,0.08);
-    }
-
-    .bottom-row {
-      width: min(1020px, 100%);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
-
-    .nav-btn {
-      min-height: 48px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--muted);
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .nav-btn.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
-    }
-
-    @media (min-width: 720px) {
-      .container { padding-top: 20px; }
-      .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .actions { grid-template-columns: 1.2fr 1fr 46px 46px; }
-    }
-
-    @media (min-width: 1024px) {
-      .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (min-width: 1040px) {
+      .links-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .ref-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="hero">
-      <div class="eyebrow">伊勢・鳥羽・神島 2泊3日旅リンク集</div>
-      <h1>参照サイトまとめ</h1>
-      <p>
-        28件のリンクを <strong>1日目 / 2日目 / 3日目 / その他</strong> に分類し、
-        そのうえで見返す可能性が高いものだけを <strong>重要</strong> タブにも重複掲載しています。
-      </p>
-      <label class="searchbar">
-        <span>🔎</span>
-        <input id="searchInput" type="search" placeholder="サイト名・地名・用途で検索" />
-      </label>
-    </header>
-
-    <div class="tabs-wrap">
-      <div class="tabs" id="tabs"></div>
-    </div>
-
-    <div class="section-head">
-      <div>
-        <h2 id="sectionTitle">1日目</h2>
-        <p id="sectionDesc"></p>
+  <div class="wrap">
+    <section class="hero" id="top">
+      <div class="floating-stars" aria-hidden="true">
+        <div class="star" style="top:12%; left:10%;">✦</div>
+        <div class="star" style="top:18%; right:18%;">✿</div>
+        <div class="star" style="bottom:18%; left:22%;">✧</div>
+        <div class="star" style="bottom:12%; right:10%;">✦</div>
       </div>
-      <div class="section-meta" id="sectionMeta"></div>
-    </div>
+      <div class="hero-inner">
+        <div class="eyebrow">🎀 2泊3日 旅のしおりサイト</div>
+        <div>
+          <h1>伊勢・鳥羽・神島<br>わくわく旅プラン</h1>
+          <p class="subtitle">
+            志摩スペイン村、賢島クルーズ、鳥羽水族館、神島、二見興玉神社、伊勢シーパラダイスまで。
+            旅行中にスマホで見返しやすいよう、日程を時系列でまとめたおしゃれなしおりです。
+          </p>
+        </div>
+        <div class="hero-badges">
+          <div class="badge">🚄 品川スタート</div>
+          <div class="badge">🏨 みち潮 ＆ 吉田屋 和光</div>
+          <div class="badge">⛴️ 神島フェリーあり</div>
+          <div class="badge">📸 最終日は津にも立ち寄り</div>
+        </div>
+        <div class="hero-actions">
+          <a class="button primary" href="#schedule">日程を見る</a>
+          <a class="button secondary" href="#links">参考リンクを見る</a>
+        </div>
+      </div>
+    </section>
 
-    <div class="card-grid" id="cardGrid"></div>
-    <div class="empty" id="emptyState">条件に合うリンクが見つかりませんでした。検索語を変えてみてください。</div>
+    <section class="section">
+      <div class="section-title">
+        <div>
+          <h2>旅のポイント</h2>
+          <p>今回の旅で大事にしたいことを、まず最初にまとめています。</p>
+        </div>
+        <div class="pill">かわいく・見やすく・再確認しやすく</div>
+      </div>
+      <div class="summary-grid">
+        <article class="summary-card">
+          <div class="icon" style="background: linear-gradient(135deg, #ffe4ef, #fff4bf);">🎡</div>
+          <h3>1日目はテーマパーク気分</h3>
+          <p>志摩スペイン村で昼食、パレードや園内散策を満喫。夜はみち潮で豪華な海幸プラン。</p>
+        </article>
+        <article class="summary-card">
+          <div class="icon" style="background: linear-gradient(135deg, #dff1ff, #ece6ff);">🚢</div>
+          <h3>2日目は海の見どころが主役</h3>
+          <p>賢島エスパーニャクルーズから鳥羽へ移動し、鳥羽水族館と華月の伊勢海老ディナーへ。</p>
+        </article>
+        <article class="summary-card">
+          <div class="icon" style="background: linear-gradient(135deg, #d7f4e7, #fff1f5);">⛩️</div>
+          <h3>3日目は神島と二見を両方満喫</h3>
+          <p>早朝フェリーで神島へ。午後は二見興玉神社でお守り、伊勢シーパラダイス、最後は津へ。</p>
+        </article>
+      </div>
+    </section>
 
-    <div class="footer-note">
-      このHTMLは参照用の整理ページです。外部サイトの内容自体は保存していません。<br>
-      ⭐ お気に入り と ✓ 確認済み の状態は、このブラウザ内に保存されます。
-    </div>
+    <section class="section" id="schedule">
+      <div class="section-title">
+        <div>
+          <h2>日程スケジュール</h2>
+          <p>タブを切り替えると、その日の予定をまとめて見られます。</p>
+        </div>
+        <div class="pill">⏰ 時刻は当日再確認がおすすめ</div>
+      </div>
+
+      <div class="day-nav" role="tablist" aria-label="旅行日程タブ">
+        <button class="day-tab active" data-day-tab="day1" role="tab" aria-selected="true">1日目</button>
+        <button class="day-tab" data-day-tab="day2" role="tab" aria-selected="false">2日目</button>
+        <button class="day-tab" data-day-tab="day3" role="tab" aria-selected="false">3日目</button>
+      </div>
+
+      <div class="day-panel active" id="day1" role="tabpanel">
+        <div class="day-head">
+          <h3>1日目｜品川 → 鵜方 → 志摩スペイン村 → みち潮</h3>
+          <p>旅のはじまりは、朝の品川出発から。昼は志摩スペイン村、夜は賢島の宿で海鮮をたっぷり楽しむ日です。</p>
+        </div>
+        <ol class="timeline">
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">06:22〜</span>
+                <div class="spot">品川駅 出発</div>
+              </div>
+              <p>品川から鵜方へ移動。大きめの荷物やチケット類はこのタイミングで再チェック。</p>
+              <div class="mini-tags"><span class="mini-tag">交通</span><span class="mini-tag">朝早め</span></div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">鵜方到着後</span>
+                <div class="spot">バスで志摩スペイン村へ</div>
+              </div>
+              <p>鵜方からバス移動。乗り場や時刻表は当日確認がおすすめです。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://www.parque-net.com/pdf/bus_timetable.pdf" target="_blank" rel="noopener">🚌 バス時刻表</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">昼〜17:00</span>
+                <div class="spot">志摩スペイン村</div>
+              </div>
+              <p>園内で昼食をとり、パレードやアトラクションを楽しみながら17:00まで滞在。ショー時間を見ながら回ると、パレードやキャラクター系イベントも組み込みやすいです。</p>
+              <div class="show-box">
+                <div class="show-box-head">
+                  <strong>🎭 ショースケジュール抜粋</strong>
+                  <span class="mini-tag">PDFより</span>
+                  <span class="mini-tag">要再確認</span>
+                </div>
+                <div class="show-list">
+                  <div class="show-item"><span class="show-time">9:30</span><div class="show-title">キャラクターグリーティング（約20分）</div></div>
+                  <div class="show-item"><span class="show-time">10:10</span><div class="show-title">キャラクターミュージカル「テソロ・デ・オーロ〜真実の宝を探せ!〜」（約25分）</div></div>
+                  <div class="show-item"><span class="show-time">10:50</span><div class="show-title">「ドンキホーテのグラン・ガラ・デ・オペラ」（約25分）</div></div>
+                  <div class="show-item"><span class="show-time">10:55</span><div class="show-title">キャラクターグリーティング（約20分）</div></div>
+                  <div class="show-item"><span class="show-time">11:00</span><div class="show-title">フラメンコショー「アライゴ」（事前予約制・料金700円）</div></div>
+                  <div class="show-item"><span class="show-time">12:50</span><div class="show-title">パルケエスパーニャパレード（約25分）</div></div>
+                  <div class="show-item"><span class="show-time">14:10</span><div class="show-title">キャラクターグリーティング</div></div>
+                  <div class="show-item"><span class="show-time">15:15</span><div class="show-title">フラメンコショー「アライゴ」（事前予約制・料金700円）／キャラクターグリーティング</div></div>
+                  <div class="show-item"><span class="show-time">16:20</span><div class="show-title">キャラクターグリーティング（約20分）</div></div>
+                </div>
+                <p class="show-note">2026年2月14日〜4月24日の公式ショースケジュールPDFをもとに抜粋しています。天候などにより変更・中止となる場合があります。</p>
+              </div>
+              <div class="link-row">
+                <a class="small-link" href="https://www.parque-net.com/restaurant/index.html" target="_blank" rel="noopener">🍽️ レストラン案内</a>
+                <a class="small-link" href="https://www.parque-net.com/pdf/sche-260214-260430_v2.pdf" target="_blank" rel="noopener">🎟️ ショーPDF</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">17:00以降</span>
+                <div class="spot">ホテルへ移動</div>
+              </div>
+              <p>宿泊先は「伊勢志摩国立公園 賢島の宿 みち潮」。お部屋で少し休んでから夕食へ。</p>
+              <div class="mini-tags"><span class="mini-tag">宿泊</span><span class="mini-tag">賢島</span></div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">19:00まで</span>
+                <div class="spot">みち潮で夕食</div>
+              </div>
+              <p>【特選DX舟盛付】伊勢海老＆鮑の姿舟盛付／舟盛付満潮会席グレードアップ／海幸大満喫プラン。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://www.michishio.jp/cuisine/" target="_blank" rel="noopener">🏨 みち潮 料理案内</a>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="day-panel" id="day2" role="tabpanel">
+        <div class="day-head">
+          <h3>2日目｜賢島クルーズ → 鳥羽水族館 → 華月 → 吉田屋 和光</h3>
+          <p>朝から海の景色を楽しみ、鳥羽では水族館と伊勢海老ディナー。旅行らしさがぎゅっと詰まった1日です。</p>
+        </div>
+        <ol class="timeline">
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">07:00</span>
+                <div class="spot">ホテルで朝ごはん</div>
+              </div>
+              <p>朝食後はクルーズに向けて準備。チェックアウトや荷物整理もこのタイミングで。</p>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">09:30</span>
+                <div class="spot">賢島エスパーニャクルーズ 乗船</div>
+              </div>
+              <p>湾内クルーズで朝の景色を楽しむ時間。乗船時間に余裕を持って移動。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://shima-marineleisure.com/espana" target="_blank" rel="noopener">🚢 クルーズ公式</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">11:00頃</span>
+                <div class="spot">電車で鳥羽へ移動</div>
+              </div>
+              <p>鳥羽へ移動して駅周辺でお昼ご飯。駅近で食べると午後の動きがスムーズです。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E8%B3%A2%E5%B3%B6&orvStationCode=00002112&dnvStationName=%E9%B3%A5%E7%BE%BD&dnvStationCode=00006282&airplane=1&sprexprs=1&utrexprs=1&othexprs=1&mtrplbus=1&intercitybus=1&ferry=1&tr_next=00002112.00006282.00000311.0&beforeyear=2026&beforemonth=04&beforeday=25&beforehour=11&beforeminute=30&afteryear=2026&aftermonth=04&afterday=25&afterhour=11&afterminute=00&before=1&bf=before&month=2026/04&day=25&hour=10&minute=42&sort=0&wspeed=100&basis=1&currentFromTime=11:00&currentToTime=11:30&currentFare=1080&currentIcFare=1080&currentTimeDiff=_30" target="_blank" rel="noopener">🚆 賢島→鳥羽</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">昼〜17:00</span>
+                <div class="spot">鳥羽水族館</div>
+              </div>
+              <p>鳥羽の人気スポット。館内マップを見ながら、見たい生きものを優先してまわるのがおすすめ。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://aquarium.co.jp/kannai/" target="_blank" rel="noopener">🐠 館内案内</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">17:15〜</span>
+                <div class="spot">タクシーで華月へ</div>
+              </div>
+              <p>鳥羽水族館からタクシー移動。夕食予約があるので余裕を持って動く想定です。</p>
+              <div class="mini-tags"><span class="mini-tag">タクシー想定</span><span class="mini-tag">予約あり</span></div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">17:30</span>
+                <div class="spot">華月で夕食</div>
+              </div>
+              <p>伊勢海老 海鮮蒸し料理 華月でディナー。旅の締めくくり感がある豪華な夜ごはんです。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://kagetu.co.jp/menu2/menuiseebi/" target="_blank" rel="noopener">🦞 伊勢海老コース</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">夕食後</span>
+                <div class="spot">吉田屋 和光へ移動</div>
+              </div>
+              <p>その後は素泊まりのホテル鳥羽・吉田屋 和光へ。もし余裕があればイオン鳥羽に立ち寄り。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://www.hotel-wako.co.jp/acc/index.html" target="_blank" rel="noopener">🧳 ホテルアクセス</a>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="day-panel" id="day3" role="tabpanel">
+        <div class="day-head">
+          <h3>3日目｜神島 → 鳥羽 → 二見興玉神社 → 伊勢シーパラダイス → 津 → 品川</h3>
+          <p>朝は神島へ船旅、午後は二見エリアを観光。最後は津に寄って写真撮影してから帰宅します。</p>
+        </div>
+        <ol class="timeline">
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">早朝 7:40</span>
+                <div class="spot">フェリーで神島へ</div>
+              </div>
+              <p>鳥羽から神島へ移動。早朝便なので、朝の準備は前日にできるだけ済ませておくと安心です。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://www.city.toba.mie.jp/soshiki/t_kanri/gyomu/doro_kotsu/kokyo_kotsu/1913.html" target="_blank" rel="noopener">⛴️ 市営定期船</a>
+                <a class="small-link" href="https://www.city.toba.mie.jp/soshiki/kikaku_keiei/gyomu/seisaku_keikaku/rito_shinko/3054.html" target="_blank" rel="noopener">🏝️ 神島情報</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">11:35</span>
+                <div class="spot">帰りのフェリーで鳥羽へ</div>
+              </div>
+              <p>鳥羽へ戻って昼食へ。鳥羽駅周辺または夫婦横丁を候補にする想定です。</p>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">昼</span>
+                <div class="spot">鳥羽駅周辺 または 夫婦横丁で昼食</div>
+              </div>
+              <p>その日の流れに合わせて、駅周辺で食べるか二見まで移動してから食べるかを選べます。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://ise-meotoiwa.jp/restaurant-shop/" target="_blank" rel="noopener">🛍️ めおと横丁</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">14:15〜14:40</span>
+                <div class="spot">二見興玉神社 参拝・お守り購入</div>
+              </div>
+              <p>拝殿前授与所でお守りを購入して参拝。伊勢シーパラダイスへ向かうなら入口側での購入がスムーズです。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://futamiokitamajinja.or.jp" target="_blank" rel="noopener">⛩️ 神社公式</a>
+                <a class="small-link" href="https://futamiokitamajinja.or.jp/visit/gift/" target="_blank" rel="noopener">🪬 授与品案内</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">14:40〜14:50</span>
+                <div class="spot">伊勢シーパラダイスへ移動</div>
+              </div>
+              <p>二見興玉神社から移動。午後の時間を見ながら無理のない範囲で楽しむプランです。</p>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">14:50〜16:50</span>
+                <div class="spot">伊勢シーパラダイス 観光</div>
+              </div>
+              <p>神社とあわせて、二見エリアの午後をたっぷり満喫。夕方前に切り上げて津方面へ向かいます。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://ise-seaparadise.com/about/" target="_blank" rel="noopener">🦭 施設案内</a>
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-card">
+              <div class="timeline-top">
+                <span class="time">17:00以降</span>
+                <div class="spot">津へ移動 → 写真撮影 → 品川へ</div>
+              </div>
+              <p>津まで移動して写真撮影後、品川へ帰宅。最後まで時間に少し余裕を持って動く想定です。</p>
+              <div class="link-row">
+                <a class="small-link" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E4%BA%8C%E8%A6%8B%E6%B5%A6&dnvStationName=%E6%B4%A5&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=" target="_blank" rel="noopener">🚆 二見浦→津</a>
+                <a class="small-link" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E6%B4%A5&dnvStationName=%E5%93%81%E5%B7%9D&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=" target="_blank" rel="noopener">🏠 津→品川</a>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+
+    <section class="section" id="links">
+      <div class="section-title">
+        <div>
+          <h2>参考リンク</h2>
+          <p>前に整理したリンク集の内容を、この旅しおりの中でもそのまま見られるようにまとめました。</p>
+        </div>
+        <div class="pill">🔗 28件 + お気に入りで重要タブ化</div>
+      </div>
+
+      <div class="ref-links-wrap">
+        <div class="ref-hero">
+          <strong>旅行中に見返しやすいリンク集</strong>
+          <p>
+            <strong>1日目 / 2日目 / 3日目 / その他</strong> に分類し、
+            各リンクは日別・その他に整理しつつ、<strong>⭐お気に入りしたものだけ</strong>を「重要」タブでまとめて見られます。
+          </p>
+        </div>
+
+        <label class="ref-search">
+          <span>🔎</span>
+          <input id="refSearchInput" type="search" placeholder="サイト名・地名・用途で検索" />
+        </label>
+
+        <div class="ref-note">
+          時刻表・営業時間・交通系のページは変更の可能性があります。旅先で再確認しやすいように、検索とタブ切り替えを使える形にしています。
+        </div>
+
+        <div class="ref-tabs" id="refTabs"></div>
+
+        <div class="ref-section-head">
+          <div>
+            <h3 id="refSectionTitle">1日目</h3>
+            <p id="refSectionDesc"></p>
+          </div>
+          <div class="ref-section-meta" id="refSectionMeta"></div>
+        </div>
+
+        <div class="ref-grid" id="refGrid"></div>
+        <div class="ref-empty" id="refEmptyState">条件に合うリンクが見つかりませんでした。検索語を変えてみてください。</div>
+      </div>
+    </section>
   </div>
 
-  <nav class="bottom-nav">
-    <div class="bottom-row" id="bottomNav"></div>
+  <nav class="sticky-nav">
+    <div class="inner">
+      <a class="sticky-link active" href="#top">表紙</a>
+      <a class="sticky-link" href="#schedule">日程</a>
+      <a class="sticky-link" href="#links">リンク</a>
+      <button class="sticky-link" type="button" id="shareBtn">共有</button>
+    </div>
   </nav>
 
   <script>
-    const items = [
+    const tabs = document.querySelectorAll('[data-day-tab]');
+    const panels = document.querySelectorAll('.day-panel');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-day-tab');
+        tabs.forEach(t => {
+          t.classList.toggle('active', t === tab);
+          t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+        });
+        panels.forEach(panel => panel.classList.toggle('active', panel.id === target));
+      });
+    });
+
+
+    const stickyLinks = document.querySelectorAll('.sticky-link[href^="#"]');
+    const sectionTargets = ['top', 'schedule', 'links'].map(id => document.getElementById(id));
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          stickyLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+          });
+        }
+      });
+    }, { threshold: 0.45 });
+    sectionTargets.forEach(sec => io.observe(sec));
+
+
+    const refLinkItems = [
       {
         id: 'route-shinagawa-ugata', tab: 'day1', category: '交通', important: true, dynamic: true,
         title: '品川から鵜方までの乗換案内 - NAVITIME',
@@ -463,7 +1418,6 @@
         desc: '1日目に賢島宿泊を想定したときの料理案内。',
         thumb: '🏨', sub: '宿の料理', domain: 'michishio.jp'
       },
-
       {
         id: 'route-kashikojima-toba', tab: 'day2', category: '交通', important: true, dynamic: true,
         title: '賢島から鳥羽までの乗換案内 - NAVITIME',
@@ -513,7 +1467,6 @@
         desc: 'Googleマップで場所を直接確認したいとき用。',
         thumb: '📍', sub: '地図確認', domain: 'google.com'
       },
-
       {
         id: 'route-toba-futamiura', tab: 'day3', category: '交通', important: true, dynamic: true,
         title: '鳥羽から二見浦までの乗換案内 - NAVITIME',
@@ -605,7 +1558,6 @@
         desc: '授与所やお守りの内容を確認するページ。',
         thumb: '🪬', sub: 'お守り確認', domain: 'futamiokitamajinja.or.jp'
       },
-
       {
         id: 'paranormasite-toba', tab: 'other', category: '観光', important: false, dynamic: false,
         title: 'パラノマサイト FILE38 伊勢人魚物語×鳥羽市',
@@ -636,15 +1588,15 @@
       }
     ];
 
-    const tabs = [
+    const refTabDefs = [
       { key: 'day1', label: '1日目', desc: '品川 → 鵜方 → 志摩スペイン村 で見返すリンク' },
       { key: 'day2', label: '2日目', desc: '賢島・鳥羽エリアの観光、食事、宿まわりのリンク' },
       { key: 'day3', label: '3日目', desc: '神島・二見・帰路で使うリンク' },
       { key: 'other', label: 'その他', desc: '補助資料、イベント、サブの時刻表など' },
-      { key: 'important', label: '重要', desc: '見返す可能性が高いリンクだけを再掲' }
+      { key: 'important', label: '重要', desc: '⭐お気に入りしたリンクだけをまとめて表示' }
     ];
 
-    const sectionLabels = {
+    const refSectionLabels = {
       day1: '1日目',
       day2: '2日目',
       day3: '3日目',
@@ -652,115 +1604,99 @@
       important: '重要'
     };
 
-    const palette = {
-      '交通': 'linear-gradient(135deg, #155eef, #3b82f6)',
-      '観光': 'linear-gradient(135deg, #0f766e, #22c55e)',
-      '食事': 'linear-gradient(135deg, #d94841, #f97316)',
-      '宿': 'linear-gradient(135deg, #7c3aed, #8b5cf6)',
-      'PDF': 'linear-gradient(135deg, #475467, #667085)',
-      '地図': 'linear-gradient(135deg, #ad6800, #f59e0b)'
-    };
-
-    const state = {
-      activeTab: 'day1',
-      search: '',
-      favorites: loadSet('travel-links-favorites'),
-      done: loadSet('travel-links-done')
+    const refPalette = {
+      '交通': 'linear-gradient(135deg, #7f7cf5, #7dc6ff)',
+      '観光': 'linear-gradient(135deg, #65c8aa, #9ae2a5)',
+      '食事': 'linear-gradient(135deg, #f28fae, #f5b36f)',
+      '宿': 'linear-gradient(135deg, #b58df0, #d5aef6)',
+      'PDF': 'linear-gradient(135deg, #7d8798, #9ca7b8)',
+      '地図': 'linear-gradient(135deg, #f09c56, #f7c26f)'
     };
 
     function loadSet(key) {
-      try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); }
-      catch { return new Set(); }
+      try {
+        return new Set(JSON.parse(localStorage.getItem(key) || '[]'));
+      } catch (e) {
+        return new Set();
+      }
     }
 
     function saveSet(key, set) {
-      localStorage.setItem(key, JSON.stringify([...set]));
+      try {
+        localStorage.setItem(key, JSON.stringify([...set]));
+      } catch (e) {}
     }
 
-    function toggleSet(set, key, id) {
-      if (set.has(id)) set.delete(id); else set.add(id);
-      saveSet(key, set);
-      render();
+    const refState = {
+      activeTab: 'day1',
+      search: '',
+      favorites: loadSet('travel-links-favorites')
+    };
+
+    function refMatchesTab(item) {
+      return refState.activeTab === 'important' ? refState.favorites.has(item.id) : item.tab === refState.activeTab;
     }
 
-    function matchesTab(item) {
-      return state.activeTab === 'important' ? item.important : item.tab === state.activeTab;
-    }
-
-    function matchesSearch(item) {
-      const q = state.search.trim().toLowerCase();
+    function refMatchesSearch(item) {
+      const q = refState.search.trim().toLowerCase();
       if (!q) return true;
-      const hay = [item.title, item.desc, item.category, item.domain, item.sub, sectionLabels[item.tab]].join(' ').toLowerCase();
+      const hay = [item.title, item.desc, item.category, item.domain, item.sub, refSectionLabels[item.tab]].join(' ').toLowerCase();
       return hay.includes(q);
     }
 
-    function getVisibleItems() {
-      return items.filter(item => matchesTab(item) && matchesSearch(item));
+    function refVisibleItems() {
+      return refLinkItems.filter(item => refMatchesTab(item) && refMatchesSearch(item));
     }
 
-    function countForTab(key) {
-      return items.filter(item => key === 'important' ? item.important : item.tab === key).length;
+    function refCountForTab(key) {
+      return refLinkItems.filter(item => key === 'important' ? refState.favorites.has(item.id) : item.tab === key).length;
     }
 
-    function createTabs() {
-      const tabsEl = document.getElementById('tabs');
-      const bottom = document.getElementById('bottomNav');
+    function refToggleSet(set, key, id) {
+      if (set.has(id)) set.delete(id); else set.add(id);
+      saveSet(key, set);
+      renderRefLinks();
+    }
+
+    function renderRefTabs() {
+      const tabsEl = document.getElementById('refTabs');
       tabsEl.innerHTML = '';
-      bottom.innerHTML = '';
-
-      tabs.forEach(tab => {
-        const count = countForTab(tab.key);
+      refTabDefs.forEach(tab => {
         const btn = document.createElement('button');
-        btn.className = 'tab-btn' + (state.activeTab === tab.key ? ' active' : '');
-        btn.innerHTML = `${tab.label}<span class="count">${count}</span>`;
+        btn.className = 'ref-tab-btn' + (refState.activeTab === tab.key ? ' active' : '');
+        btn.innerHTML = `${tab.label}<span class="ref-count">${refCountForTab(tab.key)}</span>`;
         btn.onclick = () => {
-          state.activeTab = tab.key;
-          render();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          refState.activeTab = tab.key;
+          renderRefLinks();
         };
         tabsEl.appendChild(btn);
       });
-
-      tabs.forEach(tab => {
-        const btn = document.createElement('button');
-        btn.className = 'nav-btn' + (state.activeTab === tab.key ? ' active' : '');
-        btn.textContent = tab.label === 'その他' ? '他' : tab.label;
-        btn.onclick = () => {
-          state.activeTab = tab.key;
-          render();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-        bottom.appendChild(btn);
-      });
     }
 
-    function makeCard(item) {
+    function refMakeCard(item) {
       const card = document.createElement('article');
-      card.className = 'card';
-      const fav = state.favorites.has(item.id);
-      const done = state.done.has(item.id);
-      const bg = palette[item.category] || 'linear-gradient(135deg, #155eef, #7c3aed)';
+      card.className = 'ref-card';
+      const fav = refState.favorites.has(item.id);
+      const bg = refPalette[item.category] || 'linear-gradient(135deg, #ef8fb4, #f5a261)';
 
       card.innerHTML = `
-        <div class="thumb" style="background:${bg}">
-          <div class="thumb-icon">${item.thumb}</div>
-          <div class="thumb-label">${item.sub}</div>
+        <div class="ref-thumb" style="background:${bg}">
+          <div class="ref-thumb-icon">${item.thumb}</div>
+          <div class="ref-thumb-label">${item.sub}</div>
         </div>
-        <div class="card-body">
-          <div class="meta">
-            <span class="tag">${sectionLabels[item.tab]}</span>
-            <span class="tag">${item.category}</span>
-            ${item.important ? '<span class="tag important">重要</span>' : ''}
-            ${item.dynamic ? '<span class="tag dynamic">要再確認</span>' : ''}
+        <div class="ref-card-body">
+          <div class="ref-meta">
+            <span class="ref-tag">${refSectionLabels[item.tab]}</span>
+            <span class="ref-tag">${item.category}</span>
+            ${item.dynamic ? '<span class="ref-tag dynamic">要再確認</span>' : ''}
           </div>
-          <h3 class="title">${item.title}</h3>
-          <p class="desc">${item.desc}</p>
-          <div class="domain">${item.domain}</div>
-          <div class="actions">
-            <button class="btn btn-open" data-open>開く</button>
-            <button class="btn btn-copy" data-copy>URL</button>
-            <button class="btn btn-icon ${fav ? 'active' : ''}" data-fav title="お気に入り">⭐</button>
-            <button class="btn btn-icon ${done ? 'active' : ''}" data-done title="確認済み">✓</button>
+          <h4 class="ref-title">${item.title}</h4>
+          <p class="ref-desc">${item.desc}</p>
+          <div class="ref-domain">${item.domain}</div>
+          <div class="ref-actions">
+            <button class="ref-btn ref-btn-open" data-open>開く</button>
+            <button class="ref-btn ref-btn-copy" data-copy>URL</button>
+            <button class="ref-btn ref-btn-icon ${fav ? 'active' : ''}" data-fav title="お気に入り">⭐</button>
           </div>
         </div>
       `;
@@ -785,33 +1721,48 @@
           alert('URLのコピーに失敗しました。長押しまたは共有メニューをご利用ください。');
         }
       };
-      card.querySelector('[data-fav]').onclick = () => toggleSet(state.favorites, 'travel-links-favorites', item.id);
-      card.querySelector('[data-done]').onclick = () => toggleSet(state.done, 'travel-links-done', item.id);
+      card.querySelector('[data-fav]').onclick = () => refToggleSet(refState.favorites, 'travel-links-favorites', item.id);
       return card;
     }
 
-    function render() {
-      createTabs();
-      const visible = getVisibleItems();
-      const grid = document.getElementById('cardGrid');
-      const empty = document.getElementById('emptyState');
-      const currentTab = tabs.find(t => t.key === state.activeTab);
+    function renderRefLinks() {
+      renderRefTabs();
+      const visible = refVisibleItems();
+      const currentTab = refTabDefs.find(t => t.key === refState.activeTab);
+      document.getElementById('refSectionTitle').textContent = currentTab.label;
+      document.getElementById('refSectionDesc').textContent = currentTab.desc;
+      document.getElementById('refSectionMeta').textContent = `表示 ${visible.length}件 / 総リンク 28件`;
 
-      document.getElementById('sectionTitle').textContent = currentTab.label;
-      document.getElementById('sectionDesc').textContent = currentTab.desc;
-      document.getElementById('sectionMeta').textContent = `表示 ${visible.length}件 / 総リンク 28件`;
-
+      const grid = document.getElementById('refGrid');
       grid.innerHTML = '';
-      visible.forEach(item => grid.appendChild(makeCard(item)));
-      empty.style.display = visible.length ? 'none' : 'block';
+      visible.forEach(item => grid.appendChild(refMakeCard(item)));
+      document.getElementById('refEmptyState').style.display = visible.length ? 'none' : 'block';
     }
 
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      state.search = e.target.value;
-      render();
+    document.getElementById('refSearchInput').addEventListener('input', (e) => {
+      refState.search = e.target.value;
+      renderRefLinks();
     });
 
-    render();
+    renderRefLinks();
+
+    document.getElementById('shareBtn').addEventListener('click', async () => {
+      const shareData = {
+        title: document.title,
+        text: '伊勢・鳥羽・神島 2泊3日 旅のしおり',
+        url: location.href
+      };
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+        } else if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(location.href);
+          alert('このページのURLをコピーしました。');
+        } else {
+          alert('共有機能が使えないため、URLを手動で共有してください。');
+        }
+      } catch (e) {}
+    });
   </script>
 </body>
 </html>
