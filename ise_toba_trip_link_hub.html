@@ -2,1767 +2,949 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>伊勢・鳥羽・神島 2泊3日 旅のしおり</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>伊勢志摩・鳥羽・神島 旅のしおり</title>
+  <meta name="description" content="2026/4/17〜4/20 伊勢志摩・鳥羽・神島 3泊4日旅行のスマホ向け旅のしおり" />
   <style>
     :root {
-      --bg: #fffaf7;
-      --paper: rgba(255, 255, 255, 0.88);
-      --paper-strong: #ffffff;
-      --text: #473b39;
-      --muted: #7f6d69;
-      --line: #f0d8d0;
-      --pink: #f9c9d8;
-      --rose: #ee8daf;
-      --peach: #ffd5b8;
-      --cream: #fff0de;
-      --yellow: #ffe8a3;
-      --mint: #d7f4e7;
-      --sky: #dff1ff;
-      --lavender: #ece6ff;
-      --shadow: 0 16px 40px rgba(110, 75, 70, 0.12);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --radius-sm: 12px;
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1b2430;
+      --sub: #5b6574;
+      --line: #dbe3ee;
+      --accent: #1f6feb;
+      --accent-2: #dce9ff;
+      --good: #0f766e;
+      --warn: #b45309;
+      --shadow: 0 8px 24px rgba(18, 38, 63, 0.08);
+      --radius: 18px;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      background: var(--bg);
       color: var(--text);
-      background:
-        radial-gradient(circle at 20% 10%, rgba(255, 213, 184, 0.7), transparent 28%),
-        radial-gradient(circle at 85% 8%, rgba(249, 201, 216, 0.65), transparent 30%),
-        radial-gradient(circle at 80% 90%, rgba(215, 244, 231, 0.8), transparent 26%),
-        linear-gradient(180deg, #fffaf7 0%, #fff7f8 38%, #fffdf6 100%);
-      min-height: 100vh;
+      line-height: 1.6;
     }
 
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
     .wrap {
-      width: min(1100px, calc(100% - 28px));
+      max-width: 760px;
       margin: 0 auto;
-      padding: 18px 0 110px;
+      padding: 16px 14px 96px;
     }
 
     .hero {
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,247,246,0.92));
-      border: 1px solid rgba(255,255,255,0.8);
-      box-shadow: var(--shadow);
-      border-radius: 32px;
-      padding: 28px 22px 22px;
-      backdrop-filter: blur(12px);
-    }
-
-    .hero::before,
-    .hero::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      opacity: 0.6;
-      z-index: 0;
-    }
-
-    .hero::before {
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(255, 213, 184, 0.9), transparent 65%);
-      top: -60px;
-      right: -50px;
-    }
-
-    .hero::after {
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle, rgba(236, 230, 255, 0.95), transparent 65%);
-      bottom: -50px;
-      left: -40px;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 18px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      width: fit-content;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #fff0f6, #fff9de);
-      border: 1px solid #ffd5e2;
-      font-size: 13px;
-      font-weight: 700;
-      color: #9a5f72;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(32px, 8vw, 56px);
-      line-height: 1.08;
-      letter-spacing: 0.02em;
-    }
-
-    .subtitle {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.8;
-      color: var(--muted);
-      max-width: 780px;
-    }
-
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .badge {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.88);
-      border: 1px solid #f4e0db;
-      font-size: 13px;
-      font-weight: 700;
-      box-shadow: 0 6px 18px rgba(110, 75, 70, 0.06);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .button {
-      appearance: none;
-      border: 0;
-      cursor: pointer;
-      min-height: 48px;
-      padding: 0 18px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: .02em;
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-    }
-
-    .button:hover { transform: translateY(-1px); }
-    .button.primary {
-      background: linear-gradient(135deg, #ef8fb4, #f5a261);
+      background: linear-gradient(135deg, #153b7a 0%, #2563eb 50%, #4f8df7 100%);
       color: #fff;
-      box-shadow: 0 12px 24px rgba(239, 143, 180, 0.28);
+      padding: 22px 18px 20px;
+      border-radius: 0 0 24px 24px;
+      box-shadow: var(--shadow);
     }
-    .button.secondary {
-      background: rgba(255,255,255,0.92);
-      color: var(--text);
-      border: 1px solid #efd8d1;
+
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: 1.5rem;
+      line-height: 1.35;
+    }
+
+    .hero p {
+      margin: 0;
+      color: rgba(255,255,255,0.92);
+      font-size: 0.95rem;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #fff;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 0.82rem;
+      backdrop-filter: blur(8px);
     }
 
     .section {
-      margin-top: 22px;
-      background: var(--paper);
-      border: 1px solid rgba(255,255,255,0.82);
+      margin-top: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
-      border-radius: var(--radius-xl);
-      padding: 22px 18px;
-      backdrop-filter: blur(10px);
+      padding: 16px;
     }
 
     .section-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 0 12px;
     }
 
-    .section-title h2 {
-      margin: 0;
-      font-size: 24px;
-      line-height: 1.25;
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    .section-title p {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: #fff;
+    .summary-item {
+      background: #f8fbff;
       border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 12px;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .summary-item .label {
+      color: var(--sub);
+      font-size: 0.78rem;
+      margin-bottom: 4px;
+    }
+
+    .summary-item .value {
+      font-size: 0.93rem;
       font-weight: 700;
     }
 
-    .summary-grid,
-    .tips-grid,
-    .links-grid {
-      display: grid;
-      gap: 14px;
+    .day-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(246,248,251,0.92);
+      backdrop-filter: blur(10px);
+      padding: 10px 0 6px;
+      margin-top: 6px;
     }
 
-    .summary-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-    .tips-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-    .links-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-
-    .summary-card,
-    .tip-card,
-    .link-card,
-    .note-card,
-    .packing-card {
-      background: var(--paper-strong);
-      border-radius: var(--radius-lg);
-      border: 1px solid #f5e3de;
-      padding: 16px;
-      box-shadow: 0 10px 24px rgba(110, 75, 70, 0.07);
+    .day-nav-inner {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
     }
 
-    .summary-card {
-      display: grid;
+    .day-nav-inner::-webkit-scrollbar { display: none; }
+
+    .day-link {
+      flex: 0 0 auto;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .day-link:hover {
+      text-decoration: none;
+      background: var(--accent-2);
+    }
+
+    .day-header {
+      margin: 28px 0 12px;
+      display: flex;
+      align-items: center;
       gap: 10px;
     }
 
-    .summary-card .icon {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border-radius: 18px;
-      font-size: 26px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.58);
+    .day-badge {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 5px 9px;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
-    .summary-card h3,
-    .tip-card h3,
-    .packing-card h3,
-    .note-card h3 {
+    .day-title {
       margin: 0;
-      font-size: 18px;
+      font-size: 1.12rem;
       line-height: 1.4;
     }
 
-    .summary-card p,
-    .tip-card p,
-    .note-card p,
-    .link-card p,
-    .packing-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.75;
-    }
-
-    .day-nav {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-      margin-bottom: 16px;
-    }
-    .day-nav::-webkit-scrollbar { display: none; }
-
-    .day-tab {
-      min-height: 46px;
-      padding: 0 16px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 800;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .day-tab.active {
-      background: linear-gradient(135deg, #ef8fb4, #f7b267);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 12px 24px rgba(239, 143, 180, 0.24);
-    }
-
-    .day-panel { display: none; }
-    .day-panel.active { display: block; }
-
-    .day-head {
-      background: linear-gradient(135deg, #fff6f8, #fffaf0);
-      border: 1px solid #f5ddd8;
-      border-radius: 24px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-
-    .day-head h3 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .day-head p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      line-height: 1.75;
-      font-size: 14px;
+    .meta {
+      color: var(--sub);
+      font-size: 0.9rem;
+      margin: 6px 0 0;
     }
 
     .timeline {
       position: relative;
       margin: 0;
-      padding: 4px 0 4px 0;
+      padding: 0;
       list-style: none;
-      display: grid;
-      gap: 14px;
     }
 
     .timeline::before {
       content: "";
       position: absolute;
-      left: 16px;
+      left: 18px;
       top: 6px;
       bottom: 6px;
-      width: 3px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #f6bfd1, #ffe1b6);
+      width: 2px;
+      background: var(--line);
     }
 
-    .timeline-item {
+    .step {
       position: relative;
-      padding-left: 44px;
+      padding-left: 46px;
+      margin-bottom: 16px;
     }
 
-    .timeline-item::before {
-      content: "";
+    .step:last-child { margin-bottom: 0; }
+
+    .dot {
       position: absolute;
-      left: 9px;
-      top: 22px;
-      width: 16px;
-      height: 16px;
+      left: 10px;
+      top: 9px;
+      width: 18px;
+      height: 18px;
       border-radius: 999px;
-      background: #fff;
-      border: 4px solid #ef8fb4;
-      box-shadow: 0 0 0 4px rgba(255, 215, 228, 0.6);
-    }
-
-    .timeline-card {
-      background: #fff;
-      border: 1px solid #f4dfda;
-      border-radius: 20px;
-      padding: 14px;
-      box-shadow: 0 10px 22px rgba(110, 75, 70, 0.07);
-      display: grid;
-      gap: 10px;
-    }
-
-    .timeline-top {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
+      background: var(--accent);
+      border: 4px solid #fff;
+      box-shadow: 0 0 0 1px var(--line);
     }
 
     .time {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 3px;
+    }
+
+    .step-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 12px 11px;
+    }
+
+    .step-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+
+    .step-desc {
+      margin: 0;
+      color: var(--sub);
+      font-size: 0.9rem;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      min-height: 32px;
-      padding: 0 12px;
-      border-radius: 999px;
-      background: #fff2f6;
-      color: #b45077;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .02em;
+      gap: 6px;
+      padding: 8px 11px;
+      background: var(--accent-2);
+      border: 1px solid #c8dafc;
+      color: #15408b;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .btn.secondary {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .notes {
+      display: grid;
+      gap: 10px;
+    }
+
+    .note {
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid #f0d8a8;
+      background: #fff7e8;
+      color: #7a4b00;
+      font-size: 0.92rem;
+    }
+
+    .note.good {
+      background: #edfdf8;
+      border-color: #bde7db;
+      color: var(--good);
+    }
+
+    .spot-list {
+      display: grid;
+      gap: 10px;
     }
 
     .spot {
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    .timeline-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.75;
-    }
-
-    .mini-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .mini-tag {
-      min-height: 28px;
-      display: inline-flex;
-      align-items: center;
-      padding: 0 10px;
-      border-radius: 999px;
-      background: #f8f3ff;
-      color: #6b5db3;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .link-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .small-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 38px;
-      padding: 0 12px;
-      border-radius: 999px;
-      background: #fff9ef;
-      border: 1px solid #f7dfbf;
-      color: #8c6848;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .two-col {
-      display: grid;
-      gap: 14px;
-      grid-template-columns: 1fr;
-    }
-
-    .packing-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .check {
-      display: flex;
-      align-items: start;
-      gap: 10px;
-      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
       background: #fff;
-      border: 1px solid #f3e2dc;
+    }
+
+    .spot h4 {
+      margin: 0 0 4px;
+      font-size: 0.95rem;
+    }
+
+    .spot p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 0.87rem;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .photo-card {
+      margin: 0;
+      border: 1px solid var(--line);
       border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
     }
 
-    .check input {
-      margin-top: 3px;
-      width: 18px;
-      height: 18px;
-      accent-color: #ee8daf;
-      flex-shrink: 0;
-    }
-
-    .check strong {
+    .photo-card img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
       display: block;
-      font-size: 14px;
-      margin-bottom: 4px;
+      background: #eef3fb;
     }
 
-    .check span {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .memo {
-      min-height: 160px;
-      width: 100%;
-      padding: 14px;
-      resize: vertical;
-      border-radius: 16px;
-      border: 1px dashed #e8c9d2;
-      background: linear-gradient(180deg, #fffdfd, #fff7fb);
-      color: var(--text);
-      font: inherit;
-      line-height: 1.75;
-    }
-
-    .link-card {
-      display: grid;
-      gap: 10px;
-    }
-
-    .link-card h4 {
-      margin: 0;
-      font-size: 17px;
-      line-height: 1.45;
-    }
-
-    .link-card .meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .meta-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #f6f7fb;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .link-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      width: fit-content;
-      padding: 0 14px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #ef8fb4, #f5a261);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 800;
-      box-shadow: 0 10px 18px rgba(239, 143, 180, 0.24);
-    }
-
-
-    .show-box {
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: 18px;
-      background: linear-gradient(180deg, #fff8fb, #fffdf7);
-      border: 1px solid #f4ddd9;
-      display: grid;
-      gap: 10px;
-    }
-
-    .show-box-head {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .show-box-head strong {
-      font-size: 14px;
-    }
-
-    .show-note {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-      margin: 0;
-    }
-
-    .show-list {
-      display: grid;
-      gap: 8px;
-    }
-
-    .show-item {
-      display: grid;
-      grid-template-columns: 78px 1fr;
-      gap: 10px;
-      align-items: start;
+    .photo-card figcaption {
       padding: 10px 12px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.88);
-      border: 1px solid #f5e7e2;
-    }
-
-    .show-time {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 30px;
-      padding: 0 10px;
-      border-radius: 999px;
-      background: #fff0f6;
-      color: #b45077;
-      font-size: 12px;
-      font-weight: 800;
-      width: fit-content;
-    }
-
-    .show-title {
-      font-size: 13px;
-      line-height: 1.7;
-      color: var(--text);
+      font-size: 0.86rem;
       font-weight: 700;
     }
 
-    .sticky-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 50;
-      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
-      background: rgba(255, 250, 247, 0.84);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid rgba(202, 156, 152, 0.18);
-    }
-
-    .sticky-nav .inner {
-      width: min(720px, 100%);
-      margin: 0 auto;
+    .map-stack {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .sticky-link {
-      display: grid;
-      place-items: center;
-      min-height: 50px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.92);
-      border: 1px solid #edd7d0;
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--muted);
-    }
-
-    .sticky-link.active {
-      background: linear-gradient(135deg, #ef8fb4, #f5a261);
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .floating-stars {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .star {
-      position: absolute;
-      opacity: 0.35;
-      font-size: 18px;
-      animation: floaty 5.8s ease-in-out infinite;
-    }
-    .star:nth-child(2) { animation-delay: 1.2s; }
-    .star:nth-child(3) { animation-delay: 2.4s; }
-    .star:nth-child(4) { animation-delay: 3.6s; }
-
-    @keyframes floaty {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-8px) rotate(6deg); }
-    }
-
-
-    .ref-links-wrap {
-      display: grid;
-      gap: 14px;
-    }
-
-    .ref-hero {
-      padding: 16px;
-      border-radius: 22px;
-      background: linear-gradient(135deg, #fff7fb, #fffaf1);
-      border: 1px solid #f6ded7;
-      box-shadow: 0 10px 24px rgba(110, 75, 70, 0.06);
-    }
-
-    .ref-hero p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.75;
-    }
-
-    .ref-search {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 50px;
-      padding: 0 14px;
-      border-radius: 16px;
-      background: #fff;
-      border: 1px solid #f2ddd8;
-      box-shadow: 0 8px 18px rgba(110, 75, 70, 0.05);
-    }
-
-    .ref-search input {
-      width: 100%;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      color: var(--text);
-      font-size: 16px;
-      font-family: inherit;
-    }
-
-    .ref-note {
-      padding: 13px 14px;
-      border-radius: 16px;
-      background: #fff8ea;
-      border: 1px solid #f6ddb3;
-      color: #9a6700;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .ref-tabs {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-    .ref-tabs::-webkit-scrollbar { display: none; }
-
-    .ref-tab-btn {
-      flex: 0 0 auto;
-      min-height: 44px;
-      padding: 0 14px;
-      border-radius: 999px;
-      border: 1px solid #efd9d2;
-      background: #fff;
-      color: var(--muted);
-      font-weight: 800;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-
-    .ref-tab-btn.active {
-      background: linear-gradient(135deg, #ef8fb4, #f5a261);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 10px 20px rgba(239, 143, 180, 0.2);
-    }
-
-    .ref-count {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 24px;
-      height: 24px;
-      padding: 0 7px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.2);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .ref-tab-btn:not(.active) .ref-count {
-      background: #f7f1f8;
-      color: var(--muted);
-    }
-
-    .ref-section-head {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px;
-      align-items: end;
-    }
-
-    .ref-section-head h3 {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.35;
-    }
-
-    .ref-section-head p {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .ref-section-meta {
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 800;
-    }
-
-    .ref-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    .ref-card {
-      display: flex;
-      flex-direction: column;
-      background: #fff;
-      border-radius: 22px;
-      overflow: hidden;
-      border: 1px solid #f4dfda;
-      box-shadow: 0 10px 24px rgba(110, 75, 70, 0.07);
-    }
-
-    .ref-thumb {
-      padding: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      color: #fff;
-      position: relative;
-      min-height: 110px;
-    }
-
-    .ref-thumb::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.16));
-    }
-
-    .ref-thumb-icon, .ref-thumb-label { position: relative; z-index: 1; }
-    .ref-thumb-icon {
-      font-size: 38px;
-      line-height: 1;
-      text-shadow: 0 4px 10px rgba(0,0,0,0.16);
-    }
-    .ref-thumb-label {
-      max-width: 72%;
-      text-align: right;
-      font-size: 13px;
-      line-height: 1.35;
-      font-weight: 800;
-      letter-spacing: .02em;
-    }
-
-    .ref-card-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
       gap: 12px;
-      padding: 14px;
     }
 
-    .ref-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .map-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: #fff;
     }
 
-    .ref-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-height: 28px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #f8f3ff;
-      color: #7465b6;
-      font-size: 12px;
-      font-weight: 800;
+    .map-head {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 10px;
     }
 
-    .ref-tag.dynamic {
-      background: #fff1f4;
-      color: #bf4e73;
-    }
-
-    .ref-tag.important {
-      background: #edfdf2;
-      color: #067647;
-    }
-
-    .ref-title {
-      margin: 0;
-      font-size: 18px;
-      line-height: 1.5;
-    }
-
-    .ref-desc {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.72;
-    }
-
-    .ref-domain {
-      font-size: 12px;
-      color: var(--muted);
-      word-break: break-all;
-    }
-
-    .ref-actions {
-      margin-top: auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr 46px;
-      gap: 8px;
-    }
-
-    .ref-btn {
-      min-height: 46px;
-      border-radius: 14px;
+    .map-card iframe {
+      width: 100%;
+      height: 240px;
       border: 0;
-      font-weight: 800;
-      cursor: pointer;
-      font-family: inherit;
+      border-radius: 14px;
+      background: #eef3fb;
     }
 
-    .ref-btn-open {
-      background: linear-gradient(135deg, #ef8fb4, #f5a261);
-      color: #fff;
-      box-shadow: 0 10px 18px rgba(239, 143, 180, 0.2);
-    }
-    .ref-btn-copy {
-      background: #fff7f2;
-      color: var(--text);
-      border: 1px solid #efdcd5;
-    }
-    .ref-btn-icon {
-      background: #fff;
-      border: 1px solid #efdcd5;
-      color: var(--muted);
-      font-size: 18px;
-    }
-    .ref-btn-icon.active {
-      background: #fff6db;
-      border-color: #f5c451;
-      color: #9a6700;
-    }
-
-    .ref-empty {
-      padding: 22px 16px;
+    .footer {
+      margin-top: 24px;
+      color: var(--sub);
+      font-size: 0.82rem;
       text-align: center;
-      background: #fff;
-      border: 1px dashed #edd7d0;
-      border-radius: 18px;
-      color: var(--muted);
-      display: none;
     }
 
-    @media (min-width: 760px) {
-      .wrap { width: min(1120px, calc(100% - 40px)); padding-top: 26px; }
-      .hero { padding: 36px 34px 30px; }
-      .section { padding: 28px 24px; }
-      .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .tips-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .links-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .ref-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .two-col { grid-template-columns: 1.05fr .95fr; }
-    }
-
-    @media (min-width: 1040px) {
-      .links-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .ref-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (min-width: 700px) {
+      .hero h1 { font-size: 1.8rem; }
+      .summary-grid { grid-template-columns: repeat(4, 1fr); }
+      .photo-grid { grid-template-columns: repeat(4, 1fr); }
+      .map-card iframe { height: 300px; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero" id="top">
-      <div class="floating-stars" aria-hidden="true">
-        <div class="star" style="top:12%; left:10%;">✦</div>
-        <div class="star" style="top:18%; right:18%;">✿</div>
-        <div class="star" style="bottom:18%; left:22%;">✧</div>
-        <div class="star" style="bottom:12%; right:10%;">✦</div>
+  <header class="hero">
+    <div class="wrap" style="padding:0 14px; max-width:760px;">
+      <h1>伊勢志摩・鳥羽・神島 旅のしおり</h1>
+      <p>2026/4/17（金）〜4/20（月）・3泊4日 / スマホ向け行程表</p>
+      <div class="chips">
+        <span class="chip">志摩スペイン村</span>
+        <span class="chip">賢島クルーズ</span>
+        <span class="chip">浦村牡蠣</span>
+        <span class="chip">神島</span>
+        <span class="chip">鳥羽水族館</span>
+        <span class="chip">二見・外宮・津</span>
       </div>
-      <div class="hero-inner">
-        <div class="eyebrow">🎀 2泊3日 旅のしおりサイト</div>
-        <div>
-          <h1>伊勢・鳥羽・神島<br>わくわく旅プラン</h1>
-          <p class="subtitle">
-            志摩スペイン村、賢島クルーズ、鳥羽水族館、神島、二見興玉神社、伊勢シーパラダイスまで。
-            旅行中にスマホで見返しやすいよう、日程を時系列でまとめたおしゃれなしおりです。
-          </p>
-        </div>
-        <div class="hero-badges">
-          <div class="badge">🚄 品川スタート</div>
-          <div class="badge">🏨 みち潮 ＆ 吉田屋 和光</div>
-          <div class="badge">⛴️ 神島フェリーあり</div>
-          <div class="badge">📸 最終日は津にも立ち寄り</div>
-        </div>
-        <div class="hero-actions">
-          <a class="button primary" href="#schedule">日程を見る</a>
-          <a class="button secondary" href="#links">参考リンクを見る</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-title">
-        <div>
-          <h2>旅のポイント</h2>
-          <p>今回の旅で大事にしたいことを、まず最初にまとめています。</p>
-        </div>
-        <div class="pill">かわいく・見やすく・再確認しやすく</div>
-      </div>
-      <div class="summary-grid">
-        <article class="summary-card">
-          <div class="icon" style="background: linear-gradient(135deg, #ffe4ef, #fff4bf);">🎡</div>
-          <h3>1日目はテーマパーク気分</h3>
-          <p>志摩スペイン村で昼食、パレードや園内散策を満喫。夜はみち潮で豪華な海幸プラン。</p>
-        </article>
-        <article class="summary-card">
-          <div class="icon" style="background: linear-gradient(135deg, #dff1ff, #ece6ff);">🚢</div>
-          <h3>2日目は海の見どころが主役</h3>
-          <p>賢島エスパーニャクルーズから鳥羽へ移動し、鳥羽水族館と華月の伊勢海老ディナーへ。</p>
-        </article>
-        <article class="summary-card">
-          <div class="icon" style="background: linear-gradient(135deg, #d7f4e7, #fff1f5);">⛩️</div>
-          <h3>3日目は神島と二見を両方満喫</h3>
-          <p>早朝フェリーで神島へ。午後は二見興玉神社でお守り、伊勢シーパラダイス、最後は津へ。</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="schedule">
-      <div class="section-title">
-        <div>
-          <h2>日程スケジュール</h2>
-          <p>タブを切り替えると、その日の予定をまとめて見られます。</p>
-        </div>
-        <div class="pill">⏰ 時刻は当日再確認がおすすめ</div>
-      </div>
-
-      <div class="day-nav" role="tablist" aria-label="旅行日程タブ">
-        <button class="day-tab active" data-day-tab="day1" role="tab" aria-selected="true">1日目</button>
-        <button class="day-tab" data-day-tab="day2" role="tab" aria-selected="false">2日目</button>
-        <button class="day-tab" data-day-tab="day3" role="tab" aria-selected="false">3日目</button>
-      </div>
-
-      <div class="day-panel active" id="day1" role="tabpanel">
-        <div class="day-head">
-          <h3>1日目｜品川 → 鵜方 → 志摩スペイン村 → みち潮</h3>
-          <p>旅のはじまりは、朝の品川出発から。昼は志摩スペイン村、夜は賢島の宿で海鮮をたっぷり楽しむ日です。</p>
-        </div>
-        <ol class="timeline">
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">06:22〜</span>
-                <div class="spot">品川駅 出発</div>
-              </div>
-              <p>品川から鵜方へ移動。大きめの荷物やチケット類はこのタイミングで再チェック。</p>
-              <div class="mini-tags"><span class="mini-tag">交通</span><span class="mini-tag">朝早め</span></div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">鵜方到着後</span>
-                <div class="spot">バスで志摩スペイン村へ</div>
-              </div>
-              <p>鵜方からバス移動。乗り場や時刻表は当日確認がおすすめです。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://www.parque-net.com/pdf/bus_timetable.pdf" target="_blank" rel="noopener">🚌 バス時刻表</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">昼〜17:00</span>
-                <div class="spot">志摩スペイン村</div>
-              </div>
-              <p>園内で昼食をとり、パレードやアトラクションを楽しみながら17:00まで滞在。ショー時間を見ながら回ると、パレードやキャラクター系イベントも組み込みやすいです。</p>
-              <div class="show-box">
-                <div class="show-box-head">
-                  <strong>🎭 ショースケジュール抜粋</strong>
-                  <span class="mini-tag">PDFより</span>
-                  <span class="mini-tag">要再確認</span>
-                </div>
-                <div class="show-list">
-                  <div class="show-item"><span class="show-time">9:30</span><div class="show-title">キャラクターグリーティング（約20分）</div></div>
-                  <div class="show-item"><span class="show-time">10:10</span><div class="show-title">キャラクターミュージカル「テソロ・デ・オーロ〜真実の宝を探せ!〜」（約25分）</div></div>
-                  <div class="show-item"><span class="show-time">10:50</span><div class="show-title">「ドンキホーテのグラン・ガラ・デ・オペラ」（約25分）</div></div>
-                  <div class="show-item"><span class="show-time">10:55</span><div class="show-title">キャラクターグリーティング（約20分）</div></div>
-                  <div class="show-item"><span class="show-time">11:00</span><div class="show-title">フラメンコショー「アライゴ」（事前予約制・料金700円）</div></div>
-                  <div class="show-item"><span class="show-time">12:50</span><div class="show-title">パルケエスパーニャパレード（約25分）</div></div>
-                  <div class="show-item"><span class="show-time">14:10</span><div class="show-title">キャラクターグリーティング</div></div>
-                  <div class="show-item"><span class="show-time">15:15</span><div class="show-title">フラメンコショー「アライゴ」（事前予約制・料金700円）／キャラクターグリーティング</div></div>
-                  <div class="show-item"><span class="show-time">16:20</span><div class="show-title">キャラクターグリーティング（約20分）</div></div>
-                </div>
-                <p class="show-note">2026年2月14日〜4月24日の公式ショースケジュールPDFをもとに抜粋しています。天候などにより変更・中止となる場合があります。</p>
-              </div>
-              <div class="link-row">
-                <a class="small-link" href="https://www.parque-net.com/restaurant/index.html" target="_blank" rel="noopener">🍽️ レストラン案内</a>
-                <a class="small-link" href="https://www.parque-net.com/pdf/sche-260214-260430_v2.pdf" target="_blank" rel="noopener">🎟️ ショーPDF</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">17:00以降</span>
-                <div class="spot">ホテルへ移動</div>
-              </div>
-              <p>宿泊先は「伊勢志摩国立公園 賢島の宿 みち潮」。お部屋で少し休んでから夕食へ。</p>
-              <div class="mini-tags"><span class="mini-tag">宿泊</span><span class="mini-tag">賢島</span></div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">19:00まで</span>
-                <div class="spot">みち潮で夕食</div>
-              </div>
-              <p>【特選DX舟盛付】伊勢海老＆鮑の姿舟盛付／舟盛付満潮会席グレードアップ／海幸大満喫プラン。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://www.michishio.jp/cuisine/" target="_blank" rel="noopener">🏨 みち潮 料理案内</a>
-              </div>
-            </div>
-          </li>
-        </ol>
-      </div>
-
-      <div class="day-panel" id="day2" role="tabpanel">
-        <div class="day-head">
-          <h3>2日目｜賢島クルーズ → 鳥羽水族館 → 華月 → 吉田屋 和光</h3>
-          <p>朝から海の景色を楽しみ、鳥羽では水族館と伊勢海老ディナー。旅行らしさがぎゅっと詰まった1日です。</p>
-        </div>
-        <ol class="timeline">
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">07:00</span>
-                <div class="spot">ホテルで朝ごはん</div>
-              </div>
-              <p>朝食後はクルーズに向けて準備。チェックアウトや荷物整理もこのタイミングで。</p>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">09:30</span>
-                <div class="spot">賢島エスパーニャクルーズ 乗船</div>
-              </div>
-              <p>湾内クルーズで朝の景色を楽しむ時間。乗船時間に余裕を持って移動。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://shima-marineleisure.com/espana" target="_blank" rel="noopener">🚢 クルーズ公式</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">11:00頃</span>
-                <div class="spot">電車で鳥羽へ移動</div>
-              </div>
-              <p>鳥羽へ移動して駅周辺でお昼ご飯。駅近で食べると午後の動きがスムーズです。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E8%B3%A2%E5%B3%B6&orvStationCode=00002112&dnvStationName=%E9%B3%A5%E7%BE%BD&dnvStationCode=00006282&airplane=1&sprexprs=1&utrexprs=1&othexprs=1&mtrplbus=1&intercitybus=1&ferry=1&tr_next=00002112.00006282.00000311.0&beforeyear=2026&beforemonth=04&beforeday=25&beforehour=11&beforeminute=30&afteryear=2026&aftermonth=04&afterday=25&afterhour=11&afterminute=00&before=1&bf=before&month=2026/04&day=25&hour=10&minute=42&sort=0&wspeed=100&basis=1&currentFromTime=11:00&currentToTime=11:30&currentFare=1080&currentIcFare=1080&currentTimeDiff=_30" target="_blank" rel="noopener">🚆 賢島→鳥羽</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">昼〜17:00</span>
-                <div class="spot">鳥羽水族館</div>
-              </div>
-              <p>鳥羽の人気スポット。館内マップを見ながら、見たい生きものを優先してまわるのがおすすめ。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://aquarium.co.jp/kannai/" target="_blank" rel="noopener">🐠 館内案内</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">17:15〜</span>
-                <div class="spot">タクシーで華月へ</div>
-              </div>
-              <p>鳥羽水族館からタクシー移動。夕食予約があるので余裕を持って動く想定です。</p>
-              <div class="mini-tags"><span class="mini-tag">タクシー想定</span><span class="mini-tag">予約あり</span></div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">17:30</span>
-                <div class="spot">華月で夕食</div>
-              </div>
-              <p>伊勢海老 海鮮蒸し料理 華月でディナー。旅の締めくくり感がある豪華な夜ごはんです。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://kagetu.co.jp/menu2/menuiseebi/" target="_blank" rel="noopener">🦞 伊勢海老コース</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">夕食後</span>
-                <div class="spot">吉田屋 和光へ移動</div>
-              </div>
-              <p>その後は素泊まりのホテル鳥羽・吉田屋 和光へ。もし余裕があればイオン鳥羽に立ち寄り。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://www.hotel-wako.co.jp/acc/index.html" target="_blank" rel="noopener">🧳 ホテルアクセス</a>
-              </div>
-            </div>
-          </li>
-        </ol>
-      </div>
-
-      <div class="day-panel" id="day3" role="tabpanel">
-        <div class="day-head">
-          <h3>3日目｜神島 → 鳥羽 → 二見興玉神社 → 伊勢シーパラダイス → 津 → 品川</h3>
-          <p>朝は神島へ船旅、午後は二見エリアを観光。最後は津に寄って写真撮影してから帰宅します。</p>
-        </div>
-        <ol class="timeline">
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">早朝 7:40</span>
-                <div class="spot">フェリーで神島へ</div>
-              </div>
-              <p>鳥羽から神島へ移動。早朝便なので、朝の準備は前日にできるだけ済ませておくと安心です。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://www.city.toba.mie.jp/soshiki/t_kanri/gyomu/doro_kotsu/kokyo_kotsu/1913.html" target="_blank" rel="noopener">⛴️ 市営定期船</a>
-                <a class="small-link" href="https://www.city.toba.mie.jp/soshiki/kikaku_keiei/gyomu/seisaku_keikaku/rito_shinko/3054.html" target="_blank" rel="noopener">🏝️ 神島情報</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">11:35</span>
-                <div class="spot">帰りのフェリーで鳥羽へ</div>
-              </div>
-              <p>鳥羽へ戻って昼食へ。鳥羽駅周辺または夫婦横丁を候補にする想定です。</p>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">昼</span>
-                <div class="spot">鳥羽駅周辺 または 夫婦横丁で昼食</div>
-              </div>
-              <p>その日の流れに合わせて、駅周辺で食べるか二見まで移動してから食べるかを選べます。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://ise-meotoiwa.jp/restaurant-shop/" target="_blank" rel="noopener">🛍️ めおと横丁</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">14:15〜14:40</span>
-                <div class="spot">二見興玉神社 参拝・お守り購入</div>
-              </div>
-              <p>拝殿前授与所でお守りを購入して参拝。伊勢シーパラダイスへ向かうなら入口側での購入がスムーズです。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://futamiokitamajinja.or.jp" target="_blank" rel="noopener">⛩️ 神社公式</a>
-                <a class="small-link" href="https://futamiokitamajinja.or.jp/visit/gift/" target="_blank" rel="noopener">🪬 授与品案内</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">14:40〜14:50</span>
-                <div class="spot">伊勢シーパラダイスへ移動</div>
-              </div>
-              <p>二見興玉神社から移動。午後の時間を見ながら無理のない範囲で楽しむプランです。</p>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">14:50〜16:50</span>
-                <div class="spot">伊勢シーパラダイス 観光</div>
-              </div>
-              <p>神社とあわせて、二見エリアの午後をたっぷり満喫。夕方前に切り上げて津方面へ向かいます。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://ise-seaparadise.com/about/" target="_blank" rel="noopener">🦭 施設案内</a>
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-card">
-              <div class="timeline-top">
-                <span class="time">17:00以降</span>
-                <div class="spot">津へ移動 → 写真撮影 → 品川へ</div>
-              </div>
-              <p>津まで移動して写真撮影後、品川へ帰宅。最後まで時間に少し余裕を持って動く想定です。</p>
-              <div class="link-row">
-                <a class="small-link" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E4%BA%8C%E8%A6%8B%E6%B5%A6&dnvStationName=%E6%B4%A5&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=" target="_blank" rel="noopener">🚆 二見浦→津</a>
-                <a class="small-link" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E6%B4%A5&dnvStationName=%E5%93%81%E5%B7%9D&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=" target="_blank" rel="noopener">🏠 津→品川</a>
-              </div>
-            </div>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-
-    <section class="section" id="links">
-      <div class="section-title">
-        <div>
-          <h2>参考リンク</h2>
-          <p>前に整理したリンク集の内容を、この旅しおりの中でもそのまま見られるようにまとめました。</p>
-        </div>
-        <div class="pill">🔗 28件 + お気に入りで重要タブ化</div>
-      </div>
-
-      <div class="ref-links-wrap">
-        <div class="ref-hero">
-          <strong>旅行中に見返しやすいリンク集</strong>
-          <p>
-            <strong>1日目 / 2日目 / 3日目 / その他</strong> に分類し、
-            各リンクは日別・その他に整理しつつ、<strong>⭐お気に入りしたものだけ</strong>を「重要」タブでまとめて見られます。
-          </p>
-        </div>
-
-        <label class="ref-search">
-          <span>🔎</span>
-          <input id="refSearchInput" type="search" placeholder="サイト名・地名・用途で検索" />
-        </label>
-
-        <div class="ref-note">
-          時刻表・営業時間・交通系のページは変更の可能性があります。旅先で再確認しやすいように、検索とタブ切り替えを使える形にしています。
-        </div>
-
-        <div class="ref-tabs" id="refTabs"></div>
-
-        <div class="ref-section-head">
-          <div>
-            <h3 id="refSectionTitle">1日目</h3>
-            <p id="refSectionDesc"></p>
-          </div>
-          <div class="ref-section-meta" id="refSectionMeta"></div>
-        </div>
-
-        <div class="ref-grid" id="refGrid"></div>
-        <div class="ref-empty" id="refEmptyState">条件に合うリンクが見つかりませんでした。検索語を変えてみてください。</div>
-      </div>
-    </section>
-  </div>
-
-  <nav class="sticky-nav">
-    <div class="inner">
-      <a class="sticky-link active" href="#top">表紙</a>
-      <a class="sticky-link" href="#schedule">日程</a>
-      <a class="sticky-link" href="#links">リンク</a>
-      <button class="sticky-link" type="button" id="shareBtn">共有</button>
     </div>
-  </nav>
+  </header>
 
-  <script>
-    const tabs = document.querySelectorAll('[data-day-tab]');
-    const panels = document.querySelectorAll('.day-panel');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const target = tab.getAttribute('data-day-tab');
-        tabs.forEach(t => {
-          t.classList.toggle('active', t === tab);
-          t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
-        });
-        panels.forEach(panel => panel.classList.toggle('active', panel.id === target));
-      });
-    });
+  <main class="wrap">
+    <section class="section card">
+      <h2 class="section-title">旅のイメージ</h2>
+      <div class="photo-grid">
+        <figure class="photo-card">
+          <img src="https://images.openai.com/static-rsc-4/00HDT8xPo5hRSpyWcI9RE3GMPYWJNWkt6uh68XLpuISVnhh-cEZM8ZGRYmnEg7eo8x6MeKz6ZrVWPW8y02fzypeRmnPpD6HjLGjyEONKHrj5z2R8iAI-G16Sty_ZxHJ3tdV11tfjWk-odJkF6jK3ok_BeFxNU6ied1bLN8Z1E_xu4UEotWz1TUYuzW1SW5gi?purpose=fullsize" alt="志摩スペイン村のイメージ" loading="lazy" />
+          <figcaption>志摩スペイン村</figcaption>
+        </figure>
+        <figure class="photo-card">
+          <img src="https://images.openai.com/static-rsc-4/iE1_4eru4Dn7Q-vwlFOTUgrfw8Bk4A8S07orobQnagqPi9L8plBhQCSoblfe-ALryw63gioUVHiHHXsSX9HOwa3rYNQjBV6CQ2VLRAmv5T0xxyCPR1yrd50epqGr0BYpzD0fYhsIfwBtjV9M16Nd87DMn21K3PuWXBvBR8B009Sik-WAdXrehPU67Rr6-BwL?purpose=fullsize" alt="賢島エスパーニャクルーズのイメージ" loading="lazy" />
+          <figcaption>賢島エスパーニャクルーズ</figcaption>
+        </figure>
+        <figure class="photo-card">
+          <img src="https://images.openai.com/static-rsc-4/o1omMoJKrezCFhfqqerldzkfacND82Emnzd1Wb-p-1yOjK39yEn1noJh3M0RsPlPwanfl0Iis0YQXCMU-65zthVfxhjDMRx-8irFvKFjE6I5J0jEE9nZte9UbiGLHnJyxQy47frHR84ze7Tkrq2kCUth2KFhw2AprGFDMLv0tXKIZpGMgi4bU3cVjWTwzzn3?purpose=fullsize" alt="鳥羽水族館のイメージ" loading="lazy" />
+          <figcaption>鳥羽水族館</figcaption>
+        </figure>
+        <figure class="photo-card">
+          <img src="https://images.openai.com/static-rsc-4/F8g32uA252SrAQYIM4aGVXF2zc5tUJn2cPy6Rjz5_mtxbx7oBzZMcBjXaF0jAqz8OS_jic0xfLxCqJhtdYO0btrQdrPMhtBtFHHahyEJ8VXRL64NrpGbYudEtBJF5dpnqEPL0Sabj5Y96qJHXOMtwqTj1IlPrKKNU2M-6Usyo4E7iBQCA4FAZKR_Y5-QMIaC?purpose=fullsize" alt="二見興玉神社と夫婦岩のイメージ" loading="lazy" />
+          <figcaption>二見興玉神社・夫婦岩</figcaption>
+        </figure>
+      </div>
+    </section>
 
+    <section class="section card">
+      <h2 class="section-title">旅行サマリー</h2>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="label">出発</div><div class="value">4/17 06:22 品川</div></div>
+        <div class="summary-item"><div class="label">帰着目安</div><div class="value">4/20 夜 品川</div></div>
+        <div class="summary-item"><div class="label">主な移動</div><div class="value">新幹線・近鉄・JR・船・タクシー</div></div>
+        <div class="summary-item"><div class="label">注意点</div><div class="value">神島船便 / 津の蜂蜜まんは早め</div></div>
+      </div>
+    </section>
 
-    const stickyLinks = document.querySelectorAll('.sticky-link[href^="#"]');
-    const sectionTargets = ['top', 'schedule', 'links'].map(id => document.getElementById(id));
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          stickyLinks.forEach(link => {
-            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-          });
-        }
-      });
-    }, { threshold: 0.45 });
-    sectionTargets.forEach(sec => io.observe(sec));
+    <nav class="day-nav" aria-label="日別ナビゲーション">
+      <div class="day-nav-inner">
+        <a class="day-link" href="#day1">1日目</a>
+        <a class="day-link" href="#day2">2日目</a>
+        <a class="day-link" href="#day3">3日目</a>
+        <a class="day-link" href="#day4">4日目</a>
+        <a class="day-link" href="#spots">主要スポット</a>
+        <a class="day-link" href="#memo">メモ</a>
+      </div>
+    </nav>
 
-
-    const refLinkItems = [
-      {
-        id: 'route-shinagawa-ugata', tab: 'day1', category: '交通', important: true, dynamic: true,
-        title: '品川から鵜方までの乗換案内 - NAVITIME',
-        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E5%93%81%E5%B7%9D&dnvStationName=%E9%B5%9C%E6%96%B9&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=07&hour=6&minute=20&orvStationCode=00007825&dnvStationCode=00000610&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&airplane=1&sprexprs=1&utrexprs=1&othexprs=1&mtrplbus=1&intercitybus=1&ferry=1&accidentRailCode=&accidentRailName=&isrec=#detail_route_1',
-        desc: '初日の出発ルート確認用。品川から鵜方までの接続を見直したいときに使う。',
-        thumb: '🚄', sub: '出発ルート', domain: 'navitime.co.jp'
-      },
-      {
-        id: 'bus-timetable-spain', tab: 'day1', category: 'PDF', important: true, dynamic: true,
-        title: 'bus_timetable.pdf',
-        url: 'https://www.parque-net.com/pdf/bus_timetable.pdf',
-        desc: '鵜方駅から志摩スペイン村へ向かうバス時刻表。',
-        thumb: '🚌', sub: 'バス時刻表', domain: 'parque-net.com'
-      },
-      {
-        id: 'spain-restaurant', tab: 'day1', category: '食事', important: false, dynamic: true,
-        title: 'レストラン｜志摩スペイン村',
-        url: 'https://www.parque-net.com/restaurant/index.html',
-        desc: '園内での昼食候補を確認するページ。',
-        thumb: '🍽️', sub: '昼食候補', domain: 'parque-net.com'
-      },
-      {
-        id: 'hotel-michishio-cuisine', tab: 'day1', category: '宿', important: false, dynamic: true,
-        title: '伊勢志摩国立公園 賢島の宿 みち潮【公式サイト】',
-        url: 'https://www.michishio.jp/cuisine/',
-        desc: '1日目に賢島宿泊を想定したときの料理案内。',
-        thumb: '🏨', sub: '宿の料理', domain: 'michishio.jp'
-      },
-      {
-        id: 'route-kashikojima-toba', tab: 'day2', category: '交通', important: true, dynamic: true,
-        title: '賢島から鳥羽までの乗換案内 - NAVITIME',
-        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E8%B3%A2%E5%B3%B6&orvStationCode=00002112&dnvStationName=%E9%B3%A5%E7%BE%BD&dnvStationCode=00006282&airplane=1&sprexprs=1&utrexprs=1&othexprs=1&mtrplbus=1&intercitybus=1&ferry=1&tr_next=00002112.00006282.00000311.0&beforeyear=2026&beforemonth=04&beforeday=25&beforehour=11&beforeminute=30&afteryear=2026&aftermonth=04&afterday=25&afterhour=11&afterminute=00&before=1&bf=before&month=2026/04&day=25&hour=10&minute=42&sort=0&wspeed=100&basis=1&currentFromTime=11:00&currentToTime=11:30&currentFare=1080&currentIcFare=1080&currentTimeDiff=_30',
-        desc: '2日目の賢島→鳥羽移動確認用。',
-        thumb: '🚆', sub: '2日目の移動', domain: 'navitime.co.jp'
-      },
-      {
-        id: 'espana-cruise', tab: 'day2', category: '観光', important: true, dynamic: true,
-        title: '賢島エスパーニャクルーズ｜【公式】志摩マリンレジャー',
-        url: 'https://shima-marineleisure.com/espana',
-        desc: '賢島エスパーニャクルーズの運航・案内確認用。',
-        thumb: '🚢', sub: 'クルーズ', domain: 'shima-marineleisure.com'
-      },
-      {
-        id: 'hotel-wako-access', tab: 'day2', category: '宿', important: false, dynamic: true,
-        title: '三重県鳥羽【吉田屋 和光】公式サイト・アクセス',
-        url: 'https://www.hotel-wako.co.jp/acc/index.html',
-        desc: '鳥羽側宿泊時のアクセス確認用。',
-        thumb: '🧳', sub: '宿アクセス', domain: 'hotel-wako.co.jp'
-      },
-      {
-        id: 'toba-aquarium', tab: 'day2', category: '観光', important: true, dynamic: false,
-        title: '館内案内 | 鳥羽水族館 公式サイト',
-        url: 'https://aquarium.co.jp/kannai/',
-        desc: '鳥羽水族館の館内案内。2日目候補の主力。',
-        thumb: '🐠', sub: '館内案内', domain: 'aquarium.co.jp'
-      },
-      {
-        id: 'kagetu', tab: 'day2', category: '食事', important: true, dynamic: true,
-        title: '伊勢海老コース | 伊勢海老 海鮮蒸し料理 華月',
-        url: 'https://kagetu.co.jp/menu2/menuiseebi/',
-        desc: '2日目夕食候補。コース内容や予約前の確認用。',
-        thumb: '🦞', sub: '夕食候補', domain: 'kagetu.co.jp'
-      },
-      {
-        id: 'the-kaiya', tab: 'day2', category: '食事', important: false, dynamic: true,
-        title: '鳥羽で貝を食べるなら「ザ・貝屋」',
-        url: 'https://www.the-kaiya-toba.com/html/oshina.html',
-        desc: '貝料理の候補店。',
-        thumb: '🦪', sub: '貝料理', domain: 'the-kaiya-toba.com'
-      },
-      {
-        id: 'yakigai-iroha', tab: 'day2', category: '地図', important: false, dynamic: true,
-        title: '焼貝 いろは - Google マップ',
-        url: 'https://www.google.com/maps/place/%E7%84%BC%E8%B2%9D+%E3%81%84%E3%82%8D%E3%81%AF/@34.4863058,136.8426419,19.75z/data=!4m6!3m5!1s0x6004f96d815954c5:0x7ab2df5ce1e47282!8m2!3d34.4861547!4d136.8436442!16s%2Fg%2F11h5khfgyk?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D',
-        desc: 'Googleマップで場所を直接確認したいとき用。',
-        thumb: '📍', sub: '地図確認', domain: 'google.com'
-      },
-      {
-        id: 'route-toba-futamiura', tab: 'day3', category: '交通', important: true, dynamic: true,
-        title: '鳥羽から二見浦までの乗換案内 - NAVITIME',
-        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E9%B3%A5%E7%BE%BD&dnvStationName=%E4%BA%8C%E8%A6%8B%E6%B5%A6&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=00006282&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=',
-        desc: '神島から戻った後の二見エリア移動確認用。',
-        thumb: '🚉', sub: '二見へ移動', domain: 'navitime.co.jp'
-      },
-      {
-        id: 'route-futamiura-tsu', tab: 'day3', category: '交通', important: true, dynamic: true,
-        title: '二見浦から津までの乗換案内 - NAVITIME',
-        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E4%BA%8C%E8%A6%8B%E6%B5%A6&dnvStationName=%E6%B4%A5&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=',
-        desc: '帰路の途中で津へ寄る想定の移動確認用。',
-        thumb: '🚆', sub: '津へ移動', domain: 'navitime.co.jp'
-      },
-      {
-        id: 'route-tsu-shinagawa', tab: 'day3', category: '交通', important: true, dynamic: true,
-        title: '津から品川までの乗換案内 - NAVITIME',
-        url: 'https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E6%B4%A5&dnvStationName=%E5%93%81%E5%B7%9D&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=',
-        desc: '旅の締め。津から品川へ戻るルート確認用。',
-        thumb: '🏠', sub: '帰宅ルート', domain: 'navitime.co.jp'
-      },
-      {
-        id: 'futami-jinja', tab: 'day3', category: '観光', important: true, dynamic: true,
-        title: 'お伊勢参りは二見から 二見興玉神社',
-        url: 'https://futamiokitamajinja.or.jp',
-        desc: '二見興玉神社の公式サイト。アクセスや境内案内の確認用。',
-        thumb: '⛩️', sub: '神社公式', domain: 'futamiokitamajinja.or.jp'
-      },
-      {
-        id: 'kamishima-guide', tab: 'day3', category: '観光', important: false, dynamic: false,
-        title: '神島の観光ガイド：アクセス・宿泊・食事まで徹底解説！',
-        url: 'https://www.kankomie.or.jp/report/1412#3-1',
-        desc: '神島観光の予習・現地再確認用ガイド。',
-        thumb: '🧭', sub: '観光ガイド', domain: 'kankomie.or.jp'
-      },
-      {
-        id: 'toba-ferry', tab: 'day3', category: '交通', important: true, dynamic: true,
-        title: '市営定期船／鳥羽市ホームページ',
-        url: 'https://www.city.toba.mie.jp/soshiki/t_kanri/gyomu/doro_kotsu/kokyo_kotsu/1913.html',
-        desc: '神島行きの定期船時刻を確認する中心ページ。',
-        thumb: '⛴️', sub: '神島の船', domain: 'city.toba.mie.jp'
-      },
-      {
-        id: 'toba-kamishima', tab: 'day3', category: '観光', important: false, dynamic: false,
-        title: '神島／鳥羽市ホームページ',
-        url: 'https://www.city.toba.mie.jp/soshiki/kikaku_keiei/gyomu/seisaku_keikaku/rito_shinko/3054.html',
-        desc: '神島の基本情報を確認する公式ページ。',
-        thumb: '🏝️', sub: '島の概要', domain: 'city.toba.mie.jp'
-      },
-      {
-        id: 'toba-pdf-r060901', tab: 'day3', category: 'PDF', important: false, dynamic: true,
-        title: 'r060901.pdf',
-        url: 'https://www.city.toba.mie.jp/material/files/group/45/r060901.pdf',
-        desc: '鳥羽市の補助資料PDF。',
-        thumb: '📄', sub: '補助PDF', domain: 'city.toba.mie.jp'
-      },
-      {
-        id: 'iseshima-map-pdf', tab: 'day3', category: 'PDF', important: false, dynamic: false,
-        title: '出力.indd',
-        url: 'https://www.iseshima-kanko.jp/downloads/media/23630',
-        desc: '神島関連マップとして見返す想定の資料。',
-        thumb: '🗺️', sub: '観光マップ', domain: 'iseshima-kanko.jp'
-      },
-      {
-        id: 'toba-marine-terminal', tab: 'day3', category: '地図', important: false, dynamic: true,
-        title: '鳥羽マリンターミナル',
-        url: 'https://peraichi.com/landing_pages/view/tobamarine',
-        desc: '船のりばの現地確認用。',
-        thumb: '🛳️', sub: '船のりば', domain: 'peraichi.com'
-      },
-      {
-        id: 'ise-seaparadise', tab: 'day3', category: '観光', important: true, dynamic: true,
-        title: '水族館について | 伊勢シーパラダイス(シーパラ)',
-        url: 'https://ise-seaparadise.com/about/',
-        desc: '3日目午後候補の伊勢シーパラダイス。',
-        thumb: '🦭', sub: '水族館候補', domain: 'ise-seaparadise.com'
-      },
-      {
-        id: 'meoto-yokocho', tab: 'day3', category: '食事', important: true, dynamic: true,
-        title: 'めおと横丁 ｜ 伊勢夫婦岩めおと横丁',
-        url: 'https://ise-meotoiwa.jp/restaurant-shop/',
-        desc: '買い物・食事・営業時間の確認用。',
-        thumb: '🛍️', sub: '買い物・食事', domain: 'ise-meotoiwa.jp'
-      },
-      {
-        id: 'futami-gift', tab: 'day3', category: '観光', important: true, dynamic: true,
-        title: 'お札・お守り・授与品のご案内',
-        url: 'https://futamiokitamajinja.or.jp/visit/gift/',
-        desc: '授与所やお守りの内容を確認するページ。',
-        thumb: '🪬', sub: 'お守り確認', domain: 'futamiokitamajinja.or.jp'
-      },
-      {
-        id: 'paranormasite-toba', tab: 'other', category: '観光', important: false, dynamic: false,
-        title: 'パラノマサイト FILE38 伊勢人魚物語×鳥羽市',
-        url: 'https://www.toba.gr.jp/4867-2/',
-        desc: 'イベント特設系の確認ページ。',
-        thumb: '🎮', sub: '特設ページ', domain: 'toba.gr.jp'
-      },
-      {
-        id: 'paranormasite-map-pdf', tab: 'other', category: 'PDF', important: false, dynamic: false,
-        title: 'パラノマサイト-FILE38-伊勢人魚物語MAP-最小',
-        url: 'https://www.toba.gr.jp/files/2bc0ec3b4dbda3ed6b9053a81ae56260.pdf',
-        desc: 'イベント用の補助MAP PDF。',
-        thumb: '🧾', sub: 'イベントMAP', domain: 'toba.gr.jp'
-      },
-      {
-        id: 'paranormasite-iseshima', tab: 'other', category: '観光', important: false, dynamic: false,
-        title: 'パラノマサイト FILE38 伊勢人魚物語 特設サイト',
-        url: 'https://www.iseshima-kanko.jp/fc/report_fc/PARANORMA_iseshima',
-        desc: '伊勢志摩観光ナビ側の特設ページ。',
-        thumb: '📚', sub: '特集記事', domain: 'iseshima-kanko.jp'
-      },
-      {
-        id: 'kamome-bus-jpg', tab: 'other', category: 'PDF', important: false, dynamic: true,
-        title: 'kamomebuszikokuhyoomote.jpg (2482×1755)',
-        url: 'https://www.city.toba.mie.jp/material/files/group/45/kamomebuszikokuhyoomote.jpg',
-        desc: 'かもめバス時刻表を画像で確認したいとき用。',
-        thumb: '🚌', sub: '時刻表画像', domain: 'city.toba.mie.jp'
-      }
-    ];
-
-    const refTabDefs = [
-      { key: 'day1', label: '1日目', desc: '品川 → 鵜方 → 志摩スペイン村 で見返すリンク' },
-      { key: 'day2', label: '2日目', desc: '賢島・鳥羽エリアの観光、食事、宿まわりのリンク' },
-      { key: 'day3', label: '3日目', desc: '神島・二見・帰路で使うリンク' },
-      { key: 'other', label: 'その他', desc: '補助資料、イベント、サブの時刻表など' },
-      { key: 'important', label: '重要', desc: '⭐お気に入りしたリンクだけをまとめて表示' }
-    ];
-
-    const refSectionLabels = {
-      day1: '1日目',
-      day2: '2日目',
-      day3: '3日目',
-      other: 'その他',
-      important: '重要'
-    };
-
-    const refPalette = {
-      '交通': 'linear-gradient(135deg, #7f7cf5, #7dc6ff)',
-      '観光': 'linear-gradient(135deg, #65c8aa, #9ae2a5)',
-      '食事': 'linear-gradient(135deg, #f28fae, #f5b36f)',
-      '宿': 'linear-gradient(135deg, #b58df0, #d5aef6)',
-      'PDF': 'linear-gradient(135deg, #7d8798, #9ca7b8)',
-      '地図': 'linear-gradient(135deg, #f09c56, #f7c26f)'
-    };
-
-    function loadSet(key) {
-      try {
-        return new Set(JSON.parse(localStorage.getItem(key) || '[]'));
-      } catch (e) {
-        return new Set();
-      }
-    }
-
-    function saveSet(key, set) {
-      try {
-        localStorage.setItem(key, JSON.stringify([...set]));
-      } catch (e) {}
-    }
-
-    const refState = {
-      activeTab: 'day1',
-      search: '',
-      favorites: loadSet('travel-links-favorites')
-    };
-
-    function refMatchesTab(item) {
-      return refState.activeTab === 'important' ? refState.favorites.has(item.id) : item.tab === refState.activeTab;
-    }
-
-    function refMatchesSearch(item) {
-      const q = refState.search.trim().toLowerCase();
-      if (!q) return true;
-      const hay = [item.title, item.desc, item.category, item.domain, item.sub, refSectionLabels[item.tab]].join(' ').toLowerCase();
-      return hay.includes(q);
-    }
-
-    function refVisibleItems() {
-      return refLinkItems.filter(item => refMatchesTab(item) && refMatchesSearch(item));
-    }
-
-    function refCountForTab(key) {
-      return refLinkItems.filter(item => key === 'important' ? refState.favorites.has(item.id) : item.tab === key).length;
-    }
-
-    function refToggleSet(set, key, id) {
-      if (set.has(id)) set.delete(id); else set.add(id);
-      saveSet(key, set);
-      renderRefLinks();
-    }
-
-    function renderRefTabs() {
-      const tabsEl = document.getElementById('refTabs');
-      tabsEl.innerHTML = '';
-      refTabDefs.forEach(tab => {
-        const btn = document.createElement('button');
-        btn.className = 'ref-tab-btn' + (refState.activeTab === tab.key ? ' active' : '');
-        btn.innerHTML = `${tab.label}<span class="ref-count">${refCountForTab(tab.key)}</span>`;
-        btn.onclick = () => {
-          refState.activeTab = tab.key;
-          renderRefLinks();
-        };
-        tabsEl.appendChild(btn);
-      });
-    }
-
-    function refMakeCard(item) {
-      const card = document.createElement('article');
-      card.className = 'ref-card';
-      const fav = refState.favorites.has(item.id);
-      const bg = refPalette[item.category] || 'linear-gradient(135deg, #ef8fb4, #f5a261)';
-
-      card.innerHTML = `
-        <div class="ref-thumb" style="background:${bg}">
-          <div class="ref-thumb-icon">${item.thumb}</div>
-          <div class="ref-thumb-label">${item.sub}</div>
+    <section id="day1" class="section">
+      <div class="day-header">
+        <span class="day-badge">DAY 1</span>
+        <div>
+          <h2 class="day-title">4/17（金） 品川 → 名古屋 → 鵜方 → 志摩スペイン村 → 賢島泊</h2>
+          <p class="meta">移動多めの日。志摩スペイン村は17:00閉園想定で逆算。</p>
         </div>
-        <div class="ref-card-body">
-          <div class="ref-meta">
-            <span class="ref-tag">${refSectionLabels[item.tab]}</span>
-            <span class="ref-tag">${item.category}</span>
-            ${item.dynamic ? '<span class="ref-tag dynamic">要再確認</span>' : ''}
+      </div>
+      <ol class="timeline">
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">06:22</div>
+          <div class="step-card">
+            <h3 class="step-title">品川駅を出発</h3>
+            <p class="step-desc">東海道新幹線で名古屋へ。朝が早いので駅弁や飲み物は先に購入しておくと安心です。</p>
+            <div class="links">
+              <a class="btn secondary" target="_blank" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E5%93%81%E5%B7%9D&dnvStationName=%E9%B5%9C%E6%96%B9&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=07&hour=6&minute=20&orvStationCode=00007825&dnvStationCode=00000610&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&airplane=1&sprexprs=1&utrexprs=1&othexprs=1&mtrplbus=1&intercitybus=1&ferry=1&accidentRailCode=&accidentRailName=&isrec=#detail_route_1">乗換案内</a>
+            </div>
           </div>
-          <h4 class="ref-title">${item.title}</h4>
-          <p class="ref-desc">${item.desc}</p>
-          <div class="ref-domain">${item.domain}</div>
-          <div class="ref-actions">
-            <button class="ref-btn ref-btn-open" data-open>開く</button>
-            <button class="ref-btn ref-btn-copy" data-copy>URL</button>
-            <button class="ref-btn ref-btn-icon ${fav ? 'active' : ''}" data-fav title="お気に入り">⭐</button>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">07:50</div>
+          <div class="step-card">
+            <h3 class="step-title">名古屋駅到着・近鉄へ乗換</h3>
+            <p class="step-desc">近鉄名古屋駅まで移動。乗換や購入の余裕をみて約20分確保。</p>
+            <div class="links">
+              <a class="btn secondary" target="_blank" href="https://maps.google.com/?q=JR名古屋駅">JR名古屋駅</a>
+              <a class="btn secondary" target="_blank" href="https://maps.google.com/?q=近鉄名古屋駅">近鉄名古屋駅</a>
+            </div>
           </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">08:10</div>
+          <div class="step-card">
+            <h3 class="step-title">近鉄特急で鵜方へ</h3>
+            <p class="step-desc">約2時間6分。10:16ごろ鵜方駅着の想定です。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">10:30</div>
+          <div class="step-card">
+            <h3 class="step-title">鵜方駅からバスで志摩スペイン村へ</h3>
+            <p class="step-desc">バスで約13分。テーマパーク到着後に入園。</p>
+            <div class="links">
+              <a class="btn secondary" target="_blank" href="https://www.parque-net.com/pdf/bus_timetable.pdf">バス時刻表</a>
+              <a class="btn" target="_blank" href="https://maps.google.com/?q=34.358405,136.844482">志摩スペイン村</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">11:15–16:30</div>
+          <div class="step-card">
+            <h3 class="step-title">志摩スペイン村を満喫</h3>
+            <p class="step-desc">昼食・パレード・ショー・散策。昼は少し早めに入ると混雑を避けやすいです。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://www.parque-net.com/restaurant/index.html">園内レストラン</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">17:10</div>
+          <div class="step-card">
+            <h3 class="step-title">志摩スペイン村を出発</h3>
+            <p class="step-desc">鵜方駅方面へ戻り、近鉄で賢島へ。閉園後の動きになるため、園内離脱は少し早めが安全です。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">18:00ごろ</div>
+          <div class="step-card">
+            <h3 class="step-title">賢島の宿 みち潮に到着</h3>
+            <p class="step-desc">賢島駅から徒歩約5分。坂があるため、荷物が多ければ送迎連絡も検討。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://www.michishio.jp/cuisine/">料理・宿情報</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">19:00まで</div>
+          <div class="step-card">
+            <h3 class="step-title">宿で夕食・入浴・就寝</h3>
+            <p class="step-desc">伊勢海老＆鮑の舟盛付きプラン。翌朝に備えて早めの就寝がよさそうです。</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="day2" class="section">
+      <div class="day-header">
+        <span class="day-badge">DAY 2</span>
+        <div>
+          <h2 class="day-title">4/18（土） 賢島クルーズ → 鳥羽 → 浦村牡蠣 → 鳥羽展望台 → イオン → 華月 → 鳥羽泊</h2>
+          <p class="meta">展望台はバス本数が少ないため、タクシー前提のほうが安定。</p>
         </div>
-      `;
+      </div>
+      <ol class="timeline">
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">07:00</div>
+          <div class="step-card">
+            <h3 class="step-title">ホテルで朝食</h3>
+            <p class="step-desc">チェックアウト準備も少し進めておくと後が楽です。</p>
+          </div>
+        </li>
 
-      card.querySelector('[data-open]').onclick = () => window.open(item.url, '_blank', 'noopener');
-      card.querySelector('[data-copy]').onclick = async () => {
-        try {
-          if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(item.url);
-          } else {
-            const ta = document.createElement('textarea');
-            ta.value = item.url;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            ta.remove();
-          }
-          const btn = card.querySelector('[data-copy]');
-          btn.textContent = 'コピー済';
-          setTimeout(() => btn.textContent = 'URL', 1000);
-        } catch {
-          alert('URLのコピーに失敗しました。長押しまたは共有メニューをご利用ください。');
-        }
-      };
-      card.querySelector('[data-fav]').onclick = () => refToggleSet(refState.favorites, 'travel-links-favorites', item.id);
-      return card;
-    }
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">09:15</div>
+          <div class="step-card">
+            <h3 class="step-title">賢島港へ移動</h3>
+            <p class="step-desc">9:30便に合わせて15分前到着を目安に。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://shima-marineleisure.com/espana">クルーズ公式</a>
+            </div>
+          </div>
+        </li>
 
-    function renderRefLinks() {
-      renderRefTabs();
-      const visible = refVisibleItems();
-      const currentTab = refTabDefs.find(t => t.key === refState.activeTab);
-      document.getElementById('refSectionTitle').textContent = currentTab.label;
-      document.getElementById('refSectionDesc').textContent = currentTab.desc;
-      document.getElementById('refSectionMeta').textContent = `表示 ${visible.length}件 / 総リンク 28件`;
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">09:30–10:20ごろ</div>
+          <div class="step-card">
+            <h3 class="step-title">賢島エスパーニャクルーズ</h3>
+            <p class="step-desc">所要約50分。英虞湾の景色を楽しむ時間です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://shima-marineleisure.com/espana">クルーズ情報</a>
+            </div>
+          </div>
+        </li>
 
-      const grid = document.getElementById('refGrid');
-      grid.innerHTML = '';
-      visible.forEach(item => grid.appendChild(refMakeCard(item)));
-      document.getElementById('refEmptyState').style.display = visible.length ? 'none' : 'block';
-    }
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">11:00</div>
+          <div class="step-card">
+            <h3 class="step-title">賢島から鳥羽へ移動</h3>
+            <p class="step-desc">近鉄特急で約30分。11:30ごろ鳥羽駅着想定。</p>
+            <div class="links">
+              <a class="btn secondary" target="_blank" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E8%B3%A2%E5%B3%B6&orvStationCode=00002112&dnvStationName=%E9%B3%A5%E7%BE%BD&dnvStationCode=00006282&airplane=1&sprexprs=1&utrexprs=1&othexprs=1&mtrplbus=1&intercitybus=1&ferry=1&tr_next=00002112.00006282.00000311.0&beforeyear=2026&beforemonth=04&beforeday=25&beforehour=11&beforeminute=30&afteryear=2026&aftermonth=04&afterday=25&afterhour=11&afterminute=00&before=1&bf=before&month=2026/04&day=25&hour=10&minute=42&sort=0&wspeed=100&basis=1&currentFromTime=11:00&currentToTime=11:30&currentFare=1080&currentIcFare=1080&currentTimeDiff=_30">乗換案内</a>
+            </div>
+          </div>
+        </li>
 
-    document.getElementById('refSearchInput').addEventListener('input', (e) => {
-      refState.search = e.target.value;
-      renderRefLinks();
-    });
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">12:00–12:30</div>
+          <div class="step-card">
+            <h3 class="step-title">タクシーでまっちゃん食堂へ</h3>
+            <p class="step-desc">浦村方面へ約20分。路線バスよりタクシーのほうが読みやすいです。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://matchan-shokudo.com/menu">まっちゃん食堂メニュー</a>
+            </div>
+          </div>
+        </li>
 
-    renderRefLinks();
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">12:30–14:30</div>
+          <div class="step-card">
+            <h3 class="step-title">牡蠣食べ放題</h3>
+            <p class="step-desc">2時間枠を想定。食べすぎ防止のため水分をしっかり。</p>
+          </div>
+        </li>
 
-    document.getElementById('shareBtn').addEventListener('click', async () => {
-      const shareData = {
-        title: document.title,
-        text: '伊勢・鳥羽・神島 2泊3日 旅のしおり',
-        url: location.href
-      };
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-        } else if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(location.href);
-          alert('このページのURLをコピーしました。');
-        } else {
-          alert('共有機能が使えないため、URLを手動で共有してください。');
-        }
-      } catch (e) {}
-    });
-  </script>
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">14:30–15:30</div>
+          <div class="step-card">
+            <h3 class="step-title">鳥羽展望台へ移動・観光</h3>
+            <p class="step-desc">営業終了が早めなので短時間でも先に確保。ここもタクシー移動が現実的です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://www.city.toba.mie.jp/material/files/group/45/kamomebuszikokuhyoura.jpg">かもめバス時刻表</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">16:00–17:00</div>
+          <div class="step-card">
+            <h3 class="step-title">イオン鳥羽店で買い物・休憩</h3>
+            <p class="step-desc">翌朝の軽食や飲み物の確保にも便利です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://www.iseshima-kanko.jp/downloads/media/23630">周辺観光資料</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">18:00–19:00ごろ</div>
+          <div class="step-card">
+            <h3 class="step-title">華月で夕食</h3>
+            <p class="step-desc">夜営業のラストオーダーが早いため、18:30より少し前に入店する想定です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://kagetu.co.jp/menu2/menuiseebi/">伊勢海老コース</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">19:30ごろ</div>
+          <div class="step-card">
+            <h3 class="step-title">寿々波別館 錦浦館へ移動・就寝</h3>
+            <p class="step-desc">鳥羽駅近くで徒歩移動しやすい宿。翌朝の船便に備えて早寝推奨。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://maps.google.com/?q=34.485541,136.844174">宿の地図</a>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="day3" class="section">
+      <div class="day-header">
+        <span class="day-badge">DAY 3</span>
+        <div>
+          <h2 class="day-title">4/19（日） 鳥羽 → 神島 → 鳥羽駅周辺ランチ → 鳥羽水族館 → 海楽園泊</h2>
+          <p class="meta">神島便は天候の影響を受けやすいため、朝に運航確認を。</p>
+        </div>
+      </div>
+      <ol class="timeline">
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">07:10</div>
+          <div class="step-card">
+            <h3 class="step-title">宿を出発し鳥羽マリンターミナルへ</h3>
+            <p class="step-desc">徒歩で向かう想定。コンビニ弁当や飲み物は事前に確保。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://peraichi.com/landing_pages/view/tobamarine">鳥羽マリンターミナル</a>
+              <a class="btn secondary" target="_blank" href="https://www.city.toba.mie.jp/soshiki/t_kanri/gyomu/doro_kotsu/kokyo_kotsu/1913.html">市営定期船</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">07:40–08:20</div>
+          <div class="step-card">
+            <h3 class="step-title">フェリーで神島へ</h3>
+            <p class="step-desc">所要約40分。海況次第で欠航もありえるため、当日朝に確認したい区間です。</p>
+            <div class="links">
+              <a class="btn secondary" target="_blank" href="https://www.kankomie.or.jp/report/1412#3-1">神島観光ガイド</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">08:20–11:20</div>
+          <div class="step-card">
+            <h3 class="step-title">神島を一周散策</h3>
+            <p class="step-desc">朝食は持参した軽食。歩きやすい靴と飲み物が重要です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://www.city.toba.mie.jp/soshiki/kikaku_keiei/gyomu/seisaku_keikaku/rito_shinko/3054.html">神島の島情報</a>
+              <a class="btn secondary" target="_blank" href="https://www.city.toba.mie.jp/material/files/group/45/r060901.pdf">関連PDF</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">11:35–12:15</div>
+          <div class="step-card">
+            <h3 class="step-title">フェリーで鳥羽へ戻る</h3>
+            <p class="step-desc">戻り便も約40分。余裕があれば船内で少し休憩。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">12:30–13:30</div>
+          <div class="step-card">
+            <h3 class="step-title">鳥羽駅周辺で昼食</h3>
+            <p class="step-desc">候補は駅周辺または天びん屋 本店。お腹具合で軽めにしてもよさそうです。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://www.the-kaiya-toba.com/html/oshina.html">貝料理の候補</a>
+              <a class="btn secondary" target="_blank" href="https://www.google.com/maps/place/%E7%84%BC%E8%B2%9D+%E3%81%84%E3%82%8D%E3%81%AF/@34.4863058,136.8426419,19.75z/data=!4m6!3m5!1s0x6004f96d815954c5:0x7ab2df5ce1e47282!8m2!3d34.4861547!4d136.8436442!16s%2Fg%2F11h5khfgyk?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D">焼貝いろは</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">14:00–17:00</div>
+          <div class="step-card">
+            <h3 class="step-title">鳥羽水族館を観光</h3>
+            <p class="step-desc">最終入館は16:00目安。17:00まで館内を楽しむ想定です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://aquarium.co.jp/kannai/">館内案内</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">17:00–17:30</div>
+          <div class="step-card">
+            <h3 class="step-title">海上料亭 海楽園へ移動</h3>
+            <p class="step-desc">鳥羽駅からタクシー約5分。早めにチェックインして釣りや館内時間へ。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://www.kairakuen.net">海楽園 公式サイト</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">19:00ごろ</div>
+          <div class="step-card">
+            <h3 class="step-title">宿で夕食・温泉・就寝</h3>
+            <p class="step-desc">【豪華伊勢海老＆鮑会席】を満喫。最終日に向けて体力回復の日です。</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="day4" class="section">
+      <div class="day-header">
+        <span class="day-badge">DAY 4</span>
+        <div>
+          <h2 class="day-title">4/20（月） 鳥羽 → 二見興玉神社 → 伊勢シーパラダイス → 伊勢市ランチ → 外宮 → 津 → 品川</h2>
+          <p class="meta">蜂蜜まんじゅうの営業時間が早めなので、津立寄りは前倒しが安全。</p>
+        </div>
+      </div>
+      <ol class="timeline">
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">07:00</div>
+          <div class="step-card">
+            <h3 class="step-title">宿で朝食</h3>
+            <p class="step-desc">最終日なので荷造りを済ませておくとスムーズです。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">08:30</div>
+          <div class="step-card">
+            <h3 class="step-title">チェックアウト・鳥羽駅へ</h3>
+            <p class="step-desc">9:00ごろのJRで二見浦へ向かう流れを想定。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">09:00–09:15ごろ</div>
+          <div class="step-card">
+            <h3 class="step-title">鳥羽から二見浦へ移動</h3>
+            <p class="step-desc">JR参宮線で短時間移動。駅から神社付近まではタクシー利用が楽です。</p>
+            <div class="links">
+              <a class="btn secondary" target="_blank" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E9%B3%A5%E7%BE%BD&dnvStationName=%E4%BA%8C%E8%A6%8B%E6%B5%A6&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=00006282&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=">乗換案内</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">09:15–10:15</div>
+          <div class="step-card">
+            <h3 class="step-title">二見興玉神社を参拝</h3>
+            <p class="step-desc">夫婦岩、お守り購入など。授与所の時間に間に合うよう朝寄り配置です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://futamiokitamajinja.or.jp">公式サイト</a>
+              <a class="btn secondary" target="_blank" href="https://futamiokitamajinja.or.jp/visit/gift/">お守り案内</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">10:20–12:00</div>
+          <div class="step-card">
+            <h3 class="step-title">伊勢シーパラダイスを観光</h3>
+            <p class="step-desc">神社から徒歩圏。最終入館は閉館30分前なので、午前訪問が安心です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://ise-seaparadise.com/about/">施設案内</a>
+              <a class="btn secondary" target="_blank" href="https://ise-meotoiwa.jp/restaurant-shop/">めおと横丁</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">12:10–13:00</div>
+          <div class="step-card">
+            <h3 class="step-title">二見浦から伊勢市へ移動</h3>
+            <p class="step-desc">JRで伊勢市駅へ。駅周辺なのでランチ予約に余裕を持って動けます。</p>
+            <div class="links">
+              <a class="btn secondary" target="_blank" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E4%BA%8C%E8%A6%8B%E6%B5%A6&dnvStationName=%E6%B4%A5&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=">この先の移動候補</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">13:00–14:20ごろ</div>
+          <div class="step-card">
+            <h3 class="step-title">和肉 Oniku かねごとでランチ</h3>
+            <p class="step-desc">予約済みランチ。駅から徒歩圏内のため移動も楽です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://restaurant.ikyu.com/123214/lunch?visitorsCount=2&visitDate=2026-04-20">一休レストラン</a>
+              <a class="btn secondary" target="_blank" href="https://butasute.com/butasute-shop#butasute-geku">豚捨 外宮前店</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">14:30–15:30</div>
+          <div class="step-card">
+            <h3 class="step-title">伊勢神宮 外宮を参拝</h3>
+            <p class="step-desc">伊勢市駅近く。閉門前に十分余裕のある時間帯です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://www.isejingu.or.jp/about/geku/">外宮 公式案内</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">15:30以降</div>
+          <div class="step-card">
+            <h3 class="step-title">伊勢市から津へ移動</h3>
+            <p class="step-desc">蜂蜜まんじゅうの営業時間を考えると、ここは早めの移動が安心です。</p>
+            <div class="links">
+              <a class="btn secondary" target="_blank" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E6%B4%A5&dnvStationName=%E5%93%81%E5%B7%9D&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=">津→品川 乗換案内</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">16:20–16:50</div>
+          <div class="step-card">
+            <h3 class="step-title">蜂蜜まんじゅう購入・撮影</h3>
+            <p class="step-desc">本店または駅側販売所の営業時間内に立ち寄る想定です。</p>
+            <div class="links">
+              <a class="btn" target="_blank" href="https://tsukanko.jp/spot/s483/">観光情報</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <span class="dot"></span>
+          <div class="time">17:00台〜夜</div>
+          <div class="step-card">
+            <h3 class="step-title">津 → 名古屋 → 品川へ帰宅</h3>
+            <p class="step-desc">近鉄またはJRで名古屋経由、新幹線で品川へ戻る流れです。</p>
+            <div class="links">
+              <a class="btn secondary" target="_blank" href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E6%B4%A5&dnvStationName=%E5%93%81%E5%B7%9D&thrStationName1=&thrStationCode1=&thrStationName2=&thrStationCode2=&thrStationName3=&thrStationCode3=&month=2026%2F03&day=08&hour=0&minute=17&orvStationCode=&dnvStationCode=&basis=1&from=view.transfer.searchlist&freePass=0&sort=0&wspeed=100&sprexprs=1&utrexprs=1&accidentRailCode=&accidentRailName=&isrec=">津→品川 乗換案内</a>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="spots" class="section card">
+      <h2 class="section-title">主要スポット一覧</h2>
+      <div class="spot-list">
+        <div class="spot"><h4>志摩スペイン村</h4><p>三重県志摩市磯部町坂崎 / 地図座標目安: 34.358405, 136.844482</p></div>
+        <div class="spot"><h4>賢島の宿 みち潮</h4><p>三重県志摩市阿児町神明754-9 / 賢島駅近く</p></div>
+        <div class="spot"><h4>まっちゃん食堂</h4><p>三重県鳥羽市浦村町127-1 / 地図座標目安: 34.449518, 136.878957</p></div>
+        <div class="spot"><h4>鳥羽展望台 海女のテラス</h4><p>三重県鳥羽市国崎町大岳3-3</p></div>
+        <div class="spot"><h4>イオン鳥羽店</h4><p>三重県鳥羽市大明西町1-1 / 地図座標目安: 34.470371, 136.847436</p></div>
+        <div class="spot"><h4>寿々波別館 錦浦館</h4><p>三重県鳥羽市鳥羽1-10-38 / 鳥羽駅近く</p></div>
+        <div class="spot"><h4>神島</h4><p>鳥羽市営定期船でアクセス / 佐田浜から往復</p></div>
+        <div class="spot"><h4>鳥羽水族館</h4><p>三重県鳥羽市鳥羽3-3-6 / 地図座標目安: 34.481435, 136.845790</p></div>
+        <div class="spot"><h4>海上料亭 海楽園</h4><p>三重県鳥羽市小浜町299-39</p></div>
+        <div class="spot"><h4>二見興玉神社</h4><p>三重県伊勢市二見町江575</p></div>
+        <div class="spot"><h4>伊勢シーパラダイス</h4><p>三重県伊勢市二見町江580</p></div>
+        <div class="spot"><h4>和肉 Oniku かねごと</h4><p>三重県伊勢市岩渕1-1-29 山本ビル2F / 地図座標目安: 34.488366, 136.707672</p></div>
+        <div class="spot"><h4>伊勢神宮 外宮</h4><p>三重県伊勢市豊川町279 / 地図座標目安: 34.487491, 136.706187</p></div>
+        <div class="spot"><h4>蜂蜜まん本舗</h4><p>三重県津市大門8-5 / 地図座標目安: 34.719208, 136.510950</p></div>
+      </div>
+    </section>
+
+    <section id="memo" class="section card">
+      <h2 class="section-title">旅行メモ</h2>
+      <div class="notes">
+        <div class="note">神島の船は天候で欠航の可能性があります。当日朝の運航確認が安心です。</div>
+        <div class="note">鳥羽展望台は公共交通の本数が少なめなので、2日目はタクシー中心で組むと崩れにくいです。</div>
+        <div class="note">最終日の蜂蜜まんじゅうは営業時間が早め。17時以降では厳しい可能性があるため、伊勢観光後すぐ津へ向かう流れが安全です。</div>
+        <div class="note good">二見興玉神社 → 伊勢シーパラダイス → 伊勢市ランチ → 外宮 の流れは地理的にもまとまりがよく、最終日として動きやすい構成です。</div>
+      </div>
+    </section>
+
+    <p class="footer">このページはスマホ閲覧向けの旅のしおりとして整理したものです。</p>
+  </main>
 </body>
 </html>
